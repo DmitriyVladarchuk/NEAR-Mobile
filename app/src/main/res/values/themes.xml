@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.NEAR" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.NEAR.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/current</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.NEAR</item>
+    </style>
+
+    <style name="Theme.NEAR" parent="Theme.AppCompat.Light.NoActionBar" />
 </resources>
