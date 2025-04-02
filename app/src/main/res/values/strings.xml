@@ -10,6 +10,7 @@
     <string name="country_city_district">Country, city, district</string>
     <string name="birthday">Birthday</string>
 
+    <string name="notification_options">Notification options (optional)</string>
     <string name="telegram">Telegram</string>
     <string name="mobile_app">Mobile app</string>
 
@@ -21,5 +22,10 @@
 
     <string name="login_here">Login here</string>
     <string name="sign_up_here">Sign up here</string>
+
+    <string name="show_password">Show password</string>
+    <string name="hide_password">Hide password</string>
+
+    <string name="invalid_date">Invalid date</string>
 
 </resources>

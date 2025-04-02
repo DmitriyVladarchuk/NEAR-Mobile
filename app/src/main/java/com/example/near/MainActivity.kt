@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.example.near.ui.screens.RegistrationAccount
+import com.example.near.ui.screens.auth.login.RegistrationAccount
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.NEARTheme
 
@@ -26,7 +26,9 @@ class MainActivity : AppCompatActivity() {
                     containerColor = CustomTheme.colors.background,
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
-                    RegistrationAccount(modifier = Modifier.padding(innerPadding))
+                    RegistrationAccount(modifier = Modifier.padding(innerPadding)) {
+
+                    }
                 }
             }
         }
