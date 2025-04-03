@@ -3,12 +3,19 @@
 
     <string name="lets_get_you_started">LET\'S GET YOU STARTED</string>
     <string name="create_an_account">Create an Account</string>
+    <string name="login_to_your_account">Log in to your Account</string>
+    <string name="create_a_community">Create a Community</string>
+    <string name="login_in_as_a_community">Login In as a Community</string>
 
     <string name="your_name">Your Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="country_city_district">Country, city, district</string>
     <string name="birthday">Birthday</string>
+    
+    <string name="community_name">Community Name</string>
+    <string name="monitoring_region">Monitoring Region</string>
+    <string name="emergency_type">Emergency type</string>
 
     <string name="notification_options">Notification options (optional)</string>
     <string name="telegram">Telegram</string>
@@ -25,7 +32,6 @@
     <string name="sign_up_here">Sign up here</string>
 
     <string name="welcome_back">Welcome Back</string>
-    <string name="login_to_your_account">Log in to your Account</string>
 
     <string name="show_password">Show password</string>
     <string name="hide_password">Hide password</string>

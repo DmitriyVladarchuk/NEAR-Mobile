@@ -1,4 +1,4 @@
-package com.example.near.ui.screens.auth.signup
+package com.example.near.ui.screens.auth.signup.account
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement

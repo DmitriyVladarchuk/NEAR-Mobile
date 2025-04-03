@@ -1,6 +1,5 @@
-package com.example.near.ui.screens.auth.login
+package com.example.near.ui.screens.auth.login.community
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +12,6 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,26 +19,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.near.R
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.views.AuthScreenButtons
+import com.example.near.ui.views.ForgotPassword
 import com.example.near.ui.views.HeaderTextInfo
 import com.example.near.ui.views.TextFieldLabel
 import com.example.near.ui.views.TextFieldPlaceholder
 import com.example.near.ui.views.textFieldColors
 
 @Composable
-fun LoginAccountScreen(
+fun LoginCommunityScreen(
     modifier: Modifier = Modifier,
-    viewModel: LoginAccountViewModel = viewModel(),
+    viewModel: LoginCommunityViewModel = viewModel(),
     onSignUpClick: () -> Unit
 ) {
     val defaultModifier = Modifier.padding(horizontal = 40.dp, vertical = 40.dp)
@@ -48,9 +45,9 @@ fun LoginAccountScreen(
     Column(modifier = defaultModifier.then(modifier)) {
         HeaderTextInfo(
             stringResource(R.string.welcome_back).uppercase(),
-            stringResource(R.string.login_to_your_account)
+            stringResource(R.string.login_in_as_a_community)
         )
-        TextFieldAccount(viewModel)
+        TextFieldCommunity(viewModel)
         ForgotPassword {
 
         }
@@ -67,7 +64,7 @@ fun LoginAccountScreen(
 }
 
 @Composable
-private fun TextFieldAccount(viewModel: LoginAccountViewModel) {
+private fun TextFieldCommunity(viewModel: LoginCommunityViewModel) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -113,16 +110,4 @@ private fun TextFieldAccount(viewModel: LoginAccountViewModel) {
             }
         )
     }
-}
-
-@Composable
-private fun ForgotPassword(onClick: () -> Unit) {
-    Text(
-        text = stringResource(R.string.forgot_password),
-        style = AppTypography.labelSmall,
-        color = CustomTheme.colors.content,
-        fontWeight = FontWeight.SemiBold,
-        modifier = Modifier.fillMaxWidth().padding(top = 8.dp).clickable { onClick() },
-        textAlign = TextAlign.End
-    )
 }

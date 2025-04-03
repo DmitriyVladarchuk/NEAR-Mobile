@@ -1,4 +1,4 @@
-package com.example.near.ui.screens.auth.signup
+package com.example.near.ui.screens.auth.signup.account
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
