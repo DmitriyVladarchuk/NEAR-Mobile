@@ -1,26 +1,21 @@
-package com.example.near.ui.screens.auth.login
+package com.example.near.ui.screens.auth.signup
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,9 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -40,53 +33,43 @@ import com.example.near.R
 import com.example.near.domain.models.NotificationType
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
+import com.example.near.ui.views.AuthScreenButtons
+import com.example.near.ui.views.HeaderTextInfo
 import com.example.near.ui.views.TextFieldLabel
 import com.example.near.ui.views.TextFieldPlaceholder
+import com.example.near.ui.views.textFieldColors
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 
 @Composable
-fun RegistrationAccount(
+fun SignupAccountScreen(
     modifier: Modifier = Modifier,
-    viewModel: LoginAccountViewModel = viewModel(),
-    onSignInClick: () -> Unit
+    viewModel: SignupAccountViewModel = viewModel(),
+    onLoginClick: () -> Unit
 ) {
     val defaultModifier = Modifier.padding(horizontal = 40.dp, vertical = 40.dp)
 
     Column(modifier = defaultModifier.then(modifier)) {
-        HeaderTextInfo()
+        HeaderTextInfo(
+            stringResource(R.string.lets_get_you_started),
+            stringResource(R.string.create_an_account)
+        )
         TextFieldAccount(viewModel)
         NotificationOptions(viewModel)
-        ActionButtons(
-            onSignUpClick = { viewModel.onSignUpClick() },
-            onSignInClick = onSignInClick
+
+        AuthScreenButtons(
+            primaryButtonText = stringResource(R.string.get_started).uppercase(),
+            secondaryText = stringResource(R.string.already_have_an_account),
+            secondaryActionText = stringResource(R.string.login_here).uppercase(),
+            onPrimaryButtonClick = { viewModel.onSignUpClick() },
+            onSecondaryActionClick = { onLoginClick() }
         )
     }
 }
 
 @Composable
-private fun HeaderTextInfo() {
-    Column(
-        modifier = Modifier.padding(vertical = 40.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text(
-            text = stringResource(R.string.lets_get_you_started),
-            style = AppTypography.bodySmall,
-            color = CustomTheme.colors.content
-        )
-
-        Text(
-            text = stringResource(R.string.create_an_account),
-            style = AppTypography.titleLarge,
-            color = CustomTheme.colors.content
-        )
-    }
-}
-
-@Composable
-private fun TextFieldAccount(viewModel: LoginAccountViewModel) {
+private fun TextFieldAccount(viewModel: SignupAccountViewModel) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -185,7 +168,7 @@ private fun TextFieldAccount(viewModel: LoginAccountViewModel) {
 }
 
 @Composable
-private fun NotificationOptions(viewModel: LoginAccountViewModel) {
+private fun NotificationOptions(viewModel: SignupAccountViewModel) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -251,63 +234,3 @@ private fun NotificationChip(
         )
     }
 }
-
-@Composable
-private fun ActionButtons(
-    onSignUpClick: () -> Unit,
-    onSignInClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Button(
-            onClick = onSignUpClick,
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = CustomTheme.colors.orange,
-                contentColor = Color.White
-            )
-        ) {
-            Text(
-                text = stringResource(R.string.get_started).uppercase(),
-                style = AppTypography.bodyMedium,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-        }
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = stringResource(R.string.already_have_an_account),
-                style = AppTypography.labelSmall,
-                color = CustomTheme.colors.content
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            Text(
-                text = stringResource(R.string.login_here).uppercase(),
-                style = AppTypography.bodySmall,
-                color = CustomTheme.colors.currentContainer,
-                modifier = Modifier.clickable(onClick = onSignInClick),
-                fontWeight = FontWeight.SemiBold
-            )
-        }
-    }
-}
-
-@Composable
-private fun textFieldColors() = OutlinedTextFieldDefaults.colors(
-    focusedTextColor = CustomTheme.colors.content,
-    unfocusedTextColor = CustomTheme.colors.content,
-    focusedContainerColor = CustomTheme.colors.background,
-    unfocusedContainerColor = CustomTheme.colors.background,
-    unfocusedLabelColor = CustomTheme.colors.background,
-    cursorColor = CustomTheme.colors.currentContainer,
-    focusedBorderColor = CustomTheme.colors.currentContainer,
-    unfocusedBorderColor = CustomTheme.colors.container
-)
