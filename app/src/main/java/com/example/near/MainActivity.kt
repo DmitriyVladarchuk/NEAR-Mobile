@@ -9,9 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.example.near.ui.screens.auth.login.account.LoginAccountScreen
-import com.example.near.ui.screens.auth.login.community.LoginCommunityScreen
-import com.example.near.ui.screens.auth.signup.community.SignupCommunityScreen
+import com.example.near.ui.screens.navigation.MainNavGraph
+import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.NEARTheme
 
@@ -28,19 +27,10 @@ class MainActivity : AppCompatActivity() {
                     containerColor = CustomTheme.colors.background,
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
-//                    SignupAccount(modifier = Modifier.padding(innerPadding)) {
-//
-//                    }
-//                    LoginAccountScreen(modifier = Modifier.padding(innerPadding)) {
-//
-//                    }
-
-//                    SignupCommunityScreen(modifier = Modifier.padding(innerPadding)) {
-//
-//                    }
-                    LoginCommunityScreen(modifier = Modifier.padding(innerPadding)) {
-
-                    }
+                     MainNavGraph(
+                        modifier = Modifier.padding(innerPadding),
+                        startDestination = Routes.ONBOARDING
+                    )
                 }
             }
         }

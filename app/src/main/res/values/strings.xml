@@ -38,4 +38,17 @@
 
     <string name="invalid_date">Invalid date</string>
 
+    <!-- Onboarding -->
+
+    <string name="title_text_onboarding">When Emergencies strike, NEAR is there</string>
+    <string name="text_onboarding1">With our app, you will be able to keep up to date with all important incidents in real time.</string>
+    <string name="text_onboarding2">A personal account will allow you to create and send notification templates to your friends and family. You will be able to subscribe to community accounts to receive important emergency notifications from them.</string>
+    
+    <string name="respond">Respond</string>
+    <string name="notify">Notify</string>
+    <string name="alarm">Alarm</string>
+
+    <string name="start_using">Start using</string>
+    
+    
 </resources>
