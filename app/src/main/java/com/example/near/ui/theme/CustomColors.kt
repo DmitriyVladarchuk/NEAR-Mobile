@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 data class CustomColors(
     val background: Color,
     val container: Color,
+    val container_2: Color,
     val content: Color,
     val currentContent: Color,
     val currentContainer: Color,

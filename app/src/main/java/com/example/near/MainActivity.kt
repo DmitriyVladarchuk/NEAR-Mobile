@@ -4,14 +4,9 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.near.ui.screens.navigation.MainNavGraph
 import com.example.near.ui.screens.navigation.Routes
-import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.NEARTheme
 
 class MainActivity : AppCompatActivity() {
@@ -23,15 +18,9 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContent {
             NEARTheme {
-                Scaffold(
-                    containerColor = CustomTheme.colors.background,
-                    modifier = Modifier.fillMaxSize()
-                ) { innerPadding ->
-                     MainNavGraph(
-                        modifier = Modifier.padding(innerPadding),
-                        startDestination = Routes.ONBOARDING
-                    )
-                }
+                MainNavGraph(
+                    startDestination = Routes.Onboarding.route
+                )
             }
         }
     }

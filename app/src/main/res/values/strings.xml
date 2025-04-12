@@ -50,5 +50,11 @@
 
     <string name="start_using">Start using</string>
     
+    <!-- Screens -->
+    <string name="dashboard">Dashboard</string>
+    <string name="friends">Friends</string>
+    <string name="subscriptions">Subscriptions</string>
+    <string name="my_profile">My Profile</string>
+    <string name="profile">Profile</string>
     
 </resources>

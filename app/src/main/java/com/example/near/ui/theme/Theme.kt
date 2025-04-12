@@ -9,6 +9,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 private val lightColors = CustomColors(
     background = light_background,
     container = light_container,
+    container_2 = light_container_2,
     content = light_content,
     currentContent = current_content,
     currentContainer = current_container,
@@ -18,6 +19,7 @@ private val lightColors = CustomColors(
 private val darkColors = CustomColors(
     background = dark_background,
     container = dark_container,
+    container_2 = dark_container_2,
     content = dark_content,
     currentContent = current_content,
     currentContainer = current_container,

@@ -24,7 +24,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.near.R
+import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.views.AuthScreenButtons
@@ -37,7 +39,8 @@ import com.example.near.ui.views.textFieldColors
 fun SignupCommunityScreen(
     modifier: Modifier = Modifier,
     viewModel: SignupCommunityViewModel = viewModel(),
-    onLoginClick: () -> Unit
+    onLoginClick: () -> Unit,
+    navController: NavController
 ) {
     val defaultModifier = Modifier.padding(horizontal = 40.dp, vertical = 40.dp)
 
@@ -52,7 +55,7 @@ fun SignupCommunityScreen(
             secondaryText = stringResource(R.string.already_have_an_account),
             secondaryActionText = stringResource(R.string.login_here).uppercase(),
             onPrimaryButtonClick = {
-                //viewModel.onSignUpClick()
+                navController.navigate(Routes.Dashboards.route)
             },
             onSecondaryActionClick = { onLoginClick() }
         )
