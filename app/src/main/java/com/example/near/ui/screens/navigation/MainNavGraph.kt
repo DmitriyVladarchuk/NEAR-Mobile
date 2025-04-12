@@ -16,7 +16,7 @@ import com.example.near.ui.screens.onboarding.OnboardingScreen
 @Composable
 fun MainNavGraph(
     modifier: Modifier = Modifier,
-    startDestination: String = Routes.ONBOARDING
+    startDestination: String = Routes.Onboarding.route
 ) {
     val navController = rememberNavController()
 
@@ -25,41 +25,41 @@ fun MainNavGraph(
         startDestination = startDestination,
         modifier = modifier
     ) {
-        composable(Routes.ONBOARDING) {
+        composable(Routes.Onboarding.route) {
             OnboardingScreen(
                 modifier = modifier,
-                onAccountClick = { navController.navigate(Routes.SIGNUP_ACCOUNT) },
-                onCommunityClick = { navController.navigate(Routes.SIGNUP_COMMUNITY) }
+                onAccountClick = { navController.navigate(Routes.SignupAccount.route) },
+                onCommunityClick = { navController.navigate(Routes.SignupCommunity.route) }
             )
         }
-        composable(Routes.LOGIN_ACCOUNT) {
+        composable(Routes.LoginAccount.route) {
             LoginAccountScreen(
                 modifier = modifier,
                 onSignUpClick = { navController.popBackStack() }
             )
         }
-        composable(Routes.SIGNUP_ACCOUNT) {
+        composable(Routes.SignupAccount.route) {
             SignupAccountScreen(
                 modifier = modifier,
-                onLoginClick = { navController.navigate(Routes.LOGIN_ACCOUNT) },
+                onLoginClick = { navController.navigate(Routes.LoginAccount.route) },
             )
         }
 
-        composable(Routes.LOGIN_COMMUNITY) {
+        composable(Routes.LoginCommunity.route) {
             LoginCommunityScreen(
                 modifier = modifier,
                 onSignUpClick = { navController.popBackStack() }
             )
         }
-        composable(Routes.SIGNUP_COMMUNITY) {
+        composable(Routes.SignupCommunity.route) {
             SignupCommunityScreen(
                 modifier = modifier,
-                onLoginClick = { navController.navigate(Routes.LOGIN_COMMUNITY) },
+                onLoginClick = { navController.navigate(Routes.LoginCommunity.route) },
             )
         }
 
         // Main App (заглушка)
-        composable(Routes.MAIN) {
+        composable(Routes.Main.route) {
             Text("Main Screen", modifier = Modifier.fillMaxSize())
         }
     }
