@@ -103,17 +103,17 @@ fun MainNavGraph(
 
             // Экран Dashboard
             composable(Routes.Dashboards.route) {
-                DashboardScreen()
+                DashboardScreen(modifier = Modifier.padding(innerPadding))
             }
 
             // Экран Friends
             composable(Routes.Friends.route) {
-                FriendsScreen()
+                FriendsScreen(modifier = Modifier.padding(innerPadding))
             }
 
             // Экран Notifications
             composable(Routes.Subscriptions.route) {
-                SubscriptionsScreen()
+                SubscriptionsScreen(modifier = Modifier.padding(innerPadding))
             }
 
             // Экран Profile

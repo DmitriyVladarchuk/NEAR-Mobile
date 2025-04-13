@@ -1,21 +1,23 @@
 package com.example.near.ui.screens.subscriptions
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.near.ui.theme.AppTypography
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.example.near.R
+import com.example.near.ui.views.MainHeaderTextInfo
 
 @Composable
-fun SubscriptionsScreen() {
+fun SubscriptionsScreen(modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier.fillMaxSize(),
     ) {
-        Text("Subscription Screen", style = AppTypography.headlineMedium)
+        MainHeaderTextInfo(
+            text = stringResource(R.string.subscriptions),
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
     }
 }

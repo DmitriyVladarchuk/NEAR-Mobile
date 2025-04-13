@@ -74,7 +74,7 @@ fun BottomBar(navController: NavController) {
 
 @Composable
 fun BottomBarItem(bottomItem: BottomBarItem, isSelected: Boolean, modifier: Modifier, changeType: () -> Unit) {
-    val currentColor = CustomTheme.colors.currentContent
+    val currentColor = CustomTheme.colors.container
     val containerColor = CustomTheme.colors.currentContainer
 
     val animateColor = remember { Animatable(containerColor) }
@@ -100,8 +100,8 @@ fun BottomBarItem(bottomItem: BottomBarItem, isSelected: Boolean, modifier: Modi
         Icon(
             imageVector = bottomItem.icon,
             modifier = Modifier.size(32.dp),
-            //tint = if (isSelected) Color.White else CustomTheme.colors.content,
-            tint = CustomTheme.colors.content,
+            tint = if (isSelected) Color.White else CustomTheme.colors.content,
+            //tint = CustomTheme.colors.content,
             contentDescription = ""
         )
 
