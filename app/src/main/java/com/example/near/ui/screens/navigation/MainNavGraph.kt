@@ -96,11 +96,6 @@ fun MainNavGraph(
                 )
             }
 
-            // Main App (заглушка)
-            composable(Routes.Main.route) {
-                Text("Main Screen", modifier = Modifier.fillMaxSize())
-            }
-
             // Экран Dashboard
             composable(Routes.Dashboards.route) {
                 DashboardScreen(modifier = Modifier.padding(innerPadding))

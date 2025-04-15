@@ -56,5 +56,13 @@
     <string name="subscriptions">Subscriptions</string>
     <string name="my_profile">My Profile</string>
     <string name="profile">Profile</string>
+
+    <!-- Profile -->
+    <string name="location">Location</string>
+    <string name="options_for_receiving_notifications">Options for receiving notifications</string>
+    <string name="edit_profile">Edit profile</string>
+
+    <string name="settings">Settings</string>
+    <string name="log_out">Log Out</string>
     
 </resources>

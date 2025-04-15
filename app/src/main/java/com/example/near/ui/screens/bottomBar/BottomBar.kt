@@ -51,7 +51,7 @@ fun BottomBar(navController: NavController) {
     DynamicItemContainer(
         items = bottomBarItems,
         selectedItem = bottomBarItems.find { it.route == currentRoute.value } ?: bottomBarItems[0],
-        modifier = Modifier.padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 20.dp),
+        modifier = Modifier.padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 20.dp),
         onItemSelected = { selected ->
             navController.navigate(selected.route) {
                 popUpTo(navController.graph.startDestinationId) {
@@ -74,7 +74,7 @@ fun BottomBar(navController: NavController) {
 
 @Composable
 fun BottomBarItem(bottomItem: BottomBarItem, isSelected: Boolean, modifier: Modifier, changeType: () -> Unit) {
-    val currentColor = CustomTheme.colors.container
+    val currentColor = CustomTheme.colors.container_2
     val containerColor = CustomTheme.colors.currentContainer
 
     val animateColor = remember { Animatable(containerColor) }
