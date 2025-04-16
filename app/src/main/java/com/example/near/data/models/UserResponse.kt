@@ -1,6 +1,8 @@
-package com.example.near.domain.models
+package com.example.near.data.models
 
-data class User(
+import com.example.near.domain.models.NotificationOption
+
+data class UserResponse(
     val id: String,
     val firstName: String,
     val lastName: String,
@@ -13,5 +15,5 @@ data class User(
     val friends: List<String>,
     val groups: List<String>,
     val subscriptions: List<String>,
-    val notificationTemplates: List<NotificationOption>,
+    val notificationTemplates: List<NotificationOption>
 )

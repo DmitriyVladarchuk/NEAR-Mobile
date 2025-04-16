@@ -63,7 +63,7 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.androidx.core.splash.screen)
-    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation(libs.coil.compose)
     annotationProcessor(libs.androidx.room.room.compiler)
     ksp(libs.androidx.room.room.compiler)
     ksp(libs.dagger.hilt.compiler)

@@ -1,6 +1,7 @@
 package com.example.near.ui.screens.profile
 
 import androidx.lifecycle.ViewModel
+import com.example.near.domain.models.NotificationOption
 import com.example.near.domain.models.User
 
 class ProfileViewModel : ViewModel() {
@@ -18,6 +19,6 @@ class ProfileViewModel : ViewModel() {
         listOf(),
         listOf(),
         listOf(),
-        listOf("Telegram", )
+        listOf(NotificationOption(1, "teleram"), )
     )
 }

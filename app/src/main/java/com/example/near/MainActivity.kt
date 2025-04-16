@@ -8,7 +8,9 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.near.ui.screens.navigation.MainNavGraph
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.NEARTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.near.R
@@ -47,7 +48,7 @@ import java.util.Locale
 @Composable
 fun SignupAccountScreen(
     modifier: Modifier = Modifier,
-    viewModel: SignupAccountViewModel = viewModel(),
+    viewModel: SignupAccountViewModel = hiltViewModel(),
     onLoginClick: () -> Unit,
     navController: NavController
 ) {
