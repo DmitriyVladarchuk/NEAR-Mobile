@@ -1,8 +1,6 @@
 package com.example.near.DI
 
 import com.example.near.data.API.UserService
-import com.example.near.data.repository.UserRepositoryImpl
-import com.example.near.domain.repository.UserRepository
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -39,7 +37,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://localhost:8080/")
+            .baseUrl("http://192.168.0.102:8080/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()

@@ -1,6 +1,8 @@
 package com.example.near.data.repository
 
 import com.example.near.data.API.UserService
+import com.example.near.data.models.LoginUserRequest
+import com.example.near.data.models.LoginUserResponse
 import com.example.near.data.models.SignUpRequest
 import com.example.near.data.models.UserResponse
 import com.example.near.domain.models.NotificationOption
@@ -35,6 +37,21 @@ class UserRepositoryImpl @Inject constructor(
             } else {
                 val errorBody = response.errorBody()?.string() ?: ""
                 Result.failure(Exception("Error ${response.code()}: $errorBody"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun login(email: String, password: String): Result<LoginUserResponse> {
+        return try {
+            val response = userService.login(LoginUserRequest(email, password))
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    Result.success(it)
+                } ?: Result.failure(Exception("Empty response body"))
+            } else {
+                Result.failure(Exception("Login failed: ${response.code()}"))
             }
         } catch (e: Exception) {
             Result.failure(e)

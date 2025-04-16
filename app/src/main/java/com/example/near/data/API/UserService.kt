@@ -1,5 +1,7 @@
 package com.example.near.data.API
 
+import com.example.near.data.models.LoginUserRequest
+import com.example.near.data.models.LoginUserResponse
 import com.example.near.data.models.SignUpRequest
 import com.example.near.data.models.UserResponse
 import retrofit2.Response
@@ -18,4 +20,9 @@ interface UserService {
     suspend fun getUserInfo(
         @Header("Authorization") token: String
     ): Response<UserResponse>
+
+    @POST("NEAR/login/account")
+    suspend fun login(
+        @Body request: LoginUserRequest
+    ): Response<LoginUserResponse>
 }

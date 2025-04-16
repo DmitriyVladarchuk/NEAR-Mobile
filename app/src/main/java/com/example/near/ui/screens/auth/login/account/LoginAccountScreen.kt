@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.near.R
@@ -39,7 +40,7 @@ import com.example.near.ui.views.textFieldColors
 @Composable
 fun LoginAccountScreen(
     modifier: Modifier = Modifier,
-    viewModel: LoginAccountViewModel = viewModel(),
+    viewModel: LoginAccountViewModel = hiltViewModel(),
     onSignUpClick: () -> Unit,
     navController: NavController
 ) {
@@ -60,7 +61,8 @@ fun LoginAccountScreen(
             secondaryActionText = stringResource(R.string.sign_up_here).uppercase(),
             onPrimaryButtonClick = {
                 //viewModel.onSignUpClick()
-                navController.navigate(Routes.Dashboards.route)
+                viewModel.login()
+                //navController.navigate(Routes.Dashboards.route)
             },
             onSecondaryActionClick = { onSignUpClick() }
         )
