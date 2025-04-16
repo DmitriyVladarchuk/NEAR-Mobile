@@ -7,13 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.domain.models.NotificationType
 import com.example.near.domain.repository.UserRepository
+import com.example.near.domain.usecase.SignUpUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignupAccountViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val signUpUserUseCase: SignUpUserUseCase
 ) : ViewModel() {
     var nameUser by mutableStateOf("")
     var email by mutableStateOf("")
@@ -33,8 +34,7 @@ class SignupAccountViewModel @Inject constructor(
 
     fun onSignUpClick() {
         viewModelScope.launch {
-
-            userRepository.signUp(nameUser, email, password, country, birthday, listOf())
+            signUpUserUseCase(nameUser, email, password, country, birthday, listOf())
         }
     }
 }

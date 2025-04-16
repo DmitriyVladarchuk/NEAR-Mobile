@@ -3,12 +3,12 @@ package com.example.near.ui.screens.navigation
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -23,9 +23,12 @@ import com.example.near.ui.screens.onboarding.OnboardingScreen
 import com.example.near.ui.screens.profile.ProfileScreen
 import com.example.near.ui.screens.subscriptions.SubscriptionsScreen
 import com.example.near.ui.theme.CustomTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
 fun MainNavGraph(
+    viewModel: NavigationViewModel = hiltViewModel(),
     startDestination: String = Routes.Onboarding.route
 ) {
     val navController = rememberNavController()
@@ -38,11 +41,27 @@ fun MainNavGraph(
         }
     }
 
+    // Автоматический логин при наличии сохраненных данных
+    LaunchedEffect(Unit) {
+        if (!viewModel.sessionManager.isLoggedIn) {
+            viewModel.authDataStorage.getCredentials()?.let { (email, password) ->
+                val result = withContext(Dispatchers.IO) {
+                    viewModel.userRepository.login(email, password)
+                }
+                if (result.isSuccess) {
+                    viewModel.sessionManager.saveAuthToken(result.getOrNull()!!)
+                    navController.navigate(Routes.Dashboards.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            }
+        }
+    }
+
     Scaffold(
         containerColor = CustomTheme.colors.background,
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            // Показываем BottomBar только на основных экранах
             if (currentRoute.value in listOf(
                     Routes.Dashboards.route,
                     Routes.Friends.route,
@@ -59,6 +78,7 @@ fun MainNavGraph(
             modifier = Modifier.padding(innerPadding)
         ) {
             val baseModifier = Modifier.padding(innerPadding)
+
             composable(Routes.Onboarding.route) {
                 OnboardingScreen(
                     modifier = baseModifier,
