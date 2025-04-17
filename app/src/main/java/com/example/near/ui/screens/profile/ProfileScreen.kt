@@ -1,6 +1,7 @@
 package com.example.near.ui.screens.profile
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,11 +26,13 @@ import androidx.compose.material.icons.filled.Redeem
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -50,58 +53,71 @@ import com.example.near.ui.theme.NEARTheme
 import com.example.near.ui.theme.dark_content
 
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), modifier: Modifier = Modifier) {
+fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), modifier: Modifier = Modifier) {
     val scrollState = rememberScrollState()
 
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .verticalScroll(scrollState)
-                .background(CustomTheme.colors.background)
-        ) {
-            // Основной контент (ровно 100% видимой области)
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(LocalConfiguration.current.screenHeightDp.dp)
-            ) {
+
+        when {
+            viewModel.isLoading -> {
+                CircularProgressIndicator()
+            }
+            viewModel.error != null -> {
+                Text("Error: ${viewModel.error}", color = Color.Red)
+                Button(onClick = { viewModel.loadUser() }) {
+                    Text("Retry")
+                }
+            }
+            else -> {
                 Column(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .weight(1f)
+                        .verticalScroll(scrollState)
+                        .background(CustomTheme.colors.background)
                 ) {
-                    // Аватар (30% высоты экрана)
-                    UserAvatarSection(
-                        avatarUrl = viewModel.avatarUrl,
+                    Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(0.3f)
-                    )
+                            .height(LocalConfiguration.current.screenHeightDp.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            UserAvatarSection(
+                                avatarUrl = viewModel.avatarUrl,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(0.3f)
+                            )
 
-                    // Профиль (50% высоты экрана)
-                    UserProfileCard(
-                        user = viewModel.user,
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .weight(0.4f)
-                    )
+                            viewModel.user?.let {
+                                UserProfileCard(
+                                    user = it,
+                                    modifier = Modifier
+                                        .padding(horizontal = 16.dp)
+                                        .weight(0.4f)
+                                )
+                            }
 
-                    // Друзья и подписки (20% высоты экрана)
-                    FriendsAndSubscription(
-                        user = viewModel.user,
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                            .weight(0.1f)
+                            viewModel.user?.let {
+                                FriendsAndSubscription(
+                                    user = it,
+                                    modifier = Modifier
+                                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                                        .weight(0.1f)
+                                )
+                            }
+                        }
+                    }
+
+                    SettingAndLogOut(
+                        settingClick = {},
+                        logOutClick = { viewModel.logOut() },
                     )
                 }
             }
-
-            // Дополнительный контент (кнопки, появляются при скролле)
-            SettingAndLogOut(
-                settingClick = {},
-                logOutClick = {},
-            )
         }
     }
 }
@@ -272,12 +288,41 @@ private fun ItemFriendsOrSubscription(
 }
 
 @Composable
+private fun RowButton(image: ImageVector, text: String, modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = image,
+            contentDescription = "icons",
+            modifier = Modifier.size(24.dp).padding(end = 8.dp)
+        )
+        Text(
+            text = text,
+            style = AppTypography.bodyMedium,
+            color = CustomTheme.colors.content,
+            modifier = Modifier.padding(end = 8.dp),
+        )
+    }
+}
+
+@Composable
 private fun SettingAndLogOut(settingClick: () -> Unit, logOutClick: () -> Unit) {
     Column(
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        InfoRowForUser(Icons.Filled.Settings, stringResource(R.string.settings), "")
-        InfoRowForUser(Icons.AutoMirrored.Filled.Logout, stringResource(R.string.log_out), "")
+        RowButton(
+            image = Icons.Filled.Settings,
+            text = stringResource(R.string.settings),
+            modifier = Modifier.clickable { settingClick() }
+        )
+        RowButton(
+            image = Icons.AutoMirrored.Filled.Logout,
+            text = stringResource(R.string.log_out),
+            modifier = Modifier.clickable { logOutClick() }
+        )
     }
 
 }

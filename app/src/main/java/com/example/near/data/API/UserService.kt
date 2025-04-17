@@ -3,7 +3,7 @@ package com.example.near.data.API
 import com.example.near.data.models.LoginUserRequest
 import com.example.near.data.models.LoginUserResponse
 import com.example.near.data.models.SignUpRequest
-import com.example.near.data.models.UserResponse
+import com.example.near.domain.models.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -19,7 +19,7 @@ interface UserService {
     @GET("NEAR/user/me")
     suspend fun getUserInfo(
         @Header("Authorization") token: String
-    ): Response<UserResponse>
+    ): Response<User>
 
     @POST("NEAR/login/account")
     suspend fun login(

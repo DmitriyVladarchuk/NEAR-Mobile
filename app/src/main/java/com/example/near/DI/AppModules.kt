@@ -6,6 +6,8 @@ import com.example.near.data.datastore.AuthDataStorage
 import com.example.near.data.datastore.SessionManager
 import com.example.near.data.repository.UserRepositoryImpl
 import com.example.near.domain.repository.UserRepository
+import com.example.near.domain.usecase.GetUserUseCase
+import com.example.near.domain.usecase.LogOutUseCase
 import com.example.near.domain.usecase.LoginUserUseCase
 import com.example.near.domain.usecase.SignUpUserUseCase
 import dagger.Module
@@ -34,6 +36,18 @@ object AppModules {
     @Singleton
     fun provideUserSignUpUseCase(userRepository: UserRepository): SignUpUserUseCase {
         return SignUpUserUseCase(userRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetUserUseCase(userRepository: UserRepository, sessionManager: SessionManager): GetUserUseCase {
+        return GetUserUseCase(userRepository, sessionManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLogOutUseCase(sessionManager: SessionManager, authDataStorage: AuthDataStorage): LogOutUseCase {
+        return LogOutUseCase(sessionManager, authDataStorage)
     }
 
     @Provides

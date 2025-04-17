@@ -4,8 +4,8 @@ import com.example.near.data.API.UserService
 import com.example.near.data.models.LoginUserRequest
 import com.example.near.data.models.LoginUserResponse
 import com.example.near.data.models.SignUpRequest
-import com.example.near.data.models.UserResponse
 import com.example.near.domain.models.NotificationOption
+import com.example.near.domain.models.User
 import com.example.near.domain.repository.UserRepository
 import javax.inject.Inject
 
@@ -58,7 +58,7 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserInfo(token: String): Result<UserResponse> {
+    override suspend fun getUserInfo(token: String): Result<User> {
         return try {
             val response = userService.getUserInfo("Bearer $token")
             if (response.isSuccessful) {

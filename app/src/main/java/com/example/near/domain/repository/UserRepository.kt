@@ -1,8 +1,8 @@
 package com.example.near.domain.repository
 
 import com.example.near.data.models.LoginUserResponse
-import com.example.near.data.models.UserResponse
 import com.example.near.domain.models.NotificationOption
+import com.example.near.domain.models.User
 
 interface UserRepository {
     suspend fun signUp(
@@ -19,5 +19,5 @@ interface UserRepository {
         password: String,
     ): Result<LoginUserResponse>
 
-    suspend fun getUserInfo(token: String): Result<UserResponse>
+    suspend fun getUserInfo(token: String): Result<User>
 }
