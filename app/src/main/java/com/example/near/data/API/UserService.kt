@@ -9,6 +9,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface UserService {
     @POST("NEAR/signup/account")
@@ -16,13 +17,19 @@ interface UserService {
         @Body request: SignUpRequest
     ): Response<Void>
 
+    @POST("NEAR/login/account")
+    suspend fun login(
+        @Body request: LoginUserRequest
+    ): Response<LoginUserResponse>
+
     @GET("NEAR/user/me")
     suspend fun getUserInfo(
         @Header("Authorization") token: String
     ): Response<User>
 
-    @POST("NEAR/login/account")
-    suspend fun login(
-        @Body request: LoginUserRequest
-    ): Response<LoginUserResponse>
+    @GET("NEAR/user/get")
+    suspend fun getUserById(
+        @Header("Authorization") token: String,
+        @Query("id") userId: String
+    ): Response<User>
 }
