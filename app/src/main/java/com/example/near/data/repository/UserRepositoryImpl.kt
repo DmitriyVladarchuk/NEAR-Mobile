@@ -1,6 +1,7 @@
 package com.example.near.data.repository
 
 import com.example.near.data.API.UserService
+import com.example.near.data.models.FriendRequest
 import com.example.near.data.models.LoginUserRequest
 import com.example.near.data.models.LoginUserResponse
 import com.example.near.data.models.SignUpRequest
@@ -84,6 +85,22 @@ class UserRepositoryImpl @Inject constructor(
             } else {
                 val errorBody = response.errorBody()?.string() ?: ""
                 Result.failure(Exception("Error ${response.code()}: $errorBody"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun sendFriendRequest(token: String, friendId: String): Result<Unit> {
+        return try {
+            val response = userService.sendFriendRequest(
+                token = "Bearer $token",
+                request = FriendRequest(friendId = friendId)
+            )
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Failed to send friend request"))
             }
         } catch (e: Exception) {
             Result.failure(e)

@@ -10,6 +10,7 @@ import com.example.near.domain.usecase.GetUserByIdUseCase
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.LogOutUseCase
 import com.example.near.domain.usecase.LoginUserUseCase
+import com.example.near.domain.usecase.SendFriendRequestUseCase
 import com.example.near.domain.usecase.SignUpUserUseCase
 import dagger.Module
 import dagger.Provides
@@ -55,6 +56,12 @@ object AppModules {
     @Singleton
     fun provideGetUserByIdUseCase(userRepository: UserRepository, sessionManager: SessionManager): GetUserByIdUseCase {
         return GetUserByIdUseCase(userRepository, sessionManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSendFriendRequestUseCase(userRepository: UserRepository, sessionManager: SessionManager): SendFriendRequestUseCase {
+        return SendFriendRequestUseCase(userRepository, sessionManager)
     }
 
     @Provides

@@ -22,4 +22,6 @@ interface UserRepository {
     suspend fun getUserInfo(token: String): Result<User>
 
     suspend fun getUserById(token: String, id: String): Result<User>
+
+    suspend fun sendFriendRequest(token: String, friendId: String): Result<Unit>
 }

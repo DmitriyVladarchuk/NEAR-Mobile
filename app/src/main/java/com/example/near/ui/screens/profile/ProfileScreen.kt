@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,13 +38,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.near.R
 import com.example.near.domain.models.NotificationOption
@@ -52,6 +53,7 @@ import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.NEARTheme
 import com.example.near.ui.theme.dark_content
+import com.example.near.ui.theme.light_container
 
 @Composable
 fun ProfileScreen(
@@ -70,10 +72,7 @@ fun ProfileScreen(
     }
 
 
-    Column(
-        modifier = modifier.fillMaxSize()
-    ) {
-
+    Column(modifier = modifier.fillMaxSize()) {
         when {
             viewModel.isLoading -> {
                 CircularProgressIndicator()
@@ -107,12 +106,24 @@ fun ProfileScreen(
                             )
 
                             viewModel.user?.let {
-                                UserProfileCard(
-                                    user = it,
-                                    modifier = Modifier
-                                        .padding(horizontal = 16.dp)
-                                        .weight(0.4f)
-                                )
+                                if (userId != null) {
+                                    UserProfileCard(
+                                        userId = true,
+                                        user = it,
+                                        onClick = { viewModel.friendshipRequest(userId) },
+                                        modifier = Modifier
+                                            .padding(horizontal = 16.dp)
+                                            .weight(0.4f)
+                                    )
+                                } else {
+                                    UserProfileCard(
+                                        user = it,
+                                        onClick = { /* TODO EditScreen*/ },
+                                        modifier = Modifier
+                                            .padding(horizontal = 16.dp)
+                                            .weight(0.4f)
+                                    )
+                                }
                             }
 
                             viewModel.user?.let {
@@ -146,17 +157,17 @@ private fun UserAvatarSection(avatarUrl: String, modifier: Modifier = Modifier) 
             model = avatarUrl,
             contentDescription = "user avatar",
             modifier = Modifier
-                .fillMaxHeight(0.8f) ,
-                //.aspectRatio(1f), // Сохраняем квадратную форму
-            contentScale = ContentScale.Crop,
-            //placeholder = painterResource(R.drawable.default_avatar),
-            //error = painterResource(R.drawable.default_avatar)
+                .fillMaxHeight(0.8f)
+                .aspectRatio(1f), // Сохраняем квадратную форму
+            contentScale = ContentScale.FillBounds,
+            placeholder = painterResource(R.drawable.default_avatar),
+            error = painterResource(R.drawable.default_avatar)
         )
     }
 }
 
 @Composable
-private fun UserProfileCard(user: User, modifier: Modifier = Modifier) {
+private fun UserProfileCard(userId: Boolean = false, user: User, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .background(color = CustomTheme.colors.container_2, shape = RoundedCornerShape(8.dp))
@@ -182,13 +193,15 @@ private fun UserProfileCard(user: User, modifier: Modifier = Modifier) {
 
         Spacer(Modifier.weight(1f))
         Button(
-            onClick = {},
+            onClick = { onClick() },
             shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(contentColor = CustomTheme.colors.content, containerColor = CustomTheme.colors.container),
-            modifier = Modifier.align(Alignment.End).padding(horizontal = 8.dp, vertical = 8.dp)
+            colors = ButtonDefaults.buttonColors(contentColor = CustomTheme.colors.content, containerColor = light_container),
+            modifier = Modifier
+                .align(if (userId) Alignment.CenterHorizontally else Alignment.End)
+                .padding(horizontal = 8.dp, vertical = 8.dp)
         ) {
             Text(
-                text = stringResource(R.string.edit_profile),
+                text = if (userId) stringResource(R.string.friendship_request) else stringResource(R.string.edit_profile),
                 style = AppTypography.bodyMedium,
                 color = dark_content,
                 modifier = Modifier.padding(end = 8.dp),
@@ -214,7 +227,7 @@ private fun NotificationsOptions(notificationTemplates: List<NotificationOption>
                     color = CustomTheme.colors.content,
                     modifier = Modifier
                         .padding(8.dp)
-                        .background(CustomTheme.colors.container, RoundedCornerShape(8.dp))
+                        .background(light_container, RoundedCornerShape(8.dp))
                         .padding(8.dp)
                 )
             }

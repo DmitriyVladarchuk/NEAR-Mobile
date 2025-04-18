@@ -1,5 +1,6 @@
 package com.example.near.data.API
 
+import com.example.near.data.models.FriendRequest
 import com.example.near.data.models.LoginUserRequest
 import com.example.near.data.models.LoginUserResponse
 import com.example.near.data.models.SignUpRequest
@@ -32,4 +33,13 @@ interface UserService {
         @Header("Authorization") token: String,
         @Query("id") userId: String
     ): Response<User>
+
+    // Action friend
+
+    @POST("NEAR/user/request/friend")
+    suspend fun sendFriendRequest(
+        @Header("Authorization") token: String,
+        @Body request: FriendRequest
+    ): Response<Void>
+
 }

@@ -128,13 +128,13 @@ fun MainNavGraph(
 
             // Экран Notifications
             composable(Routes.Subscriptions.route) {
-                //SubscriptionsScreen(modifier = Modifier.padding(innerPadding))
-                ProfileScreen("f8f812d3-eb1a-4e34-8fd7-c640de4fbb41")
+                SubscriptionsScreen(modifier = Modifier.padding(innerPadding))
             }
 
             // Экран Profile
             composable(Routes.Profile.route) {
                 ProfileScreen()
+                //ProfileScreen("f8f812d3-eb1a-4e34-8fd7-c640de4fbb41")
             }
         }
     }
