@@ -19,9 +19,9 @@ interface UserRepository {
         password: String,
     ): Result<LoginUserResponse>
 
-    suspend fun getUserInfo(token: String): Result<User>
+    suspend fun getUserInfo(): Result<User>
 
-    suspend fun getUserById(token: String, id: String): Result<User>
+    suspend fun getUserById(id: String): Result<User>
 
-    suspend fun sendFriendRequest(token: String, friendId: String): Result<Unit>
+    suspend fun sendFriendRequest(friendId: String): Result<Unit>
 }

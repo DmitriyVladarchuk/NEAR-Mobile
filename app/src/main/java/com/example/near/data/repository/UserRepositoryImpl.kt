@@ -1,6 +1,7 @@
 package com.example.near.data.repository
 
 import com.example.near.data.API.UserService
+import com.example.near.data.datastore.SessionManager
 import com.example.near.data.models.FriendRequest
 import com.example.near.data.models.LoginUserRequest
 import com.example.near.data.models.LoginUserResponse
@@ -11,7 +12,8 @@ import com.example.near.domain.repository.UserRepository
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val userService: UserService
+    private val userService: UserService,
+    private val sessionManager: SessionManager
 ) : UserRepository {
 
     override suspend fun signUp(
@@ -59,9 +61,9 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserInfo(token: String): Result<User> {
+    override suspend fun getUserInfo(): Result<User> {
         return try {
-            val response = userService.getUserInfo("Bearer $token")
+            val response = userService.getUserInfo("Bearer ${sessionManager.authToken!!.accessToken}")
             if (response.isSuccessful) {
                 response.body()?.let {
                     Result.success(it)
@@ -75,9 +77,9 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserById(token: String, id: String): Result<User> {
+    override suspend fun getUserById(id: String): Result<User> {
         return try {
-            val response = userService.getUserById("Bearer $token", id)
+            val response = userService.getUserById("Bearer ${sessionManager.authToken!!.accessToken}", id)
             if (response.isSuccessful) {
                 response.body()?.let {
                     Result.success(it)
@@ -91,10 +93,10 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun sendFriendRequest(token: String, friendId: String): Result<Unit> {
+    override suspend fun sendFriendRequest(friendId: String): Result<Unit> {
         return try {
             val response = userService.sendFriendRequest(
-                token = "Bearer $token",
+                token = "Bearer ${sessionManager.authToken!!.accessToken}",
                 request = FriendRequest(friendId = friendId)
             )
             if (response.isSuccessful) {
