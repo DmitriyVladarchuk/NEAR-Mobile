@@ -1,5 +1,6 @@
 package com.example.near.ui.screens.profile
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -37,6 +38,7 @@ class ProfileViewModel @Inject constructor(
             error = null
             try {
                 user = getUser()
+                Log.d("Test", user.toString())
             } catch (e: Exception) {
                 error = e.message ?: "Failed to load user data"
             } finally {

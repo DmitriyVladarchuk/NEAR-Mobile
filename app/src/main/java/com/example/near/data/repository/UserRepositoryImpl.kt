@@ -1,5 +1,6 @@
 package com.example.near.data.repository
 
+import android.util.Log
 import com.example.near.data.API.UserService
 import com.example.near.data.datastore.SessionManager
 import com.example.near.data.models.FriendRequest
@@ -22,9 +23,21 @@ class UserRepositoryImpl @Inject constructor(
         password: String,
         location: String,
         birthday: String,
+        phoneNumber: String,
+        telegramShortName: String,
         selectedOptions: List<NotificationOption>
     ): Result<Unit> {
         return try {
+            Log.d("Test", SignUpRequest(
+                userName,
+                email,
+                password,
+                location,
+                birthday,
+                phoneNumber,
+                telegramShortName,
+                selectedOptions
+            ).toString())
             val response = userService.signUp(
                 SignUpRequest(
                     userName,
@@ -32,6 +45,8 @@ class UserRepositoryImpl @Inject constructor(
                     password,
                     location,
                     birthday,
+                    phoneNumber,
+                    telegramShortName,
                     selectedOptions
                 )
             )

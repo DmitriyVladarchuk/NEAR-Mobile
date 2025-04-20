@@ -12,6 +12,8 @@
     <string name="password">Password</string>
     <string name="country_city_district">Country, city, district</string>
     <string name="birthday">Birthday</string>
+    <string name="phone_number">Phone number</string>
+    <string name="telegram_short_name">Telegram short name</string>
     
     <string name="community_name">Community Name</string>
     <string name="monitoring_region">Monitoring Region</string>

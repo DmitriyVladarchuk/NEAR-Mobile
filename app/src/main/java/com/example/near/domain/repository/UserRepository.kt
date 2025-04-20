@@ -11,6 +11,8 @@ interface UserRepository {
         password: String,
         location: String,
         birthday: String,
+        phoneNumber: String,
+        telegramShortName: String,
         selectedOptions: List<NotificationOption>
     ): Result<Unit>
 

@@ -8,5 +8,7 @@ data class SignUpRequest(
     val password: String,
     val location: String,
     val birthday: String,
+    val phoneNumber: String,
+    val telegramShortName: String,
     val selectedOptions: List<NotificationOption>
 )

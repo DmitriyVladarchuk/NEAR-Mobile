@@ -222,7 +222,7 @@ private fun NotificationsOptions(notificationTemplates: List<NotificationOption>
         ) {
             items(notificationTemplates) { item ->
                 Text(
-                    text = item.type,
+                    text = item.notificationOption,
                     style = AppTypography.bodySmall,
                     color = CustomTheme.colors.content,
                     modifier = Modifier

@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -32,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.near.R
+import com.example.near.domain.models.NotificationOption
 import com.example.near.domain.models.NotificationType
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
@@ -54,7 +57,9 @@ fun SignupAccountScreen(
 ) {
     val defaultModifier = Modifier.padding(horizontal = 40.dp, vertical = 40.dp)
 
-    Column(modifier = defaultModifier.then(modifier)) {
+    val scrollState = rememberScrollState()
+
+    Column(modifier = defaultModifier.then(modifier).verticalScroll(scrollState)) {
         HeaderTextInfo(
             stringResource(R.string.lets_get_you_started),
             stringResource(R.string.create_an_account)
@@ -66,7 +71,10 @@ fun SignupAccountScreen(
             primaryButtonText = stringResource(R.string.get_started).uppercase(),
             secondaryText = stringResource(R.string.already_have_an_account),
             secondaryActionText = stringResource(R.string.login_here).uppercase(),
-            onPrimaryButtonClick = { navController.navigate(Routes.Dashboards.route) },
+            onPrimaryButtonClick = {
+                viewModel.onSignUpClick()
+                //navController.navigate(Routes.Dashboards.route)
+            },
             onSecondaryActionClick = { onLoginClick() }
         )
     }
@@ -168,6 +176,37 @@ private fun TextFieldAccount(viewModel: SignupAccountViewModel) {
             colors = textFieldColors(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         )
+
+        // Phone number
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(8.dp),
+            value = viewModel.phone,
+            onValueChange = { newValue ->
+                viewModel.phone = newValue
+            },
+            singleLine = true,
+            label = { TextFieldLabel(stringResource(R.string.phone_number)) },
+            placeholder = { TextFieldPlaceholder(stringResource(R.string.phone_number)) },
+            textStyle = AppTypography.bodyMedium,
+            colors = textFieldColors(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
+
+        // Telegram short name
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(8.dp),
+            value = viewModel.telegramShortName,
+            onValueChange = { viewModel.telegramShortName = it },
+            singleLine = true,
+            label = {
+                TextFieldLabel(stringResource(R.string.telegram_short_name))
+            },
+            placeholder = { TextFieldPlaceholder(stringResource(R.string.telegram_short_name)) },
+            textStyle = AppTypography.bodyMedium,
+            colors = textFieldColors()
+        )
     }
 }
 
@@ -183,20 +222,20 @@ private fun NotificationOptions(viewModel: SignupAccountViewModel) {
         ) {
             NotificationChip(
                 label = stringResource(R.string.telegram),
-                isSelected = viewModel.selectedNotifications.value.contains(NotificationType.TELEGRAM),
-                onToggle = { viewModel.toggleNotification(NotificationType.TELEGRAM) }
+                isSelected = viewModel.selectedNotifications.value.any { it.id == 2 },
+                onToggle = { viewModel.toggleNotification(NotificationOption(2, "Telegram")) }
             )
 
             NotificationChip(
                 label = stringResource(R.string.email),
-                isSelected = viewModel.selectedNotifications.value.contains(NotificationType.EMAIL),
-                onToggle = { viewModel.toggleNotification(NotificationType.EMAIL) }
+                isSelected = viewModel.selectedNotifications.value.any { it.id == 1 },
+                onToggle = { viewModel.toggleNotification(NotificationOption(1, "Email")) }
             )
 
             NotificationChip(
                 label = stringResource(R.string.mobile_app),
-                isSelected = viewModel.selectedNotifications.value.contains(NotificationType.MOBILE_APP),
-                onToggle = { viewModel.toggleNotification(NotificationType.MOBILE_APP) }
+                isSelected = viewModel.selectedNotifications.value.any { it.id == 3 },
+                onToggle = { viewModel.toggleNotification(NotificationOption(3, "Mobile Notification")) }
             )
         }
     }

@@ -5,7 +5,8 @@ import com.example.near.domain.repository.UserRepository
 import javax.inject.Inject
 
 class SignUpUserUseCase @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val loginUserUseCase: LoginUserUseCase
 ) {
     suspend operator fun invoke(
         userName: String,
@@ -13,8 +14,15 @@ class SignUpUserUseCase @Inject constructor(
         password: String,
         location: String,
         birthday: String,
+        phoneNumber: String,
+        telegramShortName: String,
         selectedOptions: List<NotificationOption>
-    ): Result<Unit> {
-        return userRepository.signUp(userName, email, password, location, birthday, selectedOptions)
+    ): Boolean {
+        if (userRepository.signUp(userName, email, password, location, birthday, phoneNumber, telegramShortName, selectedOptions).isSuccess) {
+            loginUserUseCase(email, password)
+            return true
+        } else {
+            return false
+        }
     }
 }
