@@ -72,8 +72,11 @@ fun SignupAccountScreen(
             secondaryText = stringResource(R.string.already_have_an_account),
             secondaryActionText = stringResource(R.string.login_here).uppercase(),
             onPrimaryButtonClick = {
-                viewModel.onSignUpClick()
-                //navController.navigate(Routes.Dashboards.route)
+                viewModel.onSignUpClick {
+                    navController.navigate(Routes.Dashboards.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
             },
             onSecondaryActionClick = { onLoginClick() }
         )

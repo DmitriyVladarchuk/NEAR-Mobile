@@ -45,10 +45,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
 import com.example.near.domain.models.NotificationOption
 import com.example.near.domain.models.User
+import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.NEARTheme
@@ -59,6 +61,7 @@ import com.example.near.ui.theme.light_container
 fun ProfileScreen(
     userId: String? = null,
     viewModel: ProfileViewModel = hiltViewModel(),
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -68,6 +71,15 @@ fun ProfileScreen(
             viewModel.loadUser()
         } else {
             viewModel.loadUser(userId)
+        }
+    }
+
+    // Обработка события выхода
+    LaunchedEffect(Unit) {
+        viewModel.logoutEvent.collect {
+            navController.navigate(Routes.Onboarding.route) {
+                popUpTo(0) { inclusive = true }
+            }
         }
     }
 
@@ -359,6 +371,6 @@ private fun SettingAndLogOut(settingClick: () -> Unit, logOutClick: () -> Unit) 
 @Composable
 private fun TestProfileScreen() {
     NEARTheme {
-        ProfileScreen()
+        //ProfileScreen()
     }
 }

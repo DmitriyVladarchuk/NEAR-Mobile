@@ -17,12 +17,13 @@ class SignUpUserUseCase @Inject constructor(
         phoneNumber: String,
         telegramShortName: String,
         selectedOptions: List<NotificationOption>
-    ): Boolean {
-        if (userRepository.signUp(userName, email, password, location, birthday, phoneNumber, telegramShortName, selectedOptions).isSuccess) {
+    ): Result<Unit> {
+        val result = userRepository.signUp(userName, email, password, location, birthday, phoneNumber, telegramShortName, selectedOptions)
+        if (result.isSuccess) {
             loginUserUseCase(email, password)
-            return true
+            return result
         } else {
-            return false
+            return result
         }
     }
 }

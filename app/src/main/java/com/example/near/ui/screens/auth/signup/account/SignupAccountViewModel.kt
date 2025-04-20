@@ -1,14 +1,11 @@
 package com.example.near.ui.screens.auth.signup.account
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.domain.models.NotificationOption
-import com.example.near.domain.models.NotificationType
-import com.example.near.domain.repository.UserRepository
 import com.example.near.domain.usecase.SignUpUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -36,9 +33,11 @@ class SignupAccountViewModel @Inject constructor(
         }
     }
 
-    fun onSignUpClick() {
+    fun onSignUpClick(navigateToDashboards: () -> Unit) {
         viewModelScope.launch {
-            signUpUserUseCase(nameUser, email, password, country, birthday, phone, telegramShortName, selectedNotifications.value.toList())
+            if (signUpUserUseCase(nameUser, email, password, country, birthday, phone, telegramShortName, selectedNotifications.value.toList()).isSuccess) {
+                navigateToDashboards()
+            }
         }
     }
 }

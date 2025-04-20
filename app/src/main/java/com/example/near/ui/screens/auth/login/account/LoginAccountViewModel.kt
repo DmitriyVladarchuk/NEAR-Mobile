@@ -18,11 +18,13 @@ class LoginAccountViewModel @Inject constructor(
     var email by mutableStateOf("")
     var password by mutableStateOf("")
 
-    fun login() {
+    fun login(navigateToDashboards: () -> Unit) {
         viewModelScope.launch {
             val request = loginUserUseCase(email, password)
-            if (request.isSuccess)
-                email = request.getOrNull()!!.accessToken
+            if (request.isSuccess) {
+                //email = request.getOrNull()!!.accessToken
+                navigateToDashboards()
+            }
         }
     }
 }

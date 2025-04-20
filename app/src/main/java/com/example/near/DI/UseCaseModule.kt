@@ -20,19 +20,29 @@ import javax.inject.Singleton
 object UseCaseModule {
     @Provides
     @Singleton
-    fun provideUserLoginUseCase(userRepository: UserRepository, authDataStorage: AuthDataStorage): LoginUserUseCase {
-        return LoginUserUseCase(userRepository, authDataStorage)
+    fun provideUserLoginUseCase(
+        userRepository: UserRepository,
+        authDataStorage: AuthDataStorage,
+        sessionManager: SessionManager
+    ): LoginUserUseCase {
+        return LoginUserUseCase(userRepository, authDataStorage, sessionManager)
     }
 
     @Provides
     @Singleton
-    fun provideUserSignUpUseCase(userRepository: UserRepository, loginUserUseCase: LoginUserUseCase): SignUpUserUseCase {
+    fun provideUserSignUpUseCase(
+        userRepository: UserRepository,
+        loginUserUseCase: LoginUserUseCase
+    ): SignUpUserUseCase {
         return SignUpUserUseCase(userRepository, loginUserUseCase)
     }
 
     @Provides
     @Singleton
-    fun provideLogOutUseCase(sessionManager: SessionManager, authDataStorage: AuthDataStorage): LogOutUseCase {
+    fun provideLogOutUseCase(
+        sessionManager: SessionManager,
+        authDataStorage: AuthDataStorage
+    ): LogOutUseCase {
         return LogOutUseCase(sessionManager, authDataStorage)
     }
 

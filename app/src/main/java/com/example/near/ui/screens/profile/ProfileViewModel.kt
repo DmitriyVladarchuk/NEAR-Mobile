@@ -12,6 +12,8 @@ import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.LogOutUseCase
 import com.example.near.domain.usecase.SendFriendRequestUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,6 +33,9 @@ class ProfileViewModel @Inject constructor(
 
     var error by mutableStateOf<String?>(null)
         private set
+
+    private val _logoutEvent = MutableSharedFlow<Unit>()
+    val logoutEvent = _logoutEvent.asSharedFlow()
 
     fun loadUser() {
         viewModelScope.launch {
@@ -68,6 +73,9 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun logOut() {
-        logOutUseCase()
+        viewModelScope.launch {
+            logOutUseCase()
+            _logoutEvent.emit(Unit)
+        }
     }
 }
