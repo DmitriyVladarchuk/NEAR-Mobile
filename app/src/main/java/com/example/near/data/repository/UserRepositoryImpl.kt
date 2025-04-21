@@ -123,4 +123,52 @@ class UserRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
+
+    override suspend fun addFriendRequest(friendId: String): Result<Unit> {
+        return try {
+            val response = userService.addFriendRequest(
+                token = "Bearer ${sessionManager.authToken!!.accessToken}",
+                request = FriendRequest(friendId = friendId)
+            )
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Failed to send friend request"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun rejectFriendRequest(friendId: String): Result<Unit> {
+        return try {
+            val response = userService.rejectFriendRequest(
+                token = "Bearer ${sessionManager.authToken!!.accessToken}",
+                request = FriendRequest(friendId = friendId)
+            )
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Failed to send friend request"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun removeFriend(friendId: String): Result<Unit> {
+        return try {
+            val response = userService.removeFriend(
+                token = "Bearer ${sessionManager.authToken!!.accessToken}",
+                request = FriendRequest(friendId = friendId)
+            )
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Failed to send friend request"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

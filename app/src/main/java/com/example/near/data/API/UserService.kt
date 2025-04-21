@@ -7,6 +7,7 @@ import com.example.near.data.models.SignUpRequest
 import com.example.near.domain.models.User
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -42,4 +43,21 @@ interface UserService {
         @Body request: FriendRequest
     ): Response<Void>
 
+    @POST("NEAR/user/add/friend")
+    suspend fun addFriendRequest(
+        @Header("Authorization") token: String,
+        @Body request: FriendRequest
+    ): Response<Void>
+
+    @POST("NEAR/user/reject/friend")
+    suspend fun rejectFriendRequest(
+        @Header("Authorization") token: String,
+        @Body request: FriendRequest
+    ): Response<Void>
+
+    @DELETE("NEAR/user/delete/friend")
+    suspend fun removeFriend(
+        @Header("Authorization") token: String,
+        @Body request: FriendRequest
+    ): Response<Void>
 }
