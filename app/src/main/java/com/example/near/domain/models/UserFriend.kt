@@ -1,6 +1,6 @@
 package com.example.near.domain.models
 
-data class User(
+data class UserFriend(
     val id: String,
     val firstName: String,
     val lastName: String,
@@ -10,8 +10,6 @@ data class User(
     val city: String,
     val district: String,
     val registrationDate: String,
-    val friends: List<UserFriend>,
-    val groups: List<UserGroup>,
-    val subscriptions: List<UserSubscription>,
-    val notificationTemplates: List<NotificationOption>,
+    val friendsCount: Int,
+    val subscriptionCount: Int,
 )

@@ -6,10 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.near.domain.models.User
+import com.example.near.domain.usecase.AddFriendRequestUseCase
 import com.example.near.domain.usecase.GetUserByIdUseCase
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.LogOutUseCase
+import com.example.near.domain.usecase.RejectFriendRequestUseCase
 import com.example.near.domain.usecase.SendFriendRequestUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,9 +25,11 @@ class ProfileViewModel @Inject constructor(
     private val getUser: GetUserUseCase,
     private val getUserByIdUseCase: GetUserByIdUseCase,
     private val logOutUseCase: LogOutUseCase,
-    private val sendFriendRequestUseCase: SendFriendRequestUseCase
+    private val sendFriendRequestUseCase: SendFriendRequestUseCase,
+    private val addFriendRequestUseCase: AddFriendRequestUseCase,
+    private val rejectFriendRequestUseCase: RejectFriendRequestUseCase
 ): ViewModel() {
-    val avatarUrl: String = "https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/4adf61aa-3cb7-4381-9245-523971e5b4c8/300x450"
+    val avatarUrl: String = ""
     var user by mutableStateOf<User?>(null)
         private set
 
@@ -69,6 +74,18 @@ class ProfileViewModel @Inject constructor(
     fun friendshipRequest(userId: String) {
         viewModelScope.launch {
             sendFriendRequestUseCase(userId)
+        }
+    }
+
+    fun addFriend(userId: String) {
+        viewModelScope.launch {
+            addFriendRequestUseCase(userId)
+        }
+    }
+
+    fun rejectFriend(userId: String) {
+        viewModelScope.launch {
+            rejectFriendRequestUseCase(userId)
         }
     }
 

@@ -67,5 +67,10 @@
 
     <string name="settings">Settings</string>
     <string name="log_out">Log Out</string>
-    
+
+    <!-- Friends -->
+    <string name="wants_to_be_your_friend">Wants to be your friend</string>
+    <string name="all_friends">All Friends</string>
+    <string name="requests">Requests</string>
+
 </resources>

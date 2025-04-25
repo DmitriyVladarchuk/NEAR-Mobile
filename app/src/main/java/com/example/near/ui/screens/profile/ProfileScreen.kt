@@ -118,6 +118,15 @@ fun ProfileScreen(
                             )
 
                             viewModel.user?.let {
+                                FriendsAndSubscription(
+                                    user = it,
+                                    modifier = Modifier
+                                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                                        .weight(0.1f)
+                                )
+                            }
+
+                            viewModel.user?.let {
                                 if (userId != null) {
                                     UserProfileCard(
                                         userId = true,
@@ -138,14 +147,6 @@ fun ProfileScreen(
                                 }
                             }
 
-                            viewModel.user?.let {
-                                FriendsAndSubscription(
-                                    user = it,
-                                    modifier = Modifier
-                                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                                        .weight(0.1f)
-                                )
-                            }
                         }
                     }
 
