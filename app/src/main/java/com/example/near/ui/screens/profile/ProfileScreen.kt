@@ -151,7 +151,7 @@ fun ProfileScreen(
                     }
 
                     SettingAndLogOut(
-                        settingClick = {},
+                        settingClick = { navController.navigate(Routes.Settings.route) },
                         logOutClick = { viewModel.logOut() },
                     )
                 }

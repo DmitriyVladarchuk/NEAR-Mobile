@@ -2,8 +2,10 @@ package com.example.near.DI
 
 import com.example.near.data.datastore.AuthDataStorage
 import com.example.near.data.datastore.SessionManager
+import com.example.near.data.datastore.SettingsDataStorage
 import com.example.near.domain.repository.UserRepository
 import com.example.near.domain.usecase.AddFriendRequestUseCase
+import com.example.near.domain.usecase.GetThemeUseCase
 import com.example.near.domain.usecase.GetUserByIdUseCase
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.LogOutUseCase
@@ -11,6 +13,7 @@ import com.example.near.domain.usecase.LoginUserUseCase
 import com.example.near.domain.usecase.RejectFriendRequestUseCase
 import com.example.near.domain.usecase.RemoveFriendUseCase
 import com.example.near.domain.usecase.SendFriendRequestUseCase
+import com.example.near.domain.usecase.SetThemeUseCase
 import com.example.near.domain.usecase.SignUpUserUseCase
 import dagger.Module
 import dagger.Provides
@@ -83,5 +86,17 @@ object UseCaseModule {
     @Singleton
     fun provideRemoveFriendUseCase(userRepository: UserRepository): RemoveFriendUseCase {
         return RemoveFriendUseCase(userRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetThemeUseCase(settingsDataStorage: SettingsDataStorage): GetThemeUseCase {
+        return GetThemeUseCase(settingsDataStorage)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSetThemeUseCase(settingsDataStorage: SettingsDataStorage): SetThemeUseCase {
+        return SetThemeUseCase(settingsDataStorage)
     }
 }

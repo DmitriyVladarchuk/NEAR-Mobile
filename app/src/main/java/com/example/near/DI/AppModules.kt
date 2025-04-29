@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.near.data.API.UserService
 import com.example.near.data.datastore.AuthDataStorage
 import com.example.near.data.datastore.SessionManager
+import com.example.near.data.datastore.SettingsDataStorage
 import com.example.near.data.repository.UserRepositoryImpl
 import com.example.near.domain.repository.UserRepository
 import dagger.Module
@@ -27,6 +28,12 @@ object AppModules {
     fun provideAuthDataStorage(
         @ApplicationContext context: Context
     ): AuthDataStorage = AuthDataStorage(context)
+
+    @Provides
+    @Singleton
+    fun provideSettingsDataStore(
+        @ApplicationContext context: Context
+    ): SettingsDataStorage = SettingsDataStorage(context)
 
     @Provides
     @Singleton

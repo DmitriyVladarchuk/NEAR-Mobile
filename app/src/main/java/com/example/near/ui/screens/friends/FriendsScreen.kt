@@ -2,6 +2,7 @@ package com.example.near.ui.screens.friends
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,6 +37,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
 import com.example.near.domain.models.UserFriend
@@ -45,6 +47,7 @@ import com.example.near.ui.views.MainHeaderTextInfo
 
 @Composable
 fun FriendsScreen(
+    navController: NavController,
     viewModel: FriendsViewModel = hiltViewModel(),
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
@@ -73,7 +76,8 @@ fun FriendsScreen(
                 )
                 FriendsBody(
                     friends = viewModel.friends,
-                    showRequests = viewModel.selectedTab == FriendsTab.REQUESTS
+                    showRequests = viewModel.selectedTab == FriendsTab.REQUESTS,
+                    navController = navController
                 )
             }
         }
@@ -157,7 +161,8 @@ private fun FriendsTabButton(
 @Composable
 private fun FriendsBody(
     friends: List<UserFriend>,
-    showRequests: Boolean
+    showRequests: Boolean,
+    navController: NavController
 ) {
     Column(
         modifier = Modifier
@@ -182,9 +187,19 @@ private fun FriendsBody(
         LazyColumn() {
             items(friends) { friend ->
                 if (showRequests) {
-                    FriendRequestItem(friend)
+                    FriendRequestItem(
+                        friend = friend,
+                        onItemClick = { userId ->
+                            navController.navigate("profile/$userId")
+                        }
+                    )
                 } else {
-                    FriendItem(friend)
+                    FriendItem(
+                        friend = friend,
+                        onItemClick = { userId ->
+                            navController.navigate("profile/$userId")
+                        }
+                    )
                 }
                 if (friend != friends.last()) {
                     Spacer(
@@ -201,9 +216,11 @@ private fun FriendsBody(
 }
 
 @Composable
-private fun FriendItem(friend: UserFriend) {
+private fun FriendItem(friend: UserFriend, onItemClick: (String) -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp, horizontal = 8.dp),
+        modifier = Modifier
+            .fillMaxWidth().padding(vertical = 8.dp, horizontal = 8.dp)
+            .clickable { onItemClick(friend.id) },
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
@@ -225,11 +242,12 @@ private fun FriendItem(friend: UserFriend) {
 }
 
 @Composable
-private fun FriendRequestItem(friend: UserFriend) {
+private fun FriendRequestItem(friend: UserFriend, onItemClick: (String) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(16.dp)
+            .clickable { onItemClick(friend.id) },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {

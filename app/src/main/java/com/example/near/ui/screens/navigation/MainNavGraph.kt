@@ -9,9 +9,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.near.ui.screens.auth.login.account.LoginAccountScreen
 import com.example.near.ui.screens.auth.login.community.LoginCommunityScreen
 import com.example.near.ui.screens.auth.signup.account.SignupAccountScreen
@@ -21,6 +23,7 @@ import com.example.near.ui.screens.dashboard.DashboardScreen
 import com.example.near.ui.screens.friends.FriendsScreen
 import com.example.near.ui.screens.onboarding.OnboardingScreen
 import com.example.near.ui.screens.profile.ProfileScreen
+import com.example.near.ui.screens.settings.SettingsScreen
 import com.example.near.ui.screens.subscriptions.SubscriptionsScreen
 import com.example.near.ui.theme.CustomTheme
 import kotlinx.coroutines.Dispatchers
@@ -123,7 +126,7 @@ fun MainNavGraph(
 
             // Экран Friends
             composable(Routes.Friends.route) {
-                FriendsScreen(modifier = Modifier.padding(innerPadding))
+                FriendsScreen(navController = navController, modifier = Modifier.padding(innerPadding))
             }
 
             // Экран Notifications
@@ -135,6 +138,18 @@ fun MainNavGraph(
             composable(Routes.Profile.route) {
                 ProfileScreen(navController = navController)
                 //ProfileScreen("f8f812d3-eb1a-4e34-8fd7-c640de4fbb41")
+            }
+
+            composable(
+                route = "profile/{userId}",
+                arguments = listOf(navArgument("userId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val userId = backStackEntry.arguments?.getString("userId")
+                ProfileScreen(userId = userId, navController = navController)
+            }
+
+            composable(Routes.Settings.route) {
+                SettingsScreen()
             }
         }
     }
