@@ -137,7 +137,6 @@ fun MainNavGraph(
             // Экран Profile
             composable(Routes.Profile.route) {
                 ProfileScreen(navController = navController)
-                //ProfileScreen("f8f812d3-eb1a-4e34-8fd7-c640de4fbb41")
             }
 
             composable(

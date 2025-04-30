@@ -72,5 +72,23 @@
     <string name="wants_to_be_your_friend">Wants to be your friend</string>
     <string name="all_friends">All Friends</string>
     <string name="requests">Requests</string>
+    
+    <!-- Settings -->
+    <string name="option">Option</string>
+    <string name="theme_mode">Theme mode</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="system">System</string>
+    <string name="notification">Notification</string>
+
+    <string name="feedback">Feedback</string>
+    <string name="report_an_issue">Report an issue</string>
+    <string name="report_description">Facing an issue? Report and we’ll look into it</string>
+
+    <string name="common">Common</string>
+    <string name="about_app">About App</string>
+    <string name="about_description">Read a bit more about the app</string>
+    <string name="github">GitHub</string>
+    <string name="github_description">Here you can view the source code</string>
 
 </resources>

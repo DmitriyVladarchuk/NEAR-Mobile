@@ -12,7 +12,7 @@ val light_container_2 = Color(0xFFD2D2D2)
 
 val dark_content = Color(0xFFD2D2D2)
 val light_content = Color(0xFF0A1F32)
-val content_inscription = Color(0x34475680)
+val content_inscription = Color.Gray
 
 val current_content = dark_content
 val current_container = Color(0xFF2D384A)

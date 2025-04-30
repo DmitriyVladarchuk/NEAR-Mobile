@@ -1,6 +1,7 @@
 package com.example.near.data.datastore
 
 import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.near.domain.models.ThemeType
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -19,14 +20,28 @@ class SettingsDataStorage @Inject constructor(
     val currentThemeFlow: Flow<ThemeType> = _currentThemeFlow
 
     fun saveTheme(theme: ThemeType) {
-        sharedPrefs.edit() {
+        sharedPrefs.edit {
             putString("app_theme", theme.name)
         }
         _currentThemeFlow.value = theme
+        applyTheme(theme)
     }
 
     fun getTheme(): ThemeType {
         val savedTheme = sharedPrefs.getString("app_theme", ThemeType.SYSTEM.name)
         return ThemeType.valueOf(savedTheme ?: ThemeType.SYSTEM.name)
+    }
+
+    private fun applyTheme(theme: ThemeType) {
+        val mode = when (theme) {
+            ThemeType.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+            ThemeType.DARK -> AppCompatDelegate.MODE_NIGHT_YES
+            ThemeType.SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
+        AppCompatDelegate.setDefaultNightMode(mode)
+    }
+
+    init {
+        applyTheme(getTheme())
     }
 }

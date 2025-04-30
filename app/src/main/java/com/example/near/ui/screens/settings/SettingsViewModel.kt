@@ -1,5 +1,6 @@
 package com.example.near.ui.screens.settings
 
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.domain.models.ThemeType
