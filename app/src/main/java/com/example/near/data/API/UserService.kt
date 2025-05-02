@@ -60,4 +60,8 @@ interface UserService {
         @Header("Authorization") token: String,
         @Body request: FriendRequest
     ): Response<Void>
+
+    // Template action
+
+
 }

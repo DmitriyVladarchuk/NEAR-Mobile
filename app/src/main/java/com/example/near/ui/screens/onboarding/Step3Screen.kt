@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,6 +30,7 @@ import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.NEARTheme
 import com.example.near.ui.theme.current_container
 import com.example.near.ui.theme.dark_content
+import com.example.near.ui.theme.light_background
 
 @Composable
 fun Step3Screen(
@@ -42,7 +44,6 @@ fun Step3Screen(
             .padding(horizontal = 24.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        // Заголовок
         Text(
             text = "Start using",
             style = AppTypography.headlineLarge,
@@ -52,7 +53,6 @@ fun Step3Screen(
                 .align(Alignment.CenterHorizontally)
         )
 
-        // Две основные кнопки
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -72,9 +72,9 @@ fun Step3Screen(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.near_user),
+                        painter = painterResource(R.drawable.default_avatar),
                         contentDescription = null,
-                        contentScale = ContentScale.FillBounds,
+                        colorFilter = ColorFilter.tint(light_background),
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f)
@@ -98,32 +98,37 @@ fun Step3Screen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(current_container)
-                    .clickable(onClick = onCommunityClick)
             ) {
                 Column(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(16.dp))
+                        .clickable(onClick = onCommunityClick)
+                        .background(current_container)
                 ) {
-                    Image(
-                        painter = painterResource(R.drawable.near_community_small),
-                        contentDescription = null,
-                        contentScale = ContentScale.FillBounds,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
-                    )
+                    Column(
+                        modifier = Modifier.background(light_background)
+                    ) {
+                        Image(
+                            painter = painterResource(R.drawable.near_community),
+                            contentDescription = null,
+                            contentScale = ContentScale.FillBounds,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                        )
 
-                    Text(
-                        text = stringResource(R.string.create_a_community),
-                        style = AppTypography.headlineSmall,
-                        color = dark_content,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                            .background(current_container),
-                        textAlign = TextAlign.Center
-                    )
+                        Text(
+                            text = stringResource(R.string.create_a_community),
+                            style = AppTypography.headlineSmall,
+                            color = dark_content,
+                            modifier = Modifier
+                                .background(current_container)
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }

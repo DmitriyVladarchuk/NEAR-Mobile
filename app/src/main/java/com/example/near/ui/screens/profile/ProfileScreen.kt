@@ -59,12 +59,14 @@ import com.example.near.ui.theme.light_container
 
 @Composable
 fun ProfileScreen(
+    modifier: Modifier = Modifier,
     userId: String? = null,
     viewModel: ProfileViewModel = hiltViewModel(),
-    navController: NavController,
-    modifier: Modifier = Modifier
+    navController: NavController
 ) {
     val scrollState = rememberScrollState()
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
 
     LaunchedEffect(Unit) {
         if (userId == null) {
@@ -74,7 +76,6 @@ fun ProfileScreen(
         }
     }
 
-    // Обработка события выхода
     LaunchedEffect(Unit) {
         viewModel.logoutEvent.collect {
             navController.navigate(Routes.Onboarding.route) {
@@ -83,77 +84,84 @@ fun ProfileScreen(
         }
     }
 
-
-    Column(modifier = modifier.fillMaxSize()) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(CustomTheme.colors.background)
+    ) {
         when {
             viewModel.isLoading -> {
-                CircularProgressIndicator()
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
             }
             viewModel.error != null -> {
-                Text("Error: ${viewModel.error}", color = Color.Red)
-                Button(onClick = { viewModel.loadUser() }) {
-                    Text("Retry")
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text("Error: ${viewModel.error}", color = Color.Red)
+                    Button(onClick = { viewModel.loadUser() }) {
+                        Text("Retry")
+                    }
                 }
             }
             else -> {
                 Column(
                     modifier = Modifier
-                        .weight(1f)
                         .verticalScroll(scrollState)
-                        .background(CustomTheme.colors.background)
                 ) {
-                    Box(
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(LocalConfiguration.current.screenHeightDp.dp)
+                            .height(screenHeight - 116.dp)
                     ) {
-                        Column(
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            UserAvatarSection(
-                                avatarUrl = viewModel.avatarUrl,
+                        UserAvatarSection(
+                            avatarUrl = viewModel.avatarUrl,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height((screenHeight - 56.dp) * 0.3f)
+                                .padding(8.dp)
+                        )
+
+                        viewModel.user?.let { user ->
+                            FriendsAndSubscription(
+                                user = user,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .weight(0.3f)
+                                    .height((screenHeight - 56.dp) * 0.15f)
+                                    .padding(horizontal = 16.dp, vertical = 8.dp)
                             )
+                        }
 
-                            viewModel.user?.let {
-                                FriendsAndSubscription(
-                                    user = it,
-                                    modifier = Modifier
-                                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                                        .weight(0.1f)
-                                )
-                            }
-
-                            viewModel.user?.let {
-                                if (userId != null) {
-                                    UserProfileCard(
-                                        userId = true,
-                                        user = it,
-                                        onClick = { viewModel.friendshipRequest(userId) },
-                                        modifier = Modifier
-                                            .padding(horizontal = 16.dp)
-                                            .weight(0.4f)
-                                    )
-                                } else {
-                                    UserProfileCard(
-                                        user = it,
-                                        onClick = { /* TODO EditScreen*/ },
-                                        modifier = Modifier
-                                            .padding(horizontal = 16.dp)
-                                            .weight(0.4f)
-                                    )
-                                }
-                            }
-
+                        viewModel.user?.let { user ->
+                            UserProfileCard(
+                                userId = userId != null,
+                                user = user,
+                                onClick = {
+                                    if (userId != null) {
+                                        viewModel.friendshipRequest(userId)
+                                    } else {
+                                        // TODO EditScreen
+                                    }
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f)
+                                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                            )
                         }
                     }
 
-                    SettingAndLogOut(
-                        settingClick = { navController.navigate(Routes.Settings.route) },
-                        logOutClick = { viewModel.logOut() },
-                    )
+                    if (userId == null)
+                        SettingAndLogOut(
+                            settingClick = { navController.navigate(Routes.Settings.route) },
+                            logOutClick = { viewModel.logOut() },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 32.dp)
+                        )
                 }
             }
         }
@@ -300,30 +308,46 @@ private fun ItemFriendsOrSubscription(
     text: String,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    Box(
         modifier = modifier
-            .background(color = CustomTheme.colors.container_2, shape = RoundedCornerShape(8.dp))
+            .background(
+                color = CustomTheme.colors.container_2,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .padding(8.dp),
+        contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = title,
-            style = AppTypography.titleMedium,
-            color = CustomTheme.colors.content,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-        )
-        Spacer(
-            Modifier
-                .padding(horizontal = 8.dp)
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(CustomTheme.colors.content)
-        )
-        Text(
-            text = text,
-            style = AppTypography.titleMedium,
-            color = CustomTheme.colors.content,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-                .weight(1f),
-        )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = title,
+                style = AppTypography.titleMedium,
+                color = CustomTheme.colors.content
+            )
+
+            Spacer(
+                Modifier
+                    .padding(horizontal = 8.dp)
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(CustomTheme.colors.content)
+            )
+
+            Box(
+                modifier = Modifier.weight(1f),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = text,
+                    style = AppTypography.titleMedium,
+                    color = CustomTheme.colors.content,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
     }
 }
 
@@ -348,9 +372,9 @@ private fun RowButton(image: ImageVector, text: String, modifier: Modifier = Mod
 }
 
 @Composable
-private fun SettingAndLogOut(settingClick: () -> Unit, logOutClick: () -> Unit) {
+private fun SettingAndLogOut(modifier: Modifier = Modifier, settingClick: () -> Unit, logOutClick: () -> Unit) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         RowButton(

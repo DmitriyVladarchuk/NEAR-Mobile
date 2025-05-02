@@ -93,7 +93,7 @@ private fun FriendsHeader(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = CustomTheme.colors.container,
+                color = CustomTheme.colors.container_2,
                 shape = RoundedCornerShape(
                     topStart = 8.dp,
                     topEnd = 8.dp,
@@ -143,7 +143,7 @@ private fun FriendsTabButton(
     onClick: () -> Unit
 ) {
     val currentContainerColor = CustomTheme.colors.currentContainer
-    val containerColor = CustomTheme.colors.container
+    val containerColor = CustomTheme.colors.container_2
     val currentContentColor = CustomTheme.colors.currentContent
     val contentColor = CustomTheme.colors.content
     TextButton(
@@ -167,7 +167,7 @@ private fun FriendsBody(
     Column(
         modifier = Modifier
             .background(
-                color = CustomTheme.colors.container,
+                color = CustomTheme.colors.container_2,
                 shape = RoundedCornerShape(
                     topStart = 0.dp,
                     topEnd = 0.dp,

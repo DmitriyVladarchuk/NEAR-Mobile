@@ -84,21 +84,21 @@ fun MainNavGraph(
 
             composable(Routes.Onboarding.route) {
                 OnboardingScreen(
-                    modifier = baseModifier,
+                    //modifier = baseModifier,
                     onAccountClick = { navController.navigate(Routes.SignupAccount.route) },
                     onCommunityClick = { navController.navigate(Routes.SignupCommunity.route) }
                 )
             }
             composable(Routes.LoginAccount.route) {
                 LoginAccountScreen(
-                    modifier = baseModifier,
+                    //modifier = baseModifier,
                     onSignUpClick = { navController.popBackStack() },
                     navController = navController
                 )
             }
             composable(Routes.SignupAccount.route) {
                 SignupAccountScreen(
-                    modifier = baseModifier,
+                    //modifier = baseModifier,
                     onLoginClick = { navController.navigate(Routes.LoginAccount.route) },
                     navController = navController
                 )

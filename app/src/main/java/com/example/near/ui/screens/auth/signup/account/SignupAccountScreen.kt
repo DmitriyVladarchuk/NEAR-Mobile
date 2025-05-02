@@ -31,11 +31,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.near.R
 import com.example.near.domain.models.NotificationOption
-import com.example.near.domain.models.NotificationType
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
@@ -55,7 +53,7 @@ fun SignupAccountScreen(
     onLoginClick: () -> Unit,
     navController: NavController
 ) {
-    val defaultModifier = Modifier.padding(horizontal = 40.dp, vertical = 40.dp)
+    val defaultModifier = Modifier.padding(horizontal = 40.dp, vertical = 20.dp)
 
     val scrollState = rememberScrollState()
 
