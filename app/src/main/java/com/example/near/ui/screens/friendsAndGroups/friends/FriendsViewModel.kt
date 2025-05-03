@@ -1,4 +1,4 @@
-package com.example.near.ui.screens.friends
+package com.example.near.ui.screens.friendsAndGroups.friends
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -57,9 +57,6 @@ class FriendsViewModel @Inject constructor(
 
     fun selectTab(tab: FriendsTab) {
         selectedTab = tab
-//        if (tab == FriendsTab.REQUESTS) {
-//            loadFriends()
-//        }
     }
 
     fun search(query: String) {

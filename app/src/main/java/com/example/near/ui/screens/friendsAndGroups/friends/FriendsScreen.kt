@@ -1,6 +1,5 @@
-package com.example.near.ui.screens.friends
+package com.example.near.ui.screens.friendsAndGroups.friends
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,22 +42,16 @@ import com.example.near.R
 import com.example.near.domain.models.UserFriend
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.views.MainHeaderTextInfo
 
 @Composable
 fun FriendsScreen(
+    modifier: Modifier = Modifier,
     navController: NavController,
-    viewModel: FriendsViewModel = hiltViewModel(),
-    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
+    viewModel: FriendsViewModel = hiltViewModel()
 ) {
     Column(
-        modifier = modifier.fillMaxSize().padding(horizontal = 16.dp),
+        modifier = modifier.fillMaxSize(),
     ) {
-        MainHeaderTextInfo(
-            text = stringResource(R.string.friends),
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
         when {
             viewModel.isLoading -> {
                 CircularProgressIndicator()

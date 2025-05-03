@@ -1,0 +1,50 @@
+package com.example.near.ui.screens.friendsAndGroups.groups
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.near.domain.models.UserGroup
+import com.example.near.domain.usecase.GetUserUseCase
+import com.example.near.domain.usecase.user.group.CreateGroupUseCase
+import com.example.near.domain.usecase.user.group.DeleteGroupUseCase
+import com.example.near.domain.usecase.user.group.UpdateGroupUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class GroupsViewModel @Inject constructor(
+    private val createGroupUseCase: CreateGroupUseCase,
+    private val updateGroupUseCase: UpdateGroupUseCase,
+    private val deleteGroupUseCase: DeleteGroupUseCase,
+    private val getUser: GetUserUseCase,
+): ViewModel() {
+    var groups: List<UserGroup> by mutableStateOf(listOf())
+        private set
+
+    var isLoading by mutableStateOf(false)
+        private set
+
+    var error by mutableStateOf<String?>(null)
+        private set
+
+    init {
+        loadFriends()
+    }
+
+    fun loadFriends() {
+        viewModelScope.launch {
+            isLoading = true
+            error = null
+            try {
+                groups = getUser()?.groups ?: listOf()
+            } catch (e: Exception) {
+                error = e.message ?: "Failed to load user data"
+            } finally {
+                isLoading = false
+            }
+        }
+    }
+}

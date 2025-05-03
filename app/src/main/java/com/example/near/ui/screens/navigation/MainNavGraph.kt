@@ -20,7 +20,8 @@ import com.example.near.ui.screens.auth.signup.account.SignupAccountScreen
 import com.example.near.ui.screens.auth.signup.community.SignupCommunityScreen
 import com.example.near.ui.screens.bottomBar.BottomBar
 import com.example.near.ui.screens.dashboard.DashboardScreen
-import com.example.near.ui.screens.friends.FriendsScreen
+import com.example.near.ui.screens.friendsAndGroups.FriendsAndGroupsScreen
+import com.example.near.ui.screens.friendsAndGroups.groups.CreateGroupsScreen
 import com.example.near.ui.screens.onboarding.OnboardingScreen
 import com.example.near.ui.screens.profile.ProfileScreen
 import com.example.near.ui.screens.settings.SettingsScreen
@@ -84,21 +85,18 @@ fun MainNavGraph(
 
             composable(Routes.Onboarding.route) {
                 OnboardingScreen(
-                    //modifier = baseModifier,
                     onAccountClick = { navController.navigate(Routes.SignupAccount.route) },
                     onCommunityClick = { navController.navigate(Routes.SignupCommunity.route) }
                 )
             }
             composable(Routes.LoginAccount.route) {
                 LoginAccountScreen(
-                    //modifier = baseModifier,
                     onSignUpClick = { navController.popBackStack() },
                     navController = navController
                 )
             }
             composable(Routes.SignupAccount.route) {
                 SignupAccountScreen(
-                    //modifier = baseModifier,
                     onLoginClick = { navController.navigate(Routes.LoginAccount.route) },
                     navController = navController
                 )
@@ -121,17 +119,17 @@ fun MainNavGraph(
 
             // Экран Dashboard
             composable(Routes.Dashboards.route) {
-                DashboardScreen(modifier = Modifier.padding(innerPadding))
+                DashboardScreen()
             }
 
             // Экран Friends
             composable(Routes.Friends.route) {
-                FriendsScreen(navController = navController, modifier = Modifier.padding(innerPadding))
+                FriendsAndGroupsScreen(navController = navController)
             }
 
             // Экран Notifications
             composable(Routes.Subscriptions.route) {
-                SubscriptionsScreen(modifier = Modifier.padding(innerPadding))
+                SubscriptionsScreen()
             }
 
             // Экран Profile
@@ -149,6 +147,10 @@ fun MainNavGraph(
 
             composable(Routes.Settings.route) {
                 SettingsScreen()
+            }
+
+            composable(Routes.CreateGroup.route) {
+                CreateGroupsScreen(navController)
             }
         }
     }

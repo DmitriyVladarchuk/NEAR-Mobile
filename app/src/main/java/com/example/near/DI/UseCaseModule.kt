@@ -15,6 +15,9 @@ import com.example.near.domain.usecase.user.friends.RemoveFriendUseCase
 import com.example.near.domain.usecase.user.friends.SendFriendRequestUseCase
 import com.example.near.domain.usecase.SetThemeUseCase
 import com.example.near.domain.usecase.user.auth.SignUpUserUseCase
+import com.example.near.domain.usecase.user.group.CreateGroupUseCase
+import com.example.near.domain.usecase.user.group.DeleteGroupUseCase
+import com.example.near.domain.usecase.user.group.UpdateGroupUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -98,5 +101,17 @@ object UseCaseModule {
     @Singleton
     fun provideSetThemeUseCase(settingsDataStorage: SettingsDataStorage): SetThemeUseCase {
         return SetThemeUseCase(settingsDataStorage)
+    }
+
+    fun provideCreateGroupUseCase(userRepository: UserRepository): CreateGroupUseCase {
+        return CreateGroupUseCase(userRepository)
+    }
+
+    fun provideUpdateGroupUseCase(userRepository: UserRepository): UpdateGroupUseCase {
+        return UpdateGroupUseCase(userRepository)
+    }
+
+    fun provideDeleteGroupUseCase(userRepository: UserRepository): DeleteGroupUseCase {
+        return DeleteGroupUseCase(userRepository)
     }
 }

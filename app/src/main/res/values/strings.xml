@@ -72,6 +72,10 @@
     <string name="wants_to_be_your_friend">Wants to be your friend</string>
     <string name="all_friends">All Friends</string>
     <string name="requests">Requests</string>
+
+    <!-- Group -->
+    <string name="groups">Groups</string>
+    <string name="create_new_groups">Create new groups</string>
     
     <!-- Settings -->
     <string name="option">Option</string>
