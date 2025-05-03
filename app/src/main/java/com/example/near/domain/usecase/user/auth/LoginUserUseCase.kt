@@ -1,4 +1,4 @@
-package com.example.near.domain.usecase
+package com.example.near.domain.usecase.user.auth
 
 import com.example.near.data.datastore.AuthDataStorage
 import com.example.near.data.datastore.SessionManager

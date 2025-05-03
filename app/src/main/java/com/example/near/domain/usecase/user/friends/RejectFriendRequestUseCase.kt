@@ -1,4 +1,4 @@
-package com.example.near.domain.usecase
+package com.example.near.domain.usecase.user.friends
 
 import com.example.near.domain.repository.UserRepository
 import javax.inject.Inject

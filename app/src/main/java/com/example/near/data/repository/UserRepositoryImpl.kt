@@ -4,6 +4,8 @@ import android.util.Log
 import com.example.near.data.API.UserService
 import com.example.near.data.datastore.SessionManager
 import com.example.near.data.models.FriendRequest
+import com.example.near.data.models.GroupActionRequest
+import com.example.near.data.models.GroupCreateRequest
 import com.example.near.data.models.LoginUserRequest
 import com.example.near.data.models.LoginUserResponse
 import com.example.near.data.models.SignUpRequest
@@ -161,6 +163,54 @@ class UserRepositoryImpl @Inject constructor(
             val response = userService.removeFriend(
                 token = "Bearer ${sessionManager.authToken!!.accessToken}",
                 request = FriendRequest(friendId = friendId)
+            )
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Failed to send friend request"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun createGroup(groupName: String, members: List<String>): Result<Unit> {
+        return try {
+            val response = userService.createGroup(
+                token = "Bearer ${sessionManager.authToken!!.accessToken}",
+                request = GroupCreateRequest(groupName, members)
+            )
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Failed to send friend request"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun updateGroup(id: String, groupName: String, members: List<String>): Result<Unit> {
+        return try {
+            val response = userService.updateGroup(
+                token = "Bearer ${sessionManager.authToken!!.accessToken}",
+                request = GroupActionRequest(id, groupName, members)
+            )
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Failed to send friend request"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun deleteGroup(id: String, groupName: String, members: List<String>): Result<Unit> {
+        return try {
+            val response = userService.deleteGroup(
+                token = "Bearer ${sessionManager.authToken!!.accessToken}",
+                request = GroupActionRequest(id, groupName, members)
             )
             if (response.isSuccessful) {
                 Result.success(Unit)

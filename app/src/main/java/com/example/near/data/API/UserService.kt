@@ -1,6 +1,8 @@
 package com.example.near.data.API
 
 import com.example.near.data.models.FriendRequest
+import com.example.near.data.models.GroupActionRequest
+import com.example.near.data.models.GroupCreateRequest
 import com.example.near.data.models.LoginUserRequest
 import com.example.near.data.models.LoginUserResponse
 import com.example.near.data.models.SignUpRequest
@@ -11,6 +13,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Query
 
 interface UserService {
@@ -61,7 +64,24 @@ interface UserService {
         @Body request: FriendRequest
     ): Response<Void>
 
-    // Template action
+    // Group action
 
+    @POST("NEAR/user/group/create")
+    suspend fun createGroup(
+        @Header("Authorization") token: String,
+        @Body request: GroupCreateRequest
+    ): Response<Void>
+
+    @PUT("NEAR/user/group/update")
+    suspend fun updateGroup(
+        @Header("Authorization") token: String,
+        @Body request: GroupActionRequest
+    ): Response<Void>
+
+    @DELETE("NEAR/user/group/delete")
+    suspend fun deleteGroup(
+        @Header("Authorization") token: String,
+        @Body request: GroupActionRequest
+    ): Response<Void>
 
 }

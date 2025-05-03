@@ -32,4 +32,11 @@ interface UserRepository {
     suspend fun rejectFriendRequest(friendId: String): Result<Unit>
 
     suspend fun removeFriend(friendId: String): Result<Unit>
+
+    suspend fun createGroup(groupName: String, members: List<String>): Result<Unit>
+
+    suspend fun updateGroup(id: String, groupName: String, members: List<String>): Result<Unit>
+
+    suspend fun deleteGroup(id: String, groupName: String, members: List<String>): Result<Unit>
+
 }

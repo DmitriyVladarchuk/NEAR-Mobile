@@ -1,4 +1,4 @@
-package com.example.near.domain.usecase
+package com.example.near.domain.usecase.user.auth
 
 import com.example.near.domain.models.NotificationOption
 import com.example.near.domain.repository.UserRepository
