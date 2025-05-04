@@ -152,6 +152,14 @@ fun MainNavGraph(
             composable(Routes.CreateGroup.route) {
                 CreateGroupsScreen(navController)
             }
+
+            composable(
+                route = "create_group/{groupId}",
+                arguments = listOf(navArgument("groupId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val groupId = backStackEntry.arguments?.getString("groupId")
+                CreateGroupsScreen(groupId = groupId, navController = navController)
+            }
         }
     }
 

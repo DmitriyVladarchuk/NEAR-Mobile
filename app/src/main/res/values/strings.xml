@@ -76,6 +76,12 @@
     <!-- Group -->
     <string name="groups">Groups</string>
     <string name="create_new_groups">Create new groups</string>
+    <string name="group_name">Group name</string>
+    <string name="select_friends">Select friends</string>
+    <string name="create_group">Create group</string>
+    <string name="edit_group">Edit group</string>
+    <string name="cancel">Cancel</string>
+    <string name="save_changes">Save changes</string>
     
     <!-- Settings -->
     <string name="option">Option</string>
