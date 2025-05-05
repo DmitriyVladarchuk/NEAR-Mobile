@@ -146,7 +146,7 @@ fun MainNavGraph(
             }
 
             composable(Routes.Settings.route) {
-                SettingsScreen()
+                SettingsScreen(navController = navController)
             }
 
             composable(Routes.CreateGroup.route) {

@@ -20,20 +20,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.near.R
 import com.example.near.domain.models.ThemeType
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.content_inscription
-import com.example.near.ui.views.MainHeaderTextInfo
+import com.example.near.ui.views.SecondaryHeaderTextInfo
 
 @Composable
-fun SettingsScreen(modifier: Modifier = Modifier, viewModel: SettingsViewModel = hiltViewModel()) {
+fun SettingsScreen(navController: NavController, modifier: Modifier = Modifier, viewModel: SettingsViewModel = hiltViewModel()) {
     Column(
         modifier = modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        MainHeaderTextInfo(stringResource(R.string.settings))
+        SecondaryHeaderTextInfo(
+            text = stringResource(R.string.settings),
+            modifier = Modifier.padding(vertical = 16.dp)
+        ) {
+            navController.popBackStack()
+        }
         OptionCard(viewModel)
         Feedback(clickable = {  })
         Common(clickableAbout = {  }, clickableGitHub = {  })

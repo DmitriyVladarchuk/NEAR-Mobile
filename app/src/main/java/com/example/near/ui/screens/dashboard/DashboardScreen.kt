@@ -13,11 +13,11 @@ import com.example.near.ui.views.MainHeaderTextInfo
 @Composable
 fun DashboardScreen(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize().padding(horizontal = 16.dp),
     ) {
         MainHeaderTextInfo(
             text = stringResource(R.string.dashboard),
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier.padding(vertical = 16.dp)
         )
     }
 }

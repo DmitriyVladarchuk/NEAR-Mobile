@@ -56,6 +56,7 @@ import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.NEARTheme
 import com.example.near.ui.theme.dark_content
 import com.example.near.ui.theme.light_container
+import com.example.near.ui.views.SecondaryHeaderTextInfo
 
 @Composable
 fun ProfileScreen(
@@ -89,6 +90,14 @@ fun ProfileScreen(
             .fillMaxSize()
             .background(CustomTheme.colors.background)
     ) {
+        if (userId != null) {
+            SecondaryHeaderTextInfo(
+                text = stringResource(R.string.profile),
+                modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
+            ) {
+                navController.popBackStack()
+            }
+        }
         when {
             viewModel.isLoading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
