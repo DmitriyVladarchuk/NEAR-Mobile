@@ -119,7 +119,7 @@ fun MainNavGraph(
 
             // Экран Dashboard
             composable(Routes.Dashboards.route) {
-                DashboardScreen()
+                DashboardScreen(navController = navController)
             }
 
             // Экран Friends

@@ -59,6 +59,14 @@
     <string name="my_profile">My Profile</string>
     <string name="profile">Profile</string>
 
+    <!-- Dashboard -->
+    <string name="create_a_new_notification_template">Create a new notification template.</string>
+    <string name="create_new_group">Create new group.</string>
+    <string name="submitted_templates">Submitted Templates</string>
+    <string name="sos">SOS</string>
+    <string name="sos_button_description">Click on me if you need emergency help!</string>
+    <string name="my_templates">My templates</string>
+
     <!-- Profile -->
     <string name="location">Location</string>
     <string name="options_for_receiving_notifications">Options for receiving notifications</string>
