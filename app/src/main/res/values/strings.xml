@@ -82,6 +82,9 @@
     <string name="edit_group">Edit group</string>
     <string name="cancel">Cancel</string>
     <string name="save_changes">Save changes</string>
+
+    <!-- Subscription -->
+    <string name="all_community">All community</string>
     
     <!-- Settings -->
     <string name="option">Option</string>

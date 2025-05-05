@@ -129,7 +129,7 @@ fun MainNavGraph(
 
             // Экран Notifications
             composable(Routes.Subscriptions.route) {
-                SubscriptionsScreen()
+                SubscriptionsScreen(navController = navController)
             }
 
             // Экран Profile
