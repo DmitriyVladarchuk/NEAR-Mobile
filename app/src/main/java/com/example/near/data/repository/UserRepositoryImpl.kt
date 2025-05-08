@@ -6,8 +6,8 @@ import com.example.near.data.datastore.SessionManager
 import com.example.near.data.models.FriendRequest
 import com.example.near.data.models.GroupActionRequest
 import com.example.near.data.models.GroupCreateRequest
-import com.example.near.data.models.LoginUserRequest
-import com.example.near.data.models.LoginUserResponse
+import com.example.near.data.models.LoginRequest
+import com.example.near.data.models.LoginResponse
 import com.example.near.data.models.SignUpRequest
 import com.example.near.domain.models.NotificationOption
 import com.example.near.domain.models.User
@@ -63,9 +63,9 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun login(email: String, password: String): Result<LoginUserResponse> {
+    override suspend fun login(email: String, password: String): Result<LoginResponse> {
         return try {
-            val response = userService.login(LoginUserRequest(email, password))
+            val response = userService.login(LoginRequest(email, password))
             if (response.isSuccessful) {
                 response.body()?.let {
                     Result.success(it)

@@ -1,6 +1,6 @@
 package com.example.near.data.models
 
-data class LoginUserRequest(
+data class LoginRequest(
     val email: String,
     val password: String
 )

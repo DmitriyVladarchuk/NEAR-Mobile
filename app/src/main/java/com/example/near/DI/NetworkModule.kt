@@ -1,5 +1,6 @@
 package com.example.near.DI
 
+import com.example.near.data.API.CommunityService
 import com.example.near.data.API.UserService
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -47,5 +48,11 @@ object NetworkModule {
     @Singleton
     fun provideApiService(retrofit: Retrofit): UserService {
         return retrofit.create(UserService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCommunityApiService(retrofit: Retrofit): CommunityService {
+        return retrofit.create(CommunityService::class.java)
     }
 }

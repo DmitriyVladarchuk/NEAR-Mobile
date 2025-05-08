@@ -1,17 +1,17 @@
 package com.example.near.data.datastore
 
-import com.example.near.data.models.LoginUserResponse
+import com.example.near.data.models.LoginResponse
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class SessionManager @Inject constructor() {
-    private var _authToken: LoginUserResponse? = null
+    private var _authToken: LoginResponse? = null
 
-    val authToken: LoginUserResponse?
+    val authToken: LoginResponse?
         get() = _authToken
 
-    fun saveAuthToken(authToken: LoginUserResponse) {
+    fun saveAuthToken(authToken: LoginResponse) {
         _authToken = authToken
     }
 

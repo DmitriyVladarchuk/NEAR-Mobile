@@ -2,7 +2,7 @@ package com.example.near.data.models
 
 import com.google.gson.annotations.SerializedName
 
-data class LoginUserResponse(
+data class LoginResponse(
     @SerializedName("type")
     val type: String,
 

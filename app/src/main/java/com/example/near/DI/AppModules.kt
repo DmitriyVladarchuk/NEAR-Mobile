@@ -1,11 +1,14 @@
 package com.example.near.DI
 
 import android.content.Context
+import com.example.near.data.API.CommunityService
 import com.example.near.data.API.UserService
 import com.example.near.data.datastore.AuthDataStorage
 import com.example.near.data.datastore.SessionManager
 import com.example.near.data.datastore.SettingsDataStorage
+import com.example.near.data.repository.CommunityRepositoryImpl
 import com.example.near.data.repository.UserRepositoryImpl
+import com.example.near.domain.repository.CommunityRepository
 import com.example.near.domain.repository.UserRepository
 import dagger.Module
 import dagger.Provides
@@ -21,6 +24,12 @@ object AppModules {
     @Singleton
     fun provideUserRepository(userService: UserService, sessionManager: SessionManager): UserRepository {
         return UserRepositoryImpl(userService, sessionManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCommunityRepository(communityService: CommunityService, sessionManager: SessionManager): CommunityRepository {
+        return CommunityRepositoryImpl(communityService, sessionManager)
     }
 
     @Provides

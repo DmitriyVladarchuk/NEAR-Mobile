@@ -3,8 +3,8 @@ package com.example.near.data.API
 import com.example.near.data.models.FriendRequest
 import com.example.near.data.models.GroupActionRequest
 import com.example.near.data.models.GroupCreateRequest
-import com.example.near.data.models.LoginUserRequest
-import com.example.near.data.models.LoginUserResponse
+import com.example.near.data.models.LoginRequest
+import com.example.near.data.models.LoginResponse
 import com.example.near.data.models.SignUpRequest
 import com.example.near.domain.models.User
 import retrofit2.Response
@@ -24,8 +24,8 @@ interface UserService {
 
     @POST("NEAR/login/account")
     suspend fun login(
-        @Body request: LoginUserRequest
-    ): Response<LoginUserResponse>
+        @Body request: LoginRequest
+    ): Response<LoginResponse>
 
     @GET("NEAR/user/me")
     suspend fun getUserInfo(
