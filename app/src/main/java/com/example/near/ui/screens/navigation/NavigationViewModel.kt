@@ -14,4 +14,5 @@ class NavigationViewModel @Inject constructor(
     val authDataStorage: AuthDataStorage,
     val settingsDataStorage: SettingsDataStorage,
     val userRepository: UserRepository
-) : ViewModel()
+) : ViewModel() {
+}

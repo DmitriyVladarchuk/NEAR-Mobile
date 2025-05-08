@@ -31,7 +31,7 @@ import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.views.DynamicItemContainer
 
 @Composable
-fun BottomBar(navController: NavController) {
+fun BottomBar(navController: NavController, isCommunity: Boolean) {
     val bottomBarItems = listOf(
         BottomBarItem(Routes.Dashboards.route, R.string.dashboard, Icons.Default.Home),
         BottomBarItem(Routes.Friends.route, R.string.friends, Icons.Default.Group),

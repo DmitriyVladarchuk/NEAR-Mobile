@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navigation
 import com.example.near.ui.screens.auth.login.account.LoginAccountScreen
 import com.example.near.ui.screens.auth.login.community.LoginCommunityScreen
 import com.example.near.ui.screens.auth.signup.account.SignupAccountScreen
@@ -30,12 +31,14 @@ import com.example.near.ui.theme.CustomTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+
 @Composable
 fun MainNavGraph(
     viewModel: NavigationViewModel = hiltViewModel(),
     startDestination: String = Routes.Onboarding.route
 ) {
     val navController = rememberNavController()
+    val isLoggedIn = viewModel.sessionManager.isLoggedIn
     val currentRoute = remember { mutableStateOf(startDestination) }
 
     // Следим за изменениями маршрута
@@ -45,16 +48,25 @@ fun MainNavGraph(
         }
     }
 
-    // Автоматический логин при наличии сохраненных данных
+    // --- Авторизация ---
     LaunchedEffect(Unit) {
-        if (!viewModel.sessionManager.isLoggedIn) {
-            viewModel.authDataStorage.getCredentials()?.let { (email, password) ->
+        if (!isLoggedIn) {
+            viewModel.authDataStorage.getCredentials()?.let { (email, password, isCommunity) ->
                 val result = withContext(Dispatchers.IO) {
                     viewModel.userRepository.login(email, password)
+//                    if (isCommunity) {
+//                        //viewModel.communityRepository.login(email, password)
+//                    } else {
+//                        viewModel.userRepository.login(email, password)
+//                    }
                 }
                 if (result.isSuccess) {
                     viewModel.sessionManager.saveAuthToken(result.getOrNull()!!)
-                    navController.navigate(Routes.Dashboards.route) {
+                    val mainRoute =
+                        if (isCommunity) Routes.CommunityDashboard.route else {
+                            Routes.Dashboards.route
+                        }
+                    navController.navigate(mainRoute) {
                         popUpTo(0) { inclusive = true }
                     }
                 }
@@ -70,9 +82,14 @@ fun MainNavGraph(
                     Routes.Dashboards.route,
                     Routes.Friends.route,
                     Routes.Subscriptions.route,
-                    Routes.Profile.route
-                )) {
-                BottomBar(navController = navController)
+                    Routes.Profile.route,
+                    Routes.CommunityDashboard.route,
+                )
+            ) {
+                BottomBar(
+                    navController = navController,
+                    isCommunity = viewModel.authDataStorage.getCredentials()?.third ?: false
+                )
             }
         }
     ) { innerPadding ->
@@ -83,6 +100,7 @@ fun MainNavGraph(
         ) {
             val baseModifier = Modifier.padding(innerPadding)
 
+            // --- Общие экраны  ---
             composable(Routes.Onboarding.route) {
                 OnboardingScreen(
                     onAccountClick = { navController.navigate(Routes.SignupAccount.route) },
@@ -101,7 +119,6 @@ fun MainNavGraph(
                     navController = navController
                 )
             }
-
             composable(Routes.LoginCommunity.route) {
                 LoginCommunityScreen(
                     modifier = baseModifier,
@@ -117,50 +134,61 @@ fun MainNavGraph(
                 )
             }
 
-            // Экран Dashboard
-            composable(Routes.Dashboards.route) {
-                DashboardScreen(navController = navController)
+            // --- NavGraph для пользователя ---
+            navigation(
+                startDestination = Routes.Dashboards.route,
+                route = "user_graph"
+            ) {
+                composable(Routes.Dashboards.route) {
+                    DashboardScreen(navController = navController)
+                }
+
+                composable(Routes.Friends.route) {
+                    FriendsAndGroupsScreen(navController = navController)
+                }
+
+                composable(Routes.Subscriptions.route) {
+                    SubscriptionsScreen(navController = navController)
+                }
+
+                composable(Routes.Profile.route) {
+                    ProfileScreen(navController = navController)
+                }
+
+                composable(
+                    route = "profile/{userId}",
+                    arguments = listOf(navArgument("userId") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    val userId = backStackEntry.arguments?.getString("userId")
+                    ProfileScreen(userId = userId, navController = navController)
+                }
+
+                composable(Routes.Settings.route) {
+                    SettingsScreen(navController = navController)
+                }
+
+                composable(Routes.CreateGroup.route) {
+                    CreateGroupsScreen(navController)
+                }
+
+                composable(
+                    route = "create_group/{groupId}",
+                    arguments = listOf(navArgument("groupId") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    val groupId = backStackEntry.arguments?.getString("groupId")
+                    CreateGroupsScreen(groupId = groupId, navController = navController)
+                }
             }
 
-            // Экран Friends
-            composable(Routes.Friends.route) {
-                FriendsAndGroupsScreen(navController = navController)
-            }
-
-            // Экран Notifications
-            composable(Routes.Subscriptions.route) {
-                SubscriptionsScreen(navController = navController)
-            }
-
-            // Экран Profile
-            composable(Routes.Profile.route) {
-                ProfileScreen(navController = navController)
-            }
-
-            composable(
-                route = "profile/{userId}",
-                arguments = listOf(navArgument("userId") { type = NavType.StringType })
-            ) { backStackEntry ->
-                val userId = backStackEntry.arguments?.getString("userId")
-                ProfileScreen(userId = userId, navController = navController)
-            }
-
-            composable(Routes.Settings.route) {
-                SettingsScreen(navController = navController)
-            }
-
-            composable(Routes.CreateGroup.route) {
-                CreateGroupsScreen(navController)
-            }
-
-            composable(
-                route = "create_group/{groupId}",
-                arguments = listOf(navArgument("groupId") { type = NavType.StringType })
-            ) { backStackEntry ->
-                val groupId = backStackEntry.arguments?.getString("groupId")
-                CreateGroupsScreen(groupId = groupId, navController = navController)
+            // --- NavGraph для сообщества ---
+            navigation(
+                startDestination = Routes.CommunityDashboard.route,
+                route = "community_graph"
+            ) {
+//                composable(Routes.CommunityDashboard.route) { CommunityDashboardScreen(navController) }
+//                composable(Routes.CommunityMembers.route) { CommunityMembersScreen(navController) }
+//                composable(Routes.CommunityProfile.route) { CommunityProfileScreen(navController) }
             }
         }
     }
-
 }
