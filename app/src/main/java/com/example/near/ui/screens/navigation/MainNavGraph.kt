@@ -1,13 +1,20 @@
 package com.example.near.ui.screens.navigation
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -15,20 +22,24 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.example.near.domain.usecase.user.auth.LogOutUseCase
 import com.example.near.ui.screens.auth.login.account.LoginAccountScreen
 import com.example.near.ui.screens.auth.login.community.LoginCommunityScreen
 import com.example.near.ui.screens.auth.signup.account.SignupAccountScreen
 import com.example.near.ui.screens.auth.signup.community.SignupCommunityScreen
 import com.example.near.ui.screens.bottomBar.BottomBar
-import com.example.near.ui.screens.dashboard.DashboardScreen
+import com.example.near.ui.screens.dashboard.user.DashboardScreen
 import com.example.near.ui.screens.friendsAndGroups.FriendsAndGroupsScreen
 import com.example.near.ui.screens.friendsAndGroups.groups.CreateGroupsScreen
 import com.example.near.ui.screens.onboarding.OnboardingScreen
 import com.example.near.ui.screens.profile.ProfileScreen
+import com.example.near.ui.screens.profile.ProfileViewModel
 import com.example.near.ui.screens.settings.SettingsScreen
 import com.example.near.ui.screens.subscriptions.SubscriptionsScreen
+import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
@@ -53,12 +64,12 @@ fun MainNavGraph(
         if (!isLoggedIn) {
             viewModel.authDataStorage.getCredentials()?.let { (email, password, isCommunity) ->
                 val result = withContext(Dispatchers.IO) {
-                    viewModel.userRepository.login(email, password)
-//                    if (isCommunity) {
-//                        //viewModel.communityRepository.login(email, password)
-//                    } else {
-//                        viewModel.userRepository.login(email, password)
-//                    }
+                    //viewModel.userRepository.login(email, password)
+                    if (isCommunity) {
+                        viewModel.communityRepository.login(email, password)
+                    } else {
+                        viewModel.userRepository.login(email, password)
+                    }
                 }
                 if (result.isSuccess) {
                     viewModel.sessionManager.saveAuthToken(result.getOrNull()!!)
@@ -84,6 +95,8 @@ fun MainNavGraph(
                     Routes.Subscriptions.route,
                     Routes.Profile.route,
                     Routes.CommunityDashboard.route,
+                    Routes.CommunitySubscribers.route,
+                    Routes.CommunityProfile.route
                 )
             ) {
                 BottomBar(
@@ -185,10 +198,33 @@ fun MainNavGraph(
                 startDestination = Routes.CommunityDashboard.route,
                 route = "community_graph"
             ) {
-//                composable(Routes.CommunityDashboard.route) { CommunityDashboardScreen(navController) }
-//                composable(Routes.CommunityMembers.route) { CommunityMembersScreen(navController) }
-//                composable(Routes.CommunityProfile.route) { CommunityProfileScreen(navController) }
+                composable(Routes.CommunityDashboard.route) { TestScreen("Dashboard") }
+                composable(Routes.CommunitySubscribers.route) { TestScreen("Subscribers") }
+                composable(Routes.CommunityProfile.route) { TestScreen("Profile") }
             }
         }
+    }
+}
+
+@Composable
+private fun TestScreen(text: String, profileViewModel: ProfileViewModel = hiltViewModel()) {
+    Column (
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = text,
+            style = AppTypography.titleLarge,
+            color = CustomTheme.colors.content
+        )
+        Text(
+            text = "LogOut",
+            style = AppTypography.titleMedium,
+            color = CustomTheme.colors.content,
+            modifier = Modifier.padding(top = 16.dp).clickable {
+                profileViewModel.logOut()
+            }
+        )
     }
 }

@@ -18,4 +18,6 @@ sealed class Routes(val route: String) {
 
     // --- Маршруты для сообщества ---
     object CommunityDashboard : Routes("community_dashboard")
+    object CommunitySubscribers : Routes("community_Subscribers")
+    object CommunityProfile : Routes("community_profile")
 }

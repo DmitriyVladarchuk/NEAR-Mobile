@@ -19,11 +19,8 @@ class SignUpUserUseCase @Inject constructor(
         selectedOptions: List<NotificationOption>
     ): Result<Unit> {
         val result = userRepository.signUp(userName, email, password, location, birthday, phoneNumber, telegramShortName, selectedOptions)
-        if (result.isSuccess) {
+        if (result.isSuccess)
             loginUserUseCase(email, password)
-            return result
-        } else {
-            return result
-        }
+        return result
     }
 }

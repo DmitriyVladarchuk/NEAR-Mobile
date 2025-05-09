@@ -1,4 +1,4 @@
-package com.example.near.ui.screens.dashboard
+package com.example.near.ui.screens.dashboard.user
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

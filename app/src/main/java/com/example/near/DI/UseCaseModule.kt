@@ -3,6 +3,7 @@ package com.example.near.DI
 import com.example.near.data.datastore.AuthDataStorage
 import com.example.near.data.datastore.SessionManager
 import com.example.near.data.datastore.SettingsDataStorage
+import com.example.near.domain.repository.CommunityRepository
 import com.example.near.domain.repository.UserRepository
 import com.example.near.domain.usecase.user.friends.AddFriendRequestUseCase
 import com.example.near.domain.usecase.GetThemeUseCase
@@ -14,6 +15,9 @@ import com.example.near.domain.usecase.user.friends.RejectFriendRequestUseCase
 import com.example.near.domain.usecase.user.friends.RemoveFriendUseCase
 import com.example.near.domain.usecase.user.friends.SendFriendRequestUseCase
 import com.example.near.domain.usecase.SetThemeUseCase
+import com.example.near.domain.usecase.community.GetCommunityUseCase
+import com.example.near.domain.usecase.community.LoginCommunityUseCase
+import com.example.near.domain.usecase.community.SignUpCommunityUseCase
 import com.example.near.domain.usecase.user.auth.SignUpUserUseCase
 import com.example.near.domain.usecase.user.group.CreateGroupUseCase
 import com.example.near.domain.usecase.user.group.DeleteGroupUseCase
@@ -39,11 +43,30 @@ object UseCaseModule {
 
     @Provides
     @Singleton
+    fun provideCommunityLoginUseCase(
+        communityRepository: CommunityRepository,
+        authDataStorage: AuthDataStorage,
+        sessionManager: SessionManager
+    ): LoginCommunityUseCase {
+        return LoginCommunityUseCase(communityRepository, authDataStorage, sessionManager)
+    }
+
+    @Provides
+    @Singleton
     fun provideUserSignUpUseCase(
         userRepository: UserRepository,
         loginUserUseCase: LoginUserUseCase
     ): SignUpUserUseCase {
         return SignUpUserUseCase(userRepository, loginUserUseCase)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCommunitySignUpUseCase(
+        communityRepository: CommunityRepository,
+        loginCommunityUseCase: LoginCommunityUseCase
+    ): SignUpCommunityUseCase {
+        return SignUpCommunityUseCase(communityRepository, loginCommunityUseCase)
     }
 
     @Provides
@@ -59,6 +82,12 @@ object UseCaseModule {
     @Singleton
     fun provideGetUserUseCase(userRepository: UserRepository): GetUserUseCase {
         return GetUserUseCase(userRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetCommunityUseCase(communityRepository: CommunityRepository): GetCommunityUseCase {
+        return GetCommunityUseCase(communityRepository)
     }
 
     @Provides

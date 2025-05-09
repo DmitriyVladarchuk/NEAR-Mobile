@@ -32,12 +32,20 @@ import com.example.near.ui.views.DynamicItemContainer
 
 @Composable
 fun BottomBar(navController: NavController, isCommunity: Boolean) {
-    val bottomBarItems = listOf(
-        BottomBarItem(Routes.Dashboards.route, R.string.dashboard, Icons.Default.Home),
-        BottomBarItem(Routes.Friends.route, R.string.friends, Icons.Default.Group),
-        BottomBarItem(Routes.Subscriptions.route, R.string.subscriptions, Icons.Default.Notifications),
-        BottomBarItem(Routes.Profile.route, R.string.my_profile, Icons.Default.AccountCircle)
-    )
+    val bottomBarItems = if(isCommunity) {
+        listOf(
+            BottomBarItem(Routes.CommunityDashboard.route, R.string.dashboard, Icons.Default.Home),
+            BottomBarItem(Routes.CommunitySubscribers.route, R.string.subscriptions, Icons.Default.Group),
+            BottomBarItem(Routes.CommunityProfile.route, R.string.my_profile, Icons.Default.AccountCircle)
+        )
+    } else {
+        listOf(
+            BottomBarItem(Routes.Dashboards.route, R.string.dashboard, Icons.Default.Home),
+            BottomBarItem(Routes.Friends.route, R.string.friends, Icons.Default.Group),
+            BottomBarItem(Routes.Subscriptions.route, R.string.subscriptions, Icons.Default.Notifications),
+            BottomBarItem(Routes.Profile.route, R.string.my_profile, Icons.Default.AccountCircle)
+        )
+    }
 
     // Состояние для текущего маршрута
     val currentRoute = remember { mutableStateOf(navController.currentDestination?.route ?: Routes.Dashboards.route) }
