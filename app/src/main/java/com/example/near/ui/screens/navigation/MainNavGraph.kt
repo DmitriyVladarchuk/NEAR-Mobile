@@ -28,6 +28,7 @@ import com.example.near.ui.screens.auth.signup.community.SignupCommunityScreen
 import com.example.near.ui.screens.bottomBar.BottomBar
 import com.example.near.ui.screens.dashboard.user.DashboardScreen
 import com.example.near.ui.screens.friendsAndGroups.FriendsAndGroupsScreen
+import com.example.near.ui.screens.friendsAndGroups.FriendsAndSubscriptions
 import com.example.near.ui.screens.friendsAndGroups.groups.CreateGroupsScreen
 import com.example.near.ui.screens.onboarding.OnboardingScreen
 import com.example.near.ui.screens.profile.community.ProfileCommunityScreen
@@ -162,6 +163,14 @@ fun MainNavGraph(
                     SubscriptionsScreen(navController = navController)
                 }
 
+                composable(
+                    route = Routes.CommunityProfile.route + "/{communityId}",
+                    arguments = listOf(navArgument("communityId") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    val communityId = backStackEntry.arguments?.getString("communityId")
+                    ProfileCommunityScreen(communityId = communityId, navController = navController)
+                }
+
                 composable(Routes.Profile.route) {
                     ProfileScreen(navController = navController)
                 }
@@ -172,6 +181,14 @@ fun MainNavGraph(
                 ) { backStackEntry ->
                     val userId = backStackEntry.arguments?.getString("userId")
                     ProfileScreen(userId = userId, navController = navController)
+                }
+
+                composable(
+                    route = "profile_info/{userId}",
+                    arguments = listOf(navArgument("userId") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    val userId = backStackEntry.arguments!!.getString("userId")!!
+                    FriendsAndSubscriptions(userId = userId, navController = navController)
                 }
 
                 composable(Routes.Settings.route) {

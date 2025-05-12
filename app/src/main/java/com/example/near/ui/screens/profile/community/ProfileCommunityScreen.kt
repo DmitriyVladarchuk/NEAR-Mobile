@@ -66,7 +66,11 @@ fun ProfileCommunityScreen(
     val screenHeight = configuration.screenHeightDp.dp
 
     LaunchedEffect(Unit) {
-        communityId?.let { it -> viewModel.loadCommunity(it) }
+        if (communityId == null) {
+            viewModel.loadCommunity()
+        } else {
+            viewModel.loadCommunity(communityId)
+        }
     }
 
     Column(
@@ -119,15 +123,6 @@ fun ProfileCommunityScreen(
                         )
 
                         viewModel.community?.let { it ->
-                            SubscribersSection(
-                                text = it.subscribers.size.toString(),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height((screenHeight - 56.dp) * 0.15f)
-                            )
-                        }
-
-                        viewModel.community?.let { it ->
                             DescriptionCommunitySection(
                                 community = it,
                                 communityId = communityId != null,
@@ -139,6 +134,16 @@ fun ProfileCommunityScreen(
 
                             }
                         }
+
+                        viewModel.community?.let { it ->
+                            SubscribersSection(
+                                text = it.subscribers.size.toString(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height((screenHeight - 56.dp) * 0.15f)
+                            )
+                        }
+
 
                         if (communityId == null)
                             SettingAndLogOut(

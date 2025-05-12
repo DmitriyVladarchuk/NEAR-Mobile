@@ -135,13 +135,23 @@ fun ProfileScreen(
                         )
 
                         viewModel.user?.let { user ->
-                            FriendsAndSubscription(
-                                user = user,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height((screenHeight - 56.dp) * 0.15f)
-                                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                            )
+                            if (userId != null)
+                                FriendsAndSubscription(
+                                    user = user,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height((screenHeight - 56.dp) * 0.15f)
+                                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                                        .clickable { navController.navigate("profile_info/$userId") }
+                                )
+                            else
+                                FriendsAndSubscription(
+                                    user = user,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height((screenHeight - 56.dp) * 0.15f)
+                                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                                )
                         }
 
                         viewModel.user?.let { user ->

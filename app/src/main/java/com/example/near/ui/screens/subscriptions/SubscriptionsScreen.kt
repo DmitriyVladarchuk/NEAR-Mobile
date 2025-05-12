@@ -37,6 +37,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
 import com.example.near.domain.models.UserSubscription
+import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.views.MainHeaderTextInfo
@@ -186,8 +187,8 @@ private fun CommunityBody(
             items(community) { com ->
                 CommunityItem(
                     community = com,
-                    onItemClick = { userId ->
-                        //navController.navigate("profile/$userId")
+                    onItemClick = { communityId ->
+                        navController.navigate(Routes.CommunityProfile.route + "/$communityId")
                     }
                 )
                 if (com != community.last()) {
