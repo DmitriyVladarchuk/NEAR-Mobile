@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -22,7 +21,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.example.near.domain.usecase.user.auth.LogOutUseCase
 import com.example.near.ui.screens.auth.login.account.LoginAccountScreen
 import com.example.near.ui.screens.auth.login.community.LoginCommunityScreen
 import com.example.near.ui.screens.auth.signup.account.SignupAccountScreen
@@ -32,14 +30,14 @@ import com.example.near.ui.screens.dashboard.user.DashboardScreen
 import com.example.near.ui.screens.friendsAndGroups.FriendsAndGroupsScreen
 import com.example.near.ui.screens.friendsAndGroups.groups.CreateGroupsScreen
 import com.example.near.ui.screens.onboarding.OnboardingScreen
-import com.example.near.ui.screens.profile.ProfileScreen
-import com.example.near.ui.screens.profile.ProfileViewModel
+import com.example.near.ui.screens.profile.community.ProfileCommunityScreen
+import com.example.near.ui.screens.profile.user.ProfileScreen
+import com.example.near.ui.screens.profile.user.ProfileViewModel
 import com.example.near.ui.screens.settings.SettingsScreen
 import com.example.near.ui.screens.subscriptions.SubscriptionsScreen
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
@@ -200,7 +198,7 @@ fun MainNavGraph(
             ) {
                 composable(Routes.CommunityDashboard.route) { TestScreen("Dashboard") }
                 composable(Routes.CommunitySubscribers.route) { TestScreen("Subscribers") }
-                composable(Routes.CommunityProfile.route) { TestScreen("Profile") }
+                composable(Routes.CommunityProfile.route) { ProfileCommunityScreen(navController = navController) }
             }
         }
     }

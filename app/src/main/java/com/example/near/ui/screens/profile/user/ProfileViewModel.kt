@@ -1,4 +1,4 @@
-package com.example.near.ui.screens.profile
+package com.example.near.ui.screens.profile.user
 
 import android.util.Log
 import androidx.compose.runtime.getValue

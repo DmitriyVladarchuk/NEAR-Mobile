@@ -114,5 +114,11 @@
 
 
     <!-- Community -->
+    <string name="community">Community</string>
+    <string name="subscribers">Subscribers</string>
+    <string name="description">Description</string>
+    <string name="emergency_monitoring_region">Emergency monitoring region</string>
+    <string name="type_of_monitored_emergency">Type of monitored emergency</string>
+    <string name="subscribe">Subscribe</string>
 
 </resources>
