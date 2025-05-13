@@ -64,6 +64,12 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.androidx.core.splash.screen)
     implementation(libs.coil.compose)
+
+    
+    implementation("com.google.firebase:firebase-messaging-ktx:24.1.1")
+    implementation("com.google.firebase:firebase-analytics-ktx:22.4.0")
+
+
     annotationProcessor(libs.androidx.room.room.compiler)
     ksp(libs.androidx.room.room.compiler)
     ksp(libs.dagger.hilt.compiler)
