@@ -36,6 +36,7 @@ import com.example.near.ui.screens.profile.user.ProfileScreen
 import com.example.near.ui.screens.profile.user.ProfileViewModel
 import com.example.near.ui.screens.settings.SettingsScreen
 import com.example.near.ui.screens.subscriptions.SubscriptionsScreen
+import com.example.near.ui.screens.templates.CreateTemplate
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import kotlinx.coroutines.Dispatchers
@@ -205,6 +206,11 @@ fun MainNavGraph(
                 ) { backStackEntry ->
                     val groupId = backStackEntry.arguments?.getString("groupId")
                     CreateGroupsScreen(groupId = groupId, navController = navController)
+                }
+
+                // --- Template ---
+                composable(Routes.CreateTemplate.route) {
+                    CreateTemplate(navController = navController)
                 }
             }
 

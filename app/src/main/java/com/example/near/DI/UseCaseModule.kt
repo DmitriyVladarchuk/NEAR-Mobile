@@ -22,6 +22,9 @@ import com.example.near.domain.usecase.user.auth.SignUpUserUseCase
 import com.example.near.domain.usecase.user.group.CreateGroupUseCase
 import com.example.near.domain.usecase.user.group.DeleteGroupUseCase
 import com.example.near.domain.usecase.user.group.UpdateGroupUseCase
+import com.example.near.domain.usecase.user.template.CreateTemplateUseCase
+import com.example.near.domain.usecase.user.template.DeleteTemplateUseCase
+import com.example.near.domain.usecase.user.template.UpdateTemplateUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -142,5 +145,19 @@ object UseCaseModule {
 
     fun provideDeleteGroupUseCase(userRepository: UserRepository): DeleteGroupUseCase {
         return DeleteGroupUseCase(userRepository)
+    }
+
+    // --- Template ---
+
+    fun provideCreateTemplateUseCase(userRepository: UserRepository): CreateTemplateUseCase {
+        return CreateTemplateUseCase(userRepository)
+    }
+
+    fun provideUpdateTemplateUseCase(userRepository: UserRepository): UpdateTemplateUseCase {
+        return UpdateTemplateUseCase(userRepository)
+    }
+
+    fun provideDeleteTemplateUseCase(userRepository: UserRepository): DeleteTemplateUseCase {
+        return DeleteTemplateUseCase(userRepository)
     }
 }

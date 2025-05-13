@@ -13,5 +13,5 @@ data class User(
     val friends: List<UserFriend>,
     val groups: List<UserGroup>,
     val subscriptions: List<UserSubscription>,
-    val notificationTemplates: List<NotificationOption>,
+    val notificationTemplates: List<UserTemplate>,
 )

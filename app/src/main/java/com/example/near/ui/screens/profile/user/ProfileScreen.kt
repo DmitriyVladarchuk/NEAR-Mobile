@@ -228,7 +228,7 @@ private fun UserProfileCard(userId: Boolean = false, user: User, onClick: () -> 
         InfoRowForUser(Icons.Filled.LocationOn, stringResource(R.string.location), user.country)
         Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
 
-        NotificationsOptions(user.notificationTemplates)
+        //NotificationsOptions(user.notificationTemplates)
         Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
 
         Spacer(Modifier.weight(1f))

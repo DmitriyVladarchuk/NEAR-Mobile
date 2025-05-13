@@ -44,6 +44,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
 import com.example.near.domain.models.NotificationOption
+import com.example.near.domain.models.UserTemplate
+import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.dark_content
@@ -133,7 +135,7 @@ private fun BodyButtons(navController: NavController) {
                     .aspectRatio(1f)
             ) {
                 CreateNewNotifications(
-                    onClick = { /* обработка клика */ },
+                    onClick = { navController.navigate(Routes.CreateTemplate.route) },
                     modifier = Modifier.fillMaxSize()
                 )
             }
@@ -182,7 +184,7 @@ private fun BodyButtons(navController: NavController) {
 }
 
 @Composable
-private fun BodyTemplates(navController: NavController, templates: List<NotificationOption>) {
+private fun BodyTemplates(navController: NavController, templates: List<UserTemplate>) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -204,7 +206,10 @@ private fun BodyTemplates(navController: NavController, templates: List<Notifica
 }
 
 @Composable
-private fun ItemTemplate(template: NotificationOption) {
+private fun ItemTemplate(template: UserTemplate) {
+    Row {
+        Text(text = template.templateName)
+    }
 
 }
 

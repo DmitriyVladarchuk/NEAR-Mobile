@@ -121,4 +121,12 @@
     <string name="type_of_monitored_emergency">Type of monitored emergency</string>
     <string name="subscribe">Subscribe</string>
 
+    <!-- Template -->
+    <string name="create_template">Create template</string>
+    <string name="update_template">Update template</string>
+    <string name="template_name">Template Name</string>
+    <string name="message">Message</string>
+    <string name="select_emergency_type">Select Emergency Type</string>
+    <string name="save_template">Save Template</string>
+
 </resources>

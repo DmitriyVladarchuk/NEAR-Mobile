@@ -96,7 +96,6 @@ fun FriendsAndSubscriptions(
         HorizontalPager(
             state = pagerState,
             userScrollEnabled = true,
-            //modifier = Modifier.weight(1f)
         ) { page ->
             when (page) {
                 0 -> FriendsForUser(friends = viewModel.friends, navController = navController)

@@ -9,8 +9,11 @@ import com.example.near.data.models.GroupCreateRequest
 import com.example.near.data.models.LoginRequest
 import com.example.near.data.models.LoginResponse
 import com.example.near.data.models.SignUpRequest
+import com.example.near.data.models.TemplateCreateRequest
+import com.example.near.domain.models.EmergencyType
 import com.example.near.domain.models.NotificationOption
 import com.example.near.domain.models.User
+import com.example.near.domain.models.UserTemplate
 import com.example.near.domain.repository.UserRepository
 import javax.inject.Inject
 
@@ -211,6 +214,68 @@ class UserRepositoryImpl @Inject constructor(
             val response = userService.deleteGroup(
                 token = "Bearer ${sessionManager.authToken!!.accessToken}",
                 request = GroupActionRequest(id, groupName, members)
+            )
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Failed to send friend request"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun createTemplate(
+        templateName: String,
+        message: String,
+        emergencyType: EmergencyType
+    ): Result<Unit> {
+        return try {
+            val response = userService.createTemplate(
+                token = "Bearer ${sessionManager.authToken!!.accessToken}",
+                request = TemplateCreateRequest(templateName, message, emergencyType)
+            )
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Failed to send friend request"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun updateTemplate(
+        id: String,
+        templateName: String,
+        message: String,
+        emergencyType: EmergencyType
+    ): Result<Unit> {
+        return try {
+            val response = userService.updateTemplate(
+                token = "Bearer ${sessionManager.authToken!!.accessToken}",
+                request = UserTemplate(id, templateName, message, emergencyType)
+            )
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Failed to send friend request"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun deleteTemplate(
+        id: String,
+        templateName: String,
+        message: String,
+        emergencyType: EmergencyType
+    ): Result<Unit> {
+        return try {
+            val response = userService.deleteTemplate(
+                token = "Bearer ${sessionManager.authToken!!.accessToken}",
+                request = UserTemplate(id, templateName, message, emergencyType)
             )
             if (response.isSuccessful) {
                 Result.success(Unit)

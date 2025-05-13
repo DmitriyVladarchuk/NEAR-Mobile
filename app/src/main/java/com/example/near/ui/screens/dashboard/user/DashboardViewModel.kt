@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.domain.models.NotificationOption
+import com.example.near.domain.models.UserTemplate
 import com.example.near.domain.usecase.GetUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class DashboardViewModel @Inject constructor(
     var error by mutableStateOf<String?>(null)
         private set
 
-    var notificationTemplates: List<NotificationOption> by mutableStateOf(listOf())
+    var notificationTemplates: List<UserTemplate> by mutableStateOf(listOf())
         private set
 
     init {

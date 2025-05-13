@@ -6,7 +6,9 @@ import com.example.near.data.models.GroupCreateRequest
 import com.example.near.data.models.LoginRequest
 import com.example.near.data.models.LoginResponse
 import com.example.near.data.models.SignUpRequest
+import com.example.near.data.models.TemplateCreateRequest
 import com.example.near.domain.models.User
+import com.example.near.domain.models.UserTemplate
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -82,6 +84,26 @@ interface UserService {
     suspend fun deleteGroup(
         @Header("Authorization") token: String,
         @Body request: GroupActionRequest
+    ): Response<Void>
+
+    // Action Template
+
+    @POST("NEAR/user/template/create")
+    suspend fun createTemplate(
+        @Header("Authorization") token: String,
+        @Body request: TemplateCreateRequest
+    ): Response<Void>
+
+    @PUT("NEAR/user/template/update")
+    suspend fun updateTemplate(
+        @Header("Authorization") token: String,
+        @Body request: UserTemplate
+    ): Response<Void>
+
+    @DELETE("NEAR/user/template/delete")
+    suspend fun deleteTemplate(
+        @Header("Authorization") token: String,
+        @Body request: UserTemplate
     ): Response<Void>
 
 }
