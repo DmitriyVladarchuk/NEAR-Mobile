@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.devtoolsKsp)
+
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -65,9 +67,12 @@ dependencies {
     implementation(libs.androidx.core.splash.screen)
     implementation(libs.coil.compose)
 
-    
-    implementation("com.google.firebase:firebase-messaging-ktx:24.1.1")
-    implementation("com.google.firebase:firebase-analytics-ktx:22.4.0")
+    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation(libs.firebase.messaging.ktx)
+//
+//    implementation("com.google.firebase:firebase-messaging-ktx:24.1.1")
+//    implementation("com.google.firebase:firebase-analytics-ktx:22.4.0")
 
 
     annotationProcessor(libs.androidx.room.room.compiler)

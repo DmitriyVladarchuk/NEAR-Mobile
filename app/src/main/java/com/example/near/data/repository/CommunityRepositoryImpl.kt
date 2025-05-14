@@ -2,6 +2,7 @@ package com.example.near.data.repository
 
 import com.example.near.data.API.CommunityService
 import com.example.near.data.datastore.SessionManager
+import com.example.near.data.models.FcmTokenRequest
 import com.example.near.data.models.LoginRequest
 import com.example.near.data.models.LoginResponse
 import com.example.near.data.models.community.CommunityResponse
@@ -68,6 +69,19 @@ class CommunityRepositoryImpl @Inject constructor(
             } else {
                 val errorBody = response.errorBody()?.string() ?: ""
                 Result.failure(Exception("Error ${response.code()}: $errorBody"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun sendFcmToken(token: String): Result<Unit> {
+        return try {
+            val response = communityService.sendFcmToken("Bearer ${sessionManager.authToken!!.accessToken}", FcmTokenRequest(token))
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Failed to send token request"))
             }
         } catch (e: Exception) {
             Result.failure(e)

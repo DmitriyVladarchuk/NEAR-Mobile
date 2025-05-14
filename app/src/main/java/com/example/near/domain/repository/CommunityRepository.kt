@@ -19,4 +19,6 @@ interface CommunityRepository {
     ): Result<LoginResponse>
 
     suspend fun getCommunityInfo(): Result<CommunityResponse>
+
+    suspend fun sendFcmToken(token: String): Result<Unit>
 }

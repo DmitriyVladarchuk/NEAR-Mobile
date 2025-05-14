@@ -45,6 +45,7 @@ import com.example.near.ui.views.textFieldColors
 @Composable
 fun CreateTemplate(
     templateId: String? = null,
+    isCommunity: Boolean = false,
     navController: NavController,
     viewModel: CreateTemplateViewModel = hiltViewModel()
 ) {
@@ -52,23 +53,7 @@ fun CreateTemplate(
 
     // --- Загрузка шаблона при редактировании ---
     LaunchedEffect(templateId) {
-        viewModel.loadTemplate(templateId)
-    }
-
-    // --- Обработка ошибок ---
-    if (viewModel.error != null) {
-        AlertDialog(
-            onDismissRequest = { viewModel.dismissError() },
-            title = { Text("Error") },
-            text = { Text(viewModel.error!!) },
-            confirmButton = {
-                TextButton(
-                    onClick = { viewModel.dismissError() }
-                ) {
-                    Text("OK")
-                }
-            }
-        )
+        viewModel.loadTemplate(templateId, isCommunity)
     }
 
     Column(

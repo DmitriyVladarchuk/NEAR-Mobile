@@ -16,6 +16,13 @@ class LoginCommunityUseCase @Inject constructor(
             if (result.isSuccess) {
                 authDataStorage.saveCredentials(email, password, true)
                 sessionManager.saveAuthToken(result.getOrNull()!!)
+
+                // Отправка токена
+                authDataStorage.getFcmToken()?.let { token ->
+                    communityRepository.sendFcmToken(token).onSuccess {
+                        authDataStorage.clearFcmToken()
+                    }
+                }
             }
         }
     }

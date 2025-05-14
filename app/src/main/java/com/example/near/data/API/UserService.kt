@@ -1,5 +1,6 @@
 package com.example.near.data.API
 
+import com.example.near.data.models.FcmTokenRequest
 import com.example.near.data.models.FriendRequest
 import com.example.near.data.models.GroupActionRequest
 import com.example.near.data.models.GroupCreateRequest
@@ -39,6 +40,12 @@ interface UserService {
         @Header("Authorization") token: String,
         @Query("id") userId: String
     ): Response<User>
+
+    @POST("")
+    suspend fun sendFcmToken(
+        @Header("Authorization") header: String,
+        @Body token: FcmTokenRequest
+    ): Response<Void>
 
     // Action friend
 

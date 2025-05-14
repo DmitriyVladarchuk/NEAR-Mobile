@@ -31,4 +31,24 @@ class AuthDataStorage @Inject constructor(
     fun clearCredentials() {
         sharedPrefs.edit() { clear() }
     }
+
+    // --- FCM token ---
+
+    fun saveFcmToken(token: String) {
+        sharedPrefs.edit {
+            putString("fcm_token", token)
+            apply()
+        }
+    }
+
+    fun getFcmToken(): String? {
+        return sharedPrefs.getString("fcm_token", null)
+    }
+
+    fun clearFcmToken() {
+        sharedPrefs.edit {
+            remove("fcm_token")
+            apply()
+        }
+    }
 }

@@ -6,7 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.domain.models.EmergencyType
+import com.example.near.domain.models.UserTemplate
 import com.example.near.domain.usecase.GetUserUseCase
+import com.example.near.domain.usecase.community.GetCommunityUseCase
 import com.example.near.domain.usecase.user.template.CreateTemplateUseCase
 import com.example.near.domain.usecase.user.template.UpdateTemplateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateTemplateViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
+    private val getCommunityUseCase: GetCommunityUseCase,
     private val createTemplateUseCase: CreateTemplateUseCase,
     private val updateTemplateUseCase: UpdateTemplateUseCase
 ) : ViewModel() {
@@ -35,12 +38,16 @@ class CreateTemplateViewModel @Inject constructor(
     var error by mutableStateOf<String?>(null)
         private set
 
-    fun loadTemplate(templateId: String?) {
+    fun loadTemplate(templateId: String?, isCommunity: Boolean) {
         viewModelScope.launch {
             isLoading = true
-            error = null
             try {
-                val template = getUserUseCase()?.notificationTemplates?.find { it.id == templateId }
+                val template: UserTemplate?
+                if (isCommunity)
+                    template = getUserUseCase()?.notificationTemplates?.find { it.id == templateId }
+                else
+                    template = getCommunityUseCase()?.notificationTemplates?.find { it.id == templateId }
+
                 templateName = template?.templateName ?: ""
                 message = template?.message ?: ""
                 selectedEmergencyType = template?.emergencyType

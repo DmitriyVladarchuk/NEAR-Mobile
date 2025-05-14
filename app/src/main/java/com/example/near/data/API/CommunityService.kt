@@ -1,5 +1,6 @@
 package com.example.near.data.API
 
+import com.example.near.data.models.FcmTokenRequest
 import com.example.near.data.models.LoginRequest
 import com.example.near.data.models.LoginResponse
 import com.example.near.data.models.community.CommunityResponse
@@ -25,4 +26,11 @@ interface CommunityService {
     suspend fun getCommunityInfo(
         @Header("Authorization") token: String
     ): Response<CommunityResponse>
+
+    @POST("")
+    suspend fun sendFcmToken(
+        @Header("Authorization") header: String,
+        @Body token: FcmTokenRequest
+    ): Response<Void>
+
 }

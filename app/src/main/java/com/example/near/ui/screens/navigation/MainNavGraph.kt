@@ -26,6 +26,7 @@ import com.example.near.ui.screens.auth.login.community.LoginCommunityScreen
 import com.example.near.ui.screens.auth.signup.account.SignupAccountScreen
 import com.example.near.ui.screens.auth.signup.community.SignupCommunityScreen
 import com.example.near.ui.screens.bottomBar.BottomBar
+import com.example.near.ui.screens.dashboard.community.DashboardCommunityScreen
 import com.example.near.ui.screens.dashboard.user.DashboardScreen
 import com.example.near.ui.screens.friendsAndGroups.FriendsAndGroupsScreen
 import com.example.near.ui.screens.friendsAndGroups.FriendsAndSubscriptions
@@ -219,9 +220,16 @@ fun MainNavGraph(
                 startDestination = Routes.CommunityDashboard.route,
                 route = "community_graph"
             ) {
-                composable(Routes.CommunityDashboard.route) { TestScreen("Dashboard") }
+                composable(Routes.CommunityDashboard.route) {
+                    DashboardCommunityScreen(navController = navController)
+                }
                 composable(Routes.CommunitySubscribers.route) { TestScreen("Subscribers") }
                 composable(Routes.CommunityProfile.route) { ProfileCommunityScreen(navController = navController) }
+
+                // --- Template ---
+                composable(Routes.CreateTemplate.route) {
+                    CreateTemplate(navController = navController, isCommunity = true)
+                }
             }
         }
     }

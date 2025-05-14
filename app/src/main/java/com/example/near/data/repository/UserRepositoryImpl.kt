@@ -3,6 +3,7 @@ package com.example.near.data.repository
 import android.util.Log
 import com.example.near.data.API.UserService
 import com.example.near.data.datastore.SessionManager
+import com.example.near.data.models.FcmTokenRequest
 import com.example.near.data.models.FriendRequest
 import com.example.near.data.models.GroupActionRequest
 import com.example.near.data.models.GroupCreateRequest
@@ -75,6 +76,19 @@ class UserRepositoryImpl @Inject constructor(
                 } ?: Result.failure(Exception("Empty response body"))
             } else {
                 Result.failure(Exception("Login failed: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun sendFcmToken(token: String): Result<Unit> {
+        return try {
+            val response = userService.sendFcmToken("Bearer ${sessionManager.authToken!!.accessToken}", FcmTokenRequest(token))
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Failed to send token request"))
             }
         } catch (e: Exception) {
             Result.failure(e)

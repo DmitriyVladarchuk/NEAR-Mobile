@@ -19,6 +19,7 @@ retrofit2 = "2.9.0"
 roomRuntime = "2.6.1"
 hilt = "2.55"
 hiltNavigation = "1.2.0"
+firebaseMessagingKtx = "24.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -50,6 +51,7 @@ dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref =
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigation" }
 androidx-core-splash-screen = { module = "androidx.core:core-splashscreen", version.ref = "splashScreen" }
+firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
