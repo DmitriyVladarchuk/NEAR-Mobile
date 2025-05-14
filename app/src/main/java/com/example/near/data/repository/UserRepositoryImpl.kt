@@ -11,6 +11,7 @@ import com.example.near.data.models.LoginRequest
 import com.example.near.data.models.LoginResponse
 import com.example.near.data.models.SignUpRequest
 import com.example.near.data.models.TemplateCreateRequest
+import com.example.near.domain.models.AllFriendsInfoResponse
 import com.example.near.domain.models.EmergencyType
 import com.example.near.domain.models.NotificationOption
 import com.example.near.domain.models.User
@@ -127,6 +128,24 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getAllFriendsInfo(): Result<AllFriendsInfoResponse> {
+        return try {
+            val response = userService.getAllFriendsInfo(
+                "Bearer ${sessionManager.authToken!!.accessToken}"
+            )
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    Result.success(it)
+                } ?: Result.failure(Exception("Empty response body"))
+            } else {
+                val errorBody = response.errorBody()?.string() ?: ""
+                Result.failure(Exception("Error ${response.code()}: $errorBody"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     override suspend fun sendFriendRequest(friendId: String): Result<Unit> {
         return try {
             val response = userService.sendFriendRequest(
@@ -180,13 +199,17 @@ class UserRepositoryImpl @Inject constructor(
             val response = userService.removeFriend(
                 token = "Bearer ${sessionManager.authToken!!.accessToken}",
                 request = FriendRequest(friendId = friendId)
+                //friendId = friendId
             )
+            Log.e("RemoveFriend ", response.message())
             if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
+                Log.e("RemoveFriend ", response.message())
                 Result.failure(Exception("Failed to send friend request"))
             }
         } catch (e: Exception) {
+            Log.e("RemoveFriend ", e.toString())
             Result.failure(e)
         }
     }

@@ -8,12 +8,14 @@ import com.example.near.data.models.LoginRequest
 import com.example.near.data.models.LoginResponse
 import com.example.near.data.models.SignUpRequest
 import com.example.near.data.models.TemplateCreateRequest
+import com.example.near.domain.models.AllFriendsInfoResponse
 import com.example.near.domain.models.User
 import com.example.near.domain.models.UserTemplate
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.HTTP
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -41,13 +43,18 @@ interface UserService {
         @Query("id") userId: String
     ): Response<User>
 
-    @POST("")
+    @POST("NEAR/user/update-device-token")
     suspend fun sendFcmToken(
         @Header("Authorization") header: String,
         @Body token: FcmTokenRequest
     ): Response<Void>
 
-    // Action friend
+    // --- Action friend ---
+
+    @GET("NEAR/user/all-friends-info")
+    suspend fun getAllFriendsInfo(
+        @Header("Authorization") token: String
+    ): Response<AllFriendsInfoResponse>
 
     @POST("NEAR/user/request/friend")
     suspend fun sendFriendRequest(
@@ -67,13 +74,14 @@ interface UserService {
         @Body request: FriendRequest
     ): Response<Void>
 
-    @DELETE("NEAR/user/delete/friend")
+    //@DELETE("NEAR/user/delete/friend")
+    @HTTP(method = "DELETE", path = "NEAR/user/delete/friend", hasBody = true)
     suspend fun removeFriend(
         @Header("Authorization") token: String,
         @Body request: FriendRequest
     ): Response<Void>
 
-    // Group action
+    // --- Group action ---
 
     @POST("NEAR/user/group/create")
     suspend fun createGroup(
@@ -93,7 +101,7 @@ interface UserService {
         @Body request: GroupActionRequest
     ): Response<Void>
 
-    // Action Template
+    // --- Action Template ---
 
     @POST("NEAR/user/template/create")
     suspend fun createTemplate(

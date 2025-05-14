@@ -73,6 +73,11 @@
     <string name="edit_profile">Edit profile</string>
     <string name="friendship_request">Friendship request</string>
 
+    <string name="add_friend">Add friend</string>
+    <string name="request_sent">Request sent</string>
+    <string name="accept_request">Accept request</string>
+    <string name="remove_friend">Remove friend</string>
+
     <string name="settings">Settings</string>
     <string name="log_out">Log Out</string>
 

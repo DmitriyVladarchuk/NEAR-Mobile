@@ -1,6 +1,7 @@
 package com.example.near.domain.repository
 
 import com.example.near.data.models.LoginResponse
+import com.example.near.domain.models.AllFriendsInfoResponse
 import com.example.near.domain.models.EmergencyType
 import com.example.near.domain.models.NotificationOption
 import com.example.near.domain.models.User
@@ -28,6 +29,10 @@ interface UserRepository {
 
     suspend fun getUserById(id: String): Result<User>
 
+    // --- Friends Actions ---
+
+    suspend fun getAllFriendsInfo(): Result<AllFriendsInfoResponse>
+
     suspend fun sendFriendRequest(friendId: String): Result<Unit>
 
     suspend fun addFriendRequest(friendId: String): Result<Unit>
@@ -35,6 +40,8 @@ interface UserRepository {
     suspend fun rejectFriendRequest(friendId: String): Result<Unit>
 
     suspend fun removeFriend(friendId: String): Result<Unit>
+
+    // --- Groups Actions ---
 
     suspend fun createGroup(groupName: String, members: List<String>): Result<Unit>
 

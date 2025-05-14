@@ -19,6 +19,7 @@ import com.example.near.domain.usecase.community.GetCommunityUseCase
 import com.example.near.domain.usecase.community.LoginCommunityUseCase
 import com.example.near.domain.usecase.community.SignUpCommunityUseCase
 import com.example.near.domain.usecase.user.auth.SignUpUserUseCase
+import com.example.near.domain.usecase.user.friends.GetAllFriendsInfoUseCase
 import com.example.near.domain.usecase.user.group.CreateGroupUseCase
 import com.example.near.domain.usecase.user.group.DeleteGroupUseCase
 import com.example.near.domain.usecase.user.group.UpdateGroupUseCase
@@ -97,6 +98,12 @@ object UseCaseModule {
     @Singleton
     fun provideGetUserByIdUseCase(userRepository: UserRepository): GetUserByIdUseCase {
         return GetUserByIdUseCase(userRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetAllFriendsInfoUseCase(userRepository: UserRepository): GetAllFriendsInfoUseCase {
+        return GetAllFriendsInfoUseCase(userRepository)
     }
 
     @Provides

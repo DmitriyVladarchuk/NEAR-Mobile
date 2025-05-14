@@ -158,13 +158,8 @@ fun ProfileScreen(
                             UserProfileCard(
                                 userId = userId != null,
                                 user = user,
-                                onClick = {
-                                    if (userId != null) {
-                                        viewModel.friendshipRequest(userId)
-                                    } else {
-                                        // TODO EditScreen
-                                    }
-                                },
+                                friendshipStatus = viewModel.friendshipStatus,
+                                onFriendshipAction = { userId?.let { viewModel.handleFriendshipAction(it) } },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .weight(1f)
@@ -207,7 +202,13 @@ private fun UserAvatarSection(avatarUrl: String, modifier: Modifier = Modifier) 
 }
 
 @Composable
-private fun UserProfileCard(userId: Boolean = false, user: User, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun UserProfileCard(
+    userId: Boolean = false,
+    user: User,
+    friendshipStatus: FriendshipStatus,
+    onFriendshipAction: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
             .background(color = CustomTheme.colors.container_2, shape = RoundedCornerShape(8.dp))
@@ -232,21 +233,86 @@ private fun UserProfileCard(userId: Boolean = false, user: User, onClick: () -> 
         Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
 
         Spacer(Modifier.weight(1f))
-        Button(
-            onClick = { onClick() },
-            shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(contentColor = CustomTheme.colors.content, containerColor = light_container),
-            modifier = Modifier
-                .align(if (userId) Alignment.CenterHorizontally else Alignment.End)
-                .padding(horizontal = 8.dp, vertical = 8.dp)
-        ) {
-            Text(
-                text = if (userId) stringResource(R.string.friendship_request) else stringResource(R.string.edit_profile),
-                style = AppTypography.bodyMedium,
-                color = dark_content,
-                modifier = Modifier.padding(end = 8.dp),
+
+        if (userId) {
+            FriendshipActionButton(
+                status = friendshipStatus,
+                onClick = onFriendshipAction,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
             )
+        } else {
+            Button(
+                onClick = { /* Редактирование профиля */ },
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = CustomTheme.colors.content,
+                    containerColor = light_container
+                ),
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.edit_profile),
+                    style = AppTypography.bodyMedium,
+                    color = dark_content,
+                    modifier = Modifier.padding(end = 8.dp),
+                )
+            }
         }
+    }
+}
+
+@Composable
+private fun FriendshipActionButton(
+    status: FriendshipStatus,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val (text, colors) = when (status) {
+        FriendshipStatus.NOT_FRIENDS -> Pair(
+            stringResource(R.string.add_friend),
+            ButtonDefaults.buttonColors(
+                containerColor = CustomTheme.colors.currentContainer,
+                contentColor = CustomTheme.colors.currentContent
+            )
+        )
+        FriendshipStatus.REQUEST_SENT -> Pair(
+            stringResource(R.string.request_sent),
+            ButtonDefaults.buttonColors(
+                containerColor = CustomTheme.colors.container_2,
+                contentColor = CustomTheme.colors.content
+            )
+        )
+        FriendshipStatus.REQUEST_RECEIVED -> Pair(
+            stringResource(R.string.accept_request),
+            ButtonDefaults.buttonColors(
+                containerColor = CustomTheme.colors.currentContainer,
+                contentColor = CustomTheme.colors.currentContent
+            )
+        )
+        FriendshipStatus.FRIENDS -> Pair(
+            stringResource(R.string.remove_friend),
+            ButtonDefaults.buttonColors(
+                containerColor = Color.Red.copy(alpha = 0.2f),
+                contentColor = Color.Red
+            )
+        )
+    }
+
+    Button(
+        onClick = onClick,
+        shape = RoundedCornerShape(8.dp),
+        colors = colors,
+        modifier = modifier
+    ) {
+        Text(
+            text = text,
+            style = AppTypography.bodyMedium,
+            modifier = Modifier.padding(horizontal = 8.dp),
+        )
     }
 }
 

@@ -39,6 +39,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
+import com.example.near.domain.models.AllFriendsInfoResponse
+import com.example.near.domain.models.User
 import com.example.near.domain.models.UserFriend
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
@@ -68,8 +70,8 @@ fun FriendsScreen(
                     onTabSelected = { tab -> viewModel.selectTab(tab) }
                 )
                 FriendsBody(
-                    friends = viewModel.friends,
-                    showRequests = viewModel.selectedTab == FriendsTab.REQUESTS,
+                    friendsData = viewModel.friendsData!!,
+                    selectedTab = viewModel.selectedTab,
                     navController = navController
                 )
             }
@@ -153,8 +155,8 @@ private fun FriendsTabButton(
 
 @Composable
 private fun FriendsBody(
-    friends: List<UserFriend>,
-    showRequests: Boolean,
+    friendsData: AllFriendsInfoResponse,
+    selectedTab: FriendsTab,
     navController: NavController
 ) {
     Column(
@@ -177,24 +179,73 @@ private fun FriendsBody(
                 .height(2.dp)
                 .background(CustomTheme.colors.content)
         )
-        LazyColumn() {
-            items(friends) { friend ->
-                if (showRequests) {
-                    FriendRequestItem(
-                        friend = friend,
-                        onItemClick = { userId ->
-                            navController.navigate("profile/$userId")
-                        }
-                    )
-                } else {
-                    FriendItem(
-                        friend = friend,
-                        onItemClick = { userId ->
-                            navController.navigate("profile/$userId")
-                        }
-                    )
-                }
-                if (friend != friends.last()) {
+
+        when (selectedTab) {
+            FriendsTab.ALL -> {
+                FriendsList(
+                    friends = friendsData.friends,
+                    onItemClick = { userId -> navController.navigate("profile/$userId") }
+                )
+            }
+            FriendsTab.REQUESTS -> {
+                ReceivedRequestsList(
+                    requests = friendsData.receivedRequests,
+                    onItemClick = { userId -> navController.navigate("profile/$userId") }
+                )
+                SentRequestsList(
+                    requests = friendsData.sentRequests,
+                    onItemClick = { userId -> navController.navigate("profile/$userId") }
+                )
+            }
+            FriendsTab.SEARCH -> {
+                // Реализация поиска
+            }
+        }
+    }
+}
+
+@Composable
+private fun FriendsList(
+    friends: List<User>,
+    onItemClick: (String) -> Unit
+) {
+    LazyColumn {
+        items(friends) { friend ->
+            FriendItem(
+                friend = friend,
+                onItemClick = { onItemClick(friend.id) }
+            )
+            if (friend != friends.last()) {
+                Spacer(
+                    Modifier
+                        .padding(horizontal = 8.dp)
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(CustomTheme.colors.content)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ReceivedRequestsList(
+    requests: List<User>,
+    onItemClick: (String) -> Unit
+) {
+    if (requests.isNotEmpty()) {
+        Text(
+            text = "Received Requests",
+            modifier = Modifier.padding(16.dp),
+            style = AppTypography.bodyMedium
+        )
+        LazyColumn {
+            items(requests) { request ->
+                FriendRequestItem(
+                    friend = request,
+                    onItemClick = { onItemClick(request.id) }
+                )
+                if (request != requests.last()) {
                     Spacer(
                         Modifier
                             .padding(horizontal = 8.dp)
@@ -209,7 +260,38 @@ private fun FriendsBody(
 }
 
 @Composable
-private fun FriendItem(friend: UserFriend, onItemClick: (String) -> Unit) {
+private fun SentRequestsList(
+    requests: List<User>,
+    onItemClick: (String) -> Unit
+) {
+    if (requests.isNotEmpty()) {
+        Text(
+            text = "Sent Requests",
+            modifier = Modifier.padding(16.dp),
+            style = AppTypography.bodyMedium
+        )
+        LazyColumn {
+            items(requests) { request ->
+                FriendItem(
+                    friend = request,
+                    onItemClick = { onItemClick(request.id) }
+                )
+                if (request != requests.last()) {
+                    Spacer(
+                        Modifier
+                            .padding(horizontal = 8.dp)
+                            .fillMaxWidth()
+                            .height(1.dp)
+                            .background(CustomTheme.colors.content)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun FriendItem(friend: User, onItemClick: (String) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth().padding(vertical = 8.dp, horizontal = 8.dp)
@@ -226,16 +308,23 @@ private fun FriendItem(friend: UserFriend, onItemClick: (String) -> Unit) {
             placeholder = painterResource(R.drawable.default_avatar),
             error = painterResource(R.drawable.default_avatar)
         )
-        Text(
-            text = "${friend.firstName} ${friend.lastName}",
-            style = AppTypography.bodyMedium,
-            color = CustomTheme.colors.content,
-        )
+        Column {
+            Text(
+                text = "${friend.firstName} ${friend.lastName}",
+                style = AppTypography.bodyMedium,
+                color = CustomTheme.colors.content,
+            )
+            Text(
+                text = "${friend.friends.size} friends",
+                style = AppTypography.bodySmall,
+                color = CustomTheme.colors.content.copy(alpha = 0.7f)
+            )
+        }
     }
 }
 
 @Composable
-private fun FriendRequestItem(friend: UserFriend, onItemClick: (String) -> Unit) {
+private fun FriendRequestItem(friend: User, onItemClick: (String) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
