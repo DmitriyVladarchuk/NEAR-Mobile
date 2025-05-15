@@ -71,4 +71,12 @@ interface UserRepository {
         emergencyType: EmergencyType
     ): Result<Unit>
 
+    suspend fun userSubscribe(
+        communityId: String
+    ): Result<Unit>
+
+    suspend fun userCancelSubscribe(
+        communityId: String
+    ): Result<Unit>
+
 }

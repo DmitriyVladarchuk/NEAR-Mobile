@@ -9,6 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.near.data.models.community.CommunityResponse
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.community.GetCommunityUseCase
+import com.example.near.domain.usecase.user.UserCancelSubscribeUseCase
+import com.example.near.domain.usecase.user.UserSubscribeUseCase
 import com.example.near.domain.usecase.user.auth.LogOutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,6 +21,8 @@ class ProfileCommunityViewModel @Inject constructor(
     private val getCommunityUseCase: GetCommunityUseCase,
     private val getUserUseCase: GetUserUseCase,
     private val logOutUseCase: LogOutUseCase,
+    private val subscribeUseCase: UserSubscribeUseCase,
+    private val cancelSubscribeUseCase: UserCancelSubscribeUseCase
 ) : ViewModel() {
     val avatarUrl: String = ""
     var community by mutableStateOf<CommunityResponse?>(null)
@@ -28,6 +32,9 @@ class ProfileCommunityViewModel @Inject constructor(
         private set
 
     var error by mutableStateOf<String?>(null)
+        private set
+
+    var isSubscribe by mutableStateOf<Boolean>(false)
         private set
 
 
@@ -69,6 +76,12 @@ class ProfileCommunityViewModel @Inject constructor(
             } finally {
                 isLoading = false
             }
+        }
+    }
+
+    fun handleSubscribe(communityId: String) {
+        viewModelScope.launch {
+            subscribeUseCase(communityId)
         }
     }
 

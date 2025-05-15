@@ -16,10 +16,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
@@ -131,7 +133,7 @@ fun ProfileCommunityScreen(
                                     .weight(1f)
                                     .padding(vertical = 8.dp)
                             ) {
-
+                                viewModel.handleSubscribe(it.id)
                             }
                         }
 
@@ -249,6 +251,9 @@ private fun DescriptionCommunitySection(
         )
         Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(2.dp).background(CustomTheme.colors.content))
 
+        InfoRow(Icons.Default.Info, "Id", community.id)
+        Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
+
         InfoRow(Icons.Default.Description, stringResource(R.string.description), community.description.toString())
         Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
 
@@ -295,12 +300,14 @@ private fun InfoRow(icon: ImageVector, firstText: String, secondText: String, mo
             color = CustomTheme.colors.content,
             modifier = Modifier.padding(end = 8.dp),
         )
-        Text(
-            text = secondText,
-            style = AppTypography.bodyMedium,
-            color = CustomTheme.colors.content,
-            fontWeight = FontWeight.Bold
-        )
+        SelectionContainer {
+            Text(
+                text = secondText,
+                style = AppTypography.bodyMedium,
+                color = CustomTheme.colors.content,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
 }
 

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Group
@@ -59,7 +60,7 @@ fun BottomBar(navController: NavController, isCommunity: Boolean) {
     DynamicItemContainer(
         items = bottomBarItems,
         selectedItem = bottomBarItems.find { it.route == currentRoute.value } ?: bottomBarItems[0],
-        modifier = Modifier.padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 20.dp),
+        modifier = Modifier.padding(start = 18.dp, top = 0.dp, end = 18.dp, bottom = 20.dp),
         onItemSelected = { selected ->
             navController.navigate(selected.route) {
                 popUpTo(navController.graph.startDestinationId) {
@@ -97,7 +98,7 @@ fun BottomBarItem(bottomItem: BottomBarItem, isSelected: Boolean, modifier: Modi
     Row(
         horizontalArrangement = Arrangement.Center,
         modifier = modifier
-            .clip(CircleShape)
+            .clip(RoundedCornerShape(8.dp))
             .background(
                 animateColor.value
             )

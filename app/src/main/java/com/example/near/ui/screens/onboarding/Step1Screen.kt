@@ -90,21 +90,21 @@ private fun ImageNear() {
                 text = stringResource(R.string.respond),
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .offset(x = 20.dp, y = 10.dp)
+                    .offset(x = 40.dp, y = 10.dp)
             )
 
             TextForImage(
                 text = stringResource(R.string.notify),
                 modifier = Modifier
                     .align(Alignment.CenterStart)
-                    .offset(x = (-20).dp)
+                    .offset(x = (-40).dp)
             )
 
             TextForImage(
                 text = stringResource(R.string.alarm),
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .offset(x = 20.dp, y = (-10).dp)
+                    .offset(x = 40.dp, y = (-10).dp)
             )
         }
     }
@@ -123,7 +123,7 @@ private fun TextForImage(text: String, modifier: Modifier = Modifier) {
                 color = CustomTheme.colors.background,
                 shape = RoundedCornerShape(8.dp)
             )
-            .padding(horizontal = 12.dp, vertical = 8.dp)
+            .padding(horizontal = 24.dp, vertical = 12.dp)
     ) {
         val firstChar = text.take(1)
         val remainingChars = text.drop(1)

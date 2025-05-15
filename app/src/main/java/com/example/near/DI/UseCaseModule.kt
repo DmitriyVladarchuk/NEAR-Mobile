@@ -18,6 +18,8 @@ import com.example.near.domain.usecase.SetThemeUseCase
 import com.example.near.domain.usecase.community.GetCommunityUseCase
 import com.example.near.domain.usecase.community.LoginCommunityUseCase
 import com.example.near.domain.usecase.community.SignUpCommunityUseCase
+import com.example.near.domain.usecase.user.UserCancelSubscribeUseCase
+import com.example.near.domain.usecase.user.UserSubscribeUseCase
 import com.example.near.domain.usecase.user.auth.SignUpUserUseCase
 import com.example.near.domain.usecase.user.friends.GetAllFriendsInfoUseCase
 import com.example.near.domain.usecase.user.group.CreateGroupUseCase
@@ -166,5 +168,14 @@ object UseCaseModule {
 
     fun provideDeleteTemplateUseCase(userRepository: UserRepository): DeleteTemplateUseCase {
         return DeleteTemplateUseCase(userRepository)
+    }
+
+
+    fun provideUserSubscribeUseCase(userRepository: UserRepository): UserSubscribeUseCase {
+        return UserSubscribeUseCase(userRepository)
+    }
+
+    fun provideUserCancelSubscribeUseCase(userRepository: UserRepository): UserCancelSubscribeUseCase {
+        return UserCancelSubscribeUseCase(userRepository)
     }
 }

@@ -11,6 +11,7 @@ import com.example.near.data.models.LoginRequest
 import com.example.near.data.models.LoginResponse
 import com.example.near.data.models.SignUpRequest
 import com.example.near.data.models.TemplateCreateRequest
+import com.example.near.data.models.community.CommunityActionRequest
 import com.example.near.domain.models.AllFriendsInfoResponse
 import com.example.near.domain.models.EmergencyType
 import com.example.near.domain.models.NotificationOption
@@ -317,6 +318,41 @@ class UserRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
+                Result.failure(Exception("Failed to send friend request"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun userSubscribe(communityId: String): Result<Unit> {
+        return try {
+            val response = userService.userSubscribe(
+                token = "Bearer ${sessionManager.authToken!!.accessToken}",
+                request = CommunityActionRequest(communityId)
+            )
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Failed to send friend request"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun userCancelSubscribe(communityId: String): Result<Unit> {
+        return try {
+            val response = userService.userCancelSubscribe(
+                token = "Bearer ${sessionManager.authToken!!.accessToken}",
+                request = CommunityActionRequest(communityId)
+            )
+            Log.e("cancelSubscribe ", response.message())
+            if (response.isSuccessful) {
+                Log.e("cancelSubscribe ", response.message())
+                Result.success(Unit)
+            } else {
+                Log.e("cancelSubscribe ", response.code().toString())
                 Result.failure(Exception("Failed to send friend request"))
             }
         } catch (e: Exception) {

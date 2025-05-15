@@ -8,6 +8,7 @@ import com.example.near.data.models.LoginRequest
 import com.example.near.data.models.LoginResponse
 import com.example.near.data.models.SignUpRequest
 import com.example.near.data.models.TemplateCreateRequest
+import com.example.near.data.models.community.CommunityActionRequest
 import com.example.near.domain.models.AllFriendsInfoResponse
 import com.example.near.domain.models.User
 import com.example.near.domain.models.UserTemplate
@@ -119,6 +120,18 @@ interface UserService {
     suspend fun deleteTemplate(
         @Header("Authorization") token: String,
         @Body request: UserTemplate
+    ): Response<Void>
+
+    @POST("NEAR/user/subscribe")
+    suspend fun userSubscribe(
+        @Header("Authorization") token: String,
+        @Body request: CommunityActionRequest
+    ): Response<Void>
+
+    @POST("NEAR/user/cancel/subscribe")
+    suspend fun userCancelSubscribe(
+        @Header("Authorization") token: String,
+        @Body request: CommunityActionRequest
     ): Response<Void>
 
 }

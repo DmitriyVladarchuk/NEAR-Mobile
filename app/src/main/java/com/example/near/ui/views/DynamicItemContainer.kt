@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
 import com.example.near.ui.theme.CustomTheme
 
 @Composable
@@ -22,7 +24,7 @@ fun <T> DynamicItemContainer(
         modifier = modifier
             .wrapContentHeight()
             .fillMaxWidth()
-            .clip(CircleShape)
+            .clip(RoundedCornerShape(8.dp))
             .background(CustomTheme.colors.container_2),
     ) {
         items.forEach { item ->
