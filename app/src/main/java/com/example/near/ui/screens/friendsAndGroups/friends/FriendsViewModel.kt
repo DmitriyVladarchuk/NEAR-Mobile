@@ -1,5 +1,6 @@
 package com.example.near.ui.screens.friendsAndGroups.friends
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.near.domain.models.AllFriendsInfoResponse
 import com.example.near.domain.models.User
 import com.example.near.domain.models.UserFriend
+import com.example.near.domain.usecase.GetUserByIdUseCase
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.user.friends.GetAllFriendsInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +21,8 @@ enum class FriendsTab { ALL, REQUESTS, SEARCH }
 @HiltViewModel
 class FriendsViewModel @Inject constructor(
     private val getUser: GetUserUseCase,
-    private val getAllFriendsInfo: GetAllFriendsInfoUseCase
+    private val getAllFriendsInfo: GetAllFriendsInfoUseCase,
+    private val getUserById: GetUserByIdUseCase
 ): ViewModel() {
 
     var isLoading by mutableStateOf(false)
@@ -60,13 +63,29 @@ class FriendsViewModel @Inject constructor(
 
     fun search(query: String) {
         searchQuery = query
-        searchResults = if (query.isEmpty()) {
-            emptyList()
-        } else {
-            friendsData?.friends?.filter { friend ->
-                friend.firstName.contains(query, ignoreCase = true) ||
-                        friend.lastName.contains(query, ignoreCase = true)
-            } ?: emptyList()
+        if (query.isEmpty()) {
+            searchResults = emptyList()
+            return
         }
+
+        viewModelScope.launch {
+            try {
+                val user = getUserById(query)
+                Log.d("Test", user.toString())
+                user?.let {
+                    searchResults = listOf(it)
+                } ?: run {
+                    searchResults = emptyList()
+                }
+            } catch (e: Exception) {
+                searchResults = emptyList()
+            }
+        }
+    }
+
+    fun clearSearch() {
+        searchQuery = ""
+        searchResults = emptyList()
+        selectedTab = FriendsTab.ALL
     }
 }

@@ -3,6 +3,7 @@ package com.example.near.ui.screens.friendsAndGroups.friends
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,8 +27,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +47,7 @@ import com.example.near.domain.models.User
 import com.example.near.domain.models.UserFriend
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
+import com.example.near.ui.views.textFieldColors
 
 @Composable
 fun FriendsScreen(
@@ -67,11 +71,15 @@ fun FriendsScreen(
             else -> {
                 FriendsHeader(
                     selectedTab = viewModel.selectedTab,
-                    onTabSelected = { tab -> viewModel.selectTab(tab) }
+                    onTabSelected = { tab -> viewModel.selectTab(tab) },
+                    searchQuery = viewModel.searchQuery,
+                    onSearchQueryChange = { query -> viewModel.search(query) },
+                    onClearSearch = { viewModel.clearSearch() }
                 )
                 FriendsBody(
                     friendsData = viewModel.friendsData!!,
                     selectedTab = viewModel.selectedTab,
+                    searchResults = viewModel.searchResults,
                     navController = navController
                 )
             }
@@ -82,9 +90,12 @@ fun FriendsScreen(
 @Composable
 private fun FriendsHeader(
     selectedTab: FriendsTab,
-    onTabSelected: (FriendsTab) -> Unit
+    onTabSelected: (FriendsTab) -> Unit,
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit,
+    onClearSearch: () -> Unit
 ) {
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(
@@ -97,59 +108,66 @@ private fun FriendsHeader(
                 )
             )
             .padding(top = 16.dp)
-            .padding(horizontal = 8.dp),
     ) {
-        FriendsTabButton(
-            text = stringResource(R.string.all_friends),
-            isSelected = selectedTab == FriendsTab.ALL,
-            onClick = { onTabSelected(FriendsTab.ALL) }
-        )
-        Spacer(Modifier.width(8.dp))
-        FriendsTabButton(
-            text = stringResource(R.string.requests),
-            isSelected = selectedTab == FriendsTab.REQUESTS,
-            onClick = { onTabSelected(FriendsTab.REQUESTS) }
-        )
-
-        Spacer(Modifier.weight(1f))
-
-        IconButton(
-            onClick = { onTabSelected(FriendsTab.SEARCH) },
-            modifier = Modifier
-                .size(48.dp)
-                .background(
-                    color = if (selectedTab == FriendsTab.SEARCH) CustomTheme.colors.currentContainer else Color.Transparent,
-                    shape = CircleShape
+        if (selectedTab == FriendsTab.SEARCH) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    value = searchQuery,
+                    onValueChange = onSearchQueryChange,
+                    modifier = Modifier.weight(1f),
+                    placeholder = { Text("Search by name or ID") },
+                    singleLine = true,
+                    trailingIcon = {
+                        if (searchQuery.isNotEmpty()) {
+                            IconButton(onClick = onClearSearch) {
+                                Icon(Icons.Default.Close, "Clear search")
+                            }
+                        }
+                    },
+                    colors = textFieldColors()
                 )
-        ) {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = "Search",
-                tint = if (selectedTab == FriendsTab.SEARCH) Color.White else CustomTheme.colors.content
-            )
-        }
-    }
-}
+            }
+        } else {
+            Row(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                FriendsTabButton(
+                    text = stringResource(R.string.all_friends),
+                    isSelected = selectedTab == FriendsTab.ALL,
+                    onClick = { onTabSelected(FriendsTab.ALL) }
+                )
+                Spacer(Modifier.width(8.dp))
+                FriendsTabButton(
+                    text = stringResource(R.string.requests),
+                    isSelected = selectedTab == FriendsTab.REQUESTS,
+                    onClick = { onTabSelected(FriendsTab.REQUESTS) }
+                )
 
-@Composable
-private fun FriendsTabButton(
-    text: String,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    val currentContainerColor = CustomTheme.colors.currentContainer
-    val containerColor = CustomTheme.colors.container_2
-    val currentContentColor = CustomTheme.colors.currentContent
-    val contentColor = CustomTheme.colors.content
-    TextButton(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = if (isSelected) currentContainerColor else containerColor,
-            contentColor = if (isSelected) currentContentColor else contentColor
-        ),
-        shape = RoundedCornerShape(20.dp)
-    ) {
-        Text(text)
+                Spacer(Modifier.weight(1f))
+
+                IconButton(
+                    onClick = { onTabSelected(FriendsTab.SEARCH) },
+                    modifier = Modifier
+                        .size(48.dp)
+                        .background(
+                            color = if (selectedTab == FriendsTab.SEARCH) CustomTheme.colors.currentContainer else Color.Transparent,
+                            shape = CircleShape
+                        )
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "Search",
+                        tint = if (selectedTab == FriendsTab.SEARCH) Color.White else CustomTheme.colors.content
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -157,6 +175,7 @@ private fun FriendsTabButton(
 private fun FriendsBody(
     friendsData: AllFriendsInfoResponse,
     selectedTab: FriendsTab,
+    searchResults: List<User>,
     navController: NavController
 ) {
     Column(
@@ -192,15 +211,75 @@ private fun FriendsBody(
                     requests = friendsData.receivedRequests,
                     onItemClick = { userId -> navController.navigate("profile/$userId") }
                 )
-//                SentRequestsList(
-//                    requests = friendsData.sentRequests,
-//                    onItemClick = { userId -> navController.navigate("profile/$userId") }
-//                )
             }
             FriendsTab.SEARCH -> {
-                // Реализация поиска
+                SearchResultsList(
+                    results = searchResults,
+                    onItemClick = { userId -> navController.navigate("profile/$userId") }
+                )
             }
         }
+    }
+}
+
+@Composable
+private fun SearchResultsList(
+    results: List<User>,
+    onItemClick: (String) -> Unit
+) {
+    if (results.isNotEmpty()) {
+        LazyColumn {
+            items(results) { user ->
+                FriendItem(
+                    friend = user,
+                    onItemClick = { onItemClick(user.id) }
+                )
+                if (user != results.last()) {
+                    Spacer(
+                        Modifier
+                            .padding(horizontal = 8.dp)
+                            .fillMaxWidth()
+                            .height(1.dp)
+                            .background(CustomTheme.colors.content)
+                    )
+                }
+            }
+        }
+    } else {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "No results found",
+                style = AppTypography.bodyMedium,
+                color = CustomTheme.colors.content.copy(alpha = 0.7f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun FriendsTabButton(
+    text: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    val currentContainerColor = CustomTheme.colors.currentContainer
+    val containerColor = CustomTheme.colors.container_2
+    val currentContentColor = CustomTheme.colors.currentContent
+    val contentColor = CustomTheme.colors.content
+    TextButton(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = if (isSelected) currentContainerColor else containerColor,
+            contentColor = if (isSelected) currentContentColor else contentColor
+        ),
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Text(text)
     }
 }
 

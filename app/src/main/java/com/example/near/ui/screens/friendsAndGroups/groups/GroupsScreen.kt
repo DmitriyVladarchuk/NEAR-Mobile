@@ -78,6 +78,9 @@ private fun GroupsBody(
                 shape = RoundedCornerShape(8.dp)
             )
     ) {
+        if (groups.isEmpty()) {
+            ButtonCreateGroups { navController.navigate(Routes.CreateGroup.route) }
+        }
         LazyColumn() {
             items(groups) { group ->
                 GroupItem(
@@ -130,7 +133,7 @@ private fun GroupItem(group: UserGroup, onItemClick: (String) -> Unit) {
 @Composable
 private fun ButtonCreateGroups(onClick: () -> Unit) {
     Row(
-        modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp).clickable { onClick() },
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 16.dp).clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
