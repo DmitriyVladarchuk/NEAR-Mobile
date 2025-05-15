@@ -38,6 +38,7 @@ import com.example.near.ui.screens.profile.user.ProfileViewModel
 import com.example.near.ui.screens.settings.SettingsScreen
 import com.example.near.ui.screens.subscriptions.SubscriptionsScreen
 import com.example.near.ui.screens.templates.CreateTemplate
+import com.example.near.ui.screens.templates.InfoTemplateScreen
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import kotlinx.coroutines.Dispatchers
@@ -220,6 +221,14 @@ fun MainNavGraph(
                 ) { backStackEntry ->
                     val templateId = backStackEntry.arguments?.getString("templateId")
                     CreateTemplate(templateId = templateId, navController = navController)
+                }
+
+                composable(
+                    route = Routes.TemplateInfo.route + "/{templateId}",
+                    arguments = listOf(navArgument("templateId") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    val templateId = backStackEntry.arguments?.getString("templateId")
+                    InfoTemplateScreen(templateId = templateId!!, navController = navController)
                 }
             }
 

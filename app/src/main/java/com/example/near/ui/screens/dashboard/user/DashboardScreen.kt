@@ -212,6 +212,7 @@ private fun BodyTemplates(
             items(templates) { template ->
                 ItemTemplate(
                     template = template,
+                    onClick = { navController.navigate(Routes.TemplateInfo.route + "/${template.id}") },
                     onEdit = {
                         navController.navigate("edit_template/${template.id}")
                     },
@@ -228,6 +229,7 @@ private fun BodyTemplates(
 @Composable
 private fun ItemTemplate(
     template: UserTemplate,
+    onClick: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
@@ -235,6 +237,7 @@ private fun ItemTemplate(
 
     Row(
         modifier = Modifier
+            .clickable { onClick() }
             .fillMaxWidth()
             .background(
                 color = CustomTheme.colors.container_2,
