@@ -213,6 +213,14 @@ fun MainNavGraph(
                 composable(Routes.CreateTemplate.route) {
                     CreateTemplate(navController = navController)
                 }
+
+                composable(
+                    route = "edit_template/{templateId}",
+                    arguments = listOf(navArgument("templateId") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    val templateId = backStackEntry.arguments?.getString("templateId")
+                    CreateTemplate(templateId = templateId, navController = navController)
+                }
             }
 
             // --- NavGraph для сообщества ---

@@ -192,10 +192,10 @@ private fun FriendsBody(
                     requests = friendsData.receivedRequests,
                     onItemClick = { userId -> navController.navigate("profile/$userId") }
                 )
-                SentRequestsList(
-                    requests = friendsData.sentRequests,
-                    onItemClick = { userId -> navController.navigate("profile/$userId") }
-                )
+//                SentRequestsList(
+//                    requests = friendsData.sentRequests,
+//                    onItemClick = { userId -> navController.navigate("profile/$userId") }
+//                )
             }
             FriendsTab.SEARCH -> {
                 // Реализация поиска

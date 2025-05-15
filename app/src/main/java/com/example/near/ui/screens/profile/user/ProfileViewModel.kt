@@ -101,39 +101,49 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             when (friendshipStatus) {
                 FriendshipStatus.NOT_FRIENDS -> {
-                    sendFriendRequestUseCase(userId)
-                    friendshipStatus = FriendshipStatus.REQUEST_SENT
-                }
-                FriendshipStatus.REQUEST_SENT -> {
-                    // --- добавить отмену ---
-                }
-                FriendshipStatus.REQUEST_RECEIVED -> {
-                    addFriendRequestUseCase(userId)
-                    friendshipStatus = FriendshipStatus.FRIENDS
+                    sendFriendRequest(userId)
                 }
                 FriendshipStatus.FRIENDS -> {
-                    removeFriendUseCase(userId)
-                    friendshipStatus = FriendshipStatus.NOT_FRIENDS
+                    removeFriend(userId)
                 }
+                else -> {}
             }
         }
     }
 
-    fun friendshipRequest(userId: String) {
-        viewModelScope.launch {
-            sendFriendRequestUseCase(userId)
+    private suspend fun sendFriendRequest(userId: String) {
+        sendFriendRequestUseCase(userId).onSuccess {
+            friendshipStatus = FriendshipStatus.REQUEST_SENT
+        }.onFailure {
+            error = it.message ?: "Failed to send friend request"
         }
     }
 
     fun addFriend(userId: String) {
         viewModelScope.launch {
-            addFriendRequestUseCase(userId)
+            addFriendRequestUseCase(userId).onSuccess {
+                friendshipStatus = FriendshipStatus.FRIENDS
+            }.onFailure {
+                error = it.message ?: "Failed to accept friend request"
+            }
         }
     }
 
     fun rejectFriend(userId: String) {
         viewModelScope.launch {
-            rejectFriendRequestUseCase(userId)
+            rejectFriendRequestUseCase(userId).onSuccess {
+                friendshipStatus = FriendshipStatus.NOT_FRIENDS
+            }.onFailure {
+                error = it.message ?: "Failed to reject friend request"
+            }
+        }
+    }
+
+    private suspend fun removeFriend(userId: String) {
+        removeFriendUseCase(userId).onSuccess {
+            friendshipStatus = FriendshipStatus.NOT_FRIENDS
+        }.onFailure {
+            error = it.message ?: "Failed to remove friend"
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -29,9 +32,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -39,7 +44,12 @@ import androidx.navigation.NavController
 import com.example.near.R
 import com.example.near.domain.models.EmergencyType
 import com.example.near.domain.models.emergencyTypes
+import com.example.near.ui.theme.AppTypography
+import com.example.near.ui.theme.CustomTheme
+import com.example.near.ui.theme.dark_content
 import com.example.near.ui.views.SecondaryHeaderTextInfo
+import com.example.near.ui.views.TextFieldLabel
+import com.example.near.ui.views.TextFieldPlaceholder
 import com.example.near.ui.views.textFieldColors
 
 @Composable
@@ -50,10 +60,13 @@ fun CreateTemplate(
     viewModel: CreateTemplateViewModel = hiltViewModel()
 ) {
     var showEmergencyTypeDialog by remember { mutableStateOf(false) }
+    val isEditing = templateId != null
 
     // --- Загрузка шаблона при редактировании ---
     LaunchedEffect(templateId) {
-        viewModel.loadTemplate(templateId, isCommunity)
+        if (isEditing) {
+            viewModel.loadTemplate(templateId, isCommunity)
+        }
     }
 
     Column(
@@ -63,13 +76,10 @@ fun CreateTemplate(
             .verticalScroll(rememberScrollState())
     ) {
         SecondaryHeaderTextInfo(
-            text = stringResource(
-                if (templateId != null) R.string.update_template else R.string.create_template
-            ),
-            modifier = Modifier.padding(vertical = 16.dp)
-        ) {
-            navController.popBackStack()
-        }
+            text = if (templateId == null) stringResource(R.string.create_template) else stringResource(R.string.update_template),
+            modifier = Modifier.padding(vertical = 16.dp),
+            onClick = { navController.popBackStack() }
+        )
 
         OutlinedTextField(
             modifier = Modifier
@@ -77,8 +87,8 @@ fun CreateTemplate(
                 .padding(bottom = 16.dp),
             value = viewModel.templateName,
             onValueChange = viewModel::updateTemplateName,
-            label = { Text(stringResource(R.string.template_name)) },
-            placeholder = { Text("Earthquake in USA") },
+            label = { TextFieldLabel(stringResource(R.string.template_name)) },
+            placeholder = { TextFieldPlaceholder("Earthquake in USA") },
             colors = textFieldColors()
         )
 
@@ -88,8 +98,8 @@ fun CreateTemplate(
                 .padding(bottom = 16.dp),
             value = viewModel.message,
             onValueChange = viewModel::updateMessage,
-            label = { Text(stringResource(R.string.message)) },
-            placeholder = { Text("Attention, in 1 hour there will be...") },
+            label = { TextFieldLabel(stringResource(R.string.message)) },
+            placeholder = { TextFieldPlaceholder("Attention, in 1 hour there will be...") },
             colors = textFieldColors(),
             maxLines = 5
         )
@@ -100,22 +110,30 @@ fun CreateTemplate(
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant
+                containerColor = CustomTheme.colors.container_2
             )
         ) {
             Text(
-                text = viewModel.selectedEmergencyType?.title ?: stringResource(R.string.select_emergency_type),
+                text = viewModel.selectedEmergencyType?.title
+                    ?: stringResource(R.string.select_emergency_type),
                 color = viewModel.selectedEmergencyType?.let {
                     Color(it.color.toColorInt())
-                } ?: MaterialTheme.colorScheme.onSurface
+                } ?: CustomTheme.colors.content
             )
         }
 
         Button(
             onClick = {
-                viewModel.saveTemplate(templateId)
-                { navController.popBackStack() } },
+                viewModel.saveTemplate(templateId, isCommunity) {
+                    navController.popBackStack()
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = CustomTheme.colors.orange,
+                contentColor = Color.White
+            ),
             enabled = viewModel.templateName.isNotBlank() &&
                     viewModel.message.isNotBlank() &&
                     viewModel.selectedEmergencyType != null &&
@@ -124,7 +142,12 @@ fun CreateTemplate(
             if (viewModel.isLoading) {
                 CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
             } else {
-                Text(stringResource(R.string.save_template))
+                Text(
+                    text = if (isEditing) stringResource(R.string.update_template)
+                    else stringResource(R.string.save_template),
+                    style = AppTypography.bodyMedium,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
             }
         }
     }
@@ -144,38 +167,56 @@ private fun EmergencyTypeDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.select_emergency_type)) },
+        title = {
+            Text(
+                text = stringResource(R.string.select_emergency_type),
+                style = AppTypography.titleMedium,
+                color = CustomTheme.colors.content
+            )
+        },
+        containerColor = CustomTheme.colors.container_2,
         text = {
             LazyColumn {
                 items(emergencyTypes) { type ->
-                    ListItem(
-                        headlineContent = { Text(type.title) },
-                        leadingContent = {
-                            Box(
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .background(
-                                        Color(type.bgColor.toColorInt()),
-                                        CircleShape
-                                    )
-                                    .border(
-                                        1.dp,
-                                        Color(type.color.toColorInt()),
-                                        CircleShape
-                                    )
-                            )
-                        },
-                        modifier = Modifier
-                            .clickable { onSelect(type) }
-                            .padding(8.dp)
+                    ItemEmergencyType(
+                        emergencyType = type,
+                        modifier = Modifier.clickable {
+                            onSelect(type)
+                            onDismiss()
+                        }
                     )
                 }
             }
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel))
+                Text(
+                    text = stringResource(R.string.cancel),
+                    style = AppTypography.bodyMedium,
+                    color = CustomTheme.colors.content
+                )
             }
         }
     )
+}
+
+@Composable
+private fun ItemEmergencyType(emergencyType: EmergencyType, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp, horizontal = 12.dp)
+            .background(
+                color = Color(emergencyType.color.toColorInt()),
+                shape = RoundedCornerShape(12.dp)
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = emergencyType.title,
+            style = AppTypography.bodyMedium,
+            color = dark_content,
+            modifier = Modifier.padding(vertical = 12.dp)
+        )
+    }
 }

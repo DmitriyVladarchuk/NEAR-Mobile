@@ -159,7 +159,9 @@ fun ProfileScreen(
                                 userId = userId != null,
                                 user = user,
                                 friendshipStatus = viewModel.friendshipStatus,
-                                onFriendshipAction = { userId?.let { viewModel.handleFriendshipAction(it) } },
+                                onAccept = { userId?.let { viewModel.addFriend(it) } },
+                                onReject = { userId?.let { viewModel.rejectFriend(it) } },
+                                onAction = { userId?.let { viewModel.handleFriendshipAction(it) } },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .weight(1f)
@@ -206,7 +208,9 @@ private fun UserProfileCard(
     userId: Boolean = false,
     user: User,
     friendshipStatus: FriendshipStatus,
-    onFriendshipAction: () -> Unit,
+    onAccept: () -> Unit,
+    onReject: () -> Unit,
+    onAction: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -237,9 +241,10 @@ private fun UserProfileCard(
         if (userId) {
             FriendshipActionButton(
                 status = friendshipStatus,
-                onClick = onFriendshipAction,
+                onAccept = onAccept,
+                onReject = onReject,
+                onAction = onAction,
                 modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
                     .padding(horizontal = 8.dp, vertical = 8.dp)
             )
         } else {
@@ -268,51 +273,86 @@ private fun UserProfileCard(
 @Composable
 private fun FriendshipActionButton(
     status: FriendshipStatus,
-    onClick: () -> Unit,
+    onAccept: () -> Unit,
+    onReject: () -> Unit,
+    onAction: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val (text, colors) = when (status) {
-        FriendshipStatus.NOT_FRIENDS -> Pair(
-            stringResource(R.string.add_friend),
-            ButtonDefaults.buttonColors(
-                containerColor = CustomTheme.colors.currentContainer,
-                contentColor = CustomTheme.colors.currentContent
-            )
-        )
-        FriendshipStatus.REQUEST_SENT -> Pair(
-            stringResource(R.string.request_sent),
-            ButtonDefaults.buttonColors(
-                containerColor = CustomTheme.colors.container_2,
-                contentColor = CustomTheme.colors.content
-            )
-        )
-        FriendshipStatus.REQUEST_RECEIVED -> Pair(
-            stringResource(R.string.accept_request),
-            ButtonDefaults.buttonColors(
-                containerColor = CustomTheme.colors.currentContainer,
-                contentColor = CustomTheme.colors.currentContent
-            )
-        )
-        FriendshipStatus.FRIENDS -> Pair(
-            stringResource(R.string.remove_friend),
-            ButtonDefaults.buttonColors(
-                containerColor = Color.Red.copy(alpha = 0.2f),
-                contentColor = Color.Red
-            )
-        )
-    }
+    when (status) {
+        FriendshipStatus.REQUEST_RECEIVED -> {
+            Row(
+                modifier = modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Button(
+                    onClick = onAccept,
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = CustomTheme.colors.currentContainer,
+                        contentColor = CustomTheme.colors.currentContent
+                    ),
+                    modifier = Modifier.weight(1f).padding(end = 4.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.accept_request),
+                        style = AppTypography.bodyMedium
+                    )
+                }
 
-    Button(
-        onClick = onClick,
-        shape = RoundedCornerShape(8.dp),
-        colors = colors,
-        modifier = modifier
-    ) {
-        Text(
-            text = text,
-            style = AppTypography.bodyMedium,
-            modifier = Modifier.padding(horizontal = 8.dp),
-        )
+                Button(
+                    onClick = onReject,
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Red.copy(alpha = 0.2f),
+                        contentColor = Color.Red
+                    ),
+                    modifier = Modifier.weight(1f).padding(start = 4.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.reject),
+                        style = AppTypography.bodyMedium
+                    )
+                }
+            }
+        }
+        else -> {
+            val (text, colors) = when (status) {
+                FriendshipStatus.NOT_FRIENDS -> Pair(
+                    stringResource(R.string.add_friend),
+                    ButtonDefaults.buttonColors(
+                        containerColor = CustomTheme.colors.currentContainer,
+                        contentColor = CustomTheme.colors.currentContent
+                    )
+                )
+                FriendshipStatus.REQUEST_SENT -> Pair(
+                    stringResource(R.string.request_sent),
+                    ButtonDefaults.buttonColors(
+                        containerColor = CustomTheme.colors.container_2,
+                        contentColor = CustomTheme.colors.content
+                    )
+                )
+                FriendshipStatus.FRIENDS -> Pair(
+                    stringResource(R.string.remove_friend),
+                    ButtonDefaults.buttonColors(
+                        containerColor = Color.Red.copy(alpha = 0.2f),
+                        contentColor = Color.Red
+                    )
+                )
+                else -> Pair("", ButtonDefaults.buttonColors())
+            }
+
+            Button(
+                onClick = onAction,
+                shape = RoundedCornerShape(8.dp),
+                colors = colors,
+                modifier = modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = text,
+                    style = AppTypography.bodyMedium
+                )
+            }
+        }
     }
 }
 

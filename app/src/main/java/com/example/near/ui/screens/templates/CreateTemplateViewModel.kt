@@ -10,6 +10,7 @@ import com.example.near.domain.models.UserTemplate
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.community.GetCommunityUseCase
 import com.example.near.domain.usecase.user.template.CreateTemplateUseCase
+import com.example.near.domain.usecase.user.template.DeleteTemplateUseCase
 import com.example.near.domain.usecase.user.template.UpdateTemplateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -20,8 +21,10 @@ class CreateTemplateViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val getCommunityUseCase: GetCommunityUseCase,
     private val createTemplateUseCase: CreateTemplateUseCase,
-    private val updateTemplateUseCase: UpdateTemplateUseCase
+    private val updateTemplateUseCase: UpdateTemplateUseCase,
 ) : ViewModel() {
+
+    var template by mutableStateOf<UserTemplate?>(null)
 
     var templateName by mutableStateOf("")
         private set
@@ -42,17 +45,20 @@ class CreateTemplateViewModel @Inject constructor(
         viewModelScope.launch {
             isLoading = true
             try {
-                val template: UserTemplate?
-                if (isCommunity)
-                    template = getUserUseCase()?.notificationTemplates?.find { it.id == templateId }
-                else
-                    template = getCommunityUseCase()?.notificationTemplates?.find { it.id == templateId }
+                val templates = if (isCommunity) {
+                    getCommunityUseCase()?.notificationTemplates
+                } else {
+                    getUserUseCase()?.notificationTemplates
+                }
 
-                templateName = template?.templateName ?: ""
-                message = template?.message ?: ""
-                selectedEmergencyType = template?.emergencyType
+                template = templates?.find { it.id == templateId }
+                template?.let {
+                    templateName = it.templateName
+                    message = it.message
+                    selectedEmergencyType = it.emergencyType
+                }
             } catch (e: Exception) {
-                error = e.message ?: "Failed to load user data"
+                error = e.message ?: "Failed to load template"
             } finally {
                 isLoading = false
             }
@@ -71,7 +77,7 @@ class CreateTemplateViewModel @Inject constructor(
         selectedEmergencyType = type
     }
 
-    fun saveTemplate(templateId: String?, onSuccess: () -> Unit) {
+    fun saveTemplate(templateId: String?, isCommunity: Boolean, onSuccess: () -> Unit) {
         if (templateName.isBlank() || message.isBlank() || selectedEmergencyType == null) {
             error = "Please fill all fields"
             return
@@ -81,11 +87,18 @@ class CreateTemplateViewModel @Inject constructor(
             isLoading = true
             try {
                 if (templateId != null) {
-                    updateTemplateUseCase(templateId, templateName, message, selectedEmergencyType!!)
+                    if (isCommunity) {
+                        //updateCommunityTemplateUseCase(templateId, templateName, message, selectedEmergencyType!!)
+                    } else {
+                        updateTemplateUseCase(templateId, templateName, message, selectedEmergencyType!!)
+                    }
                 } else {
-                    createTemplateUseCase(templateName, message, selectedEmergencyType!!)
+                    if (isCommunity) {
+                        //createCommunityTemplateUseCase(templateName, message, selectedEmergencyType!!)
+                    } else {
+                        createTemplateUseCase(templateName, message, selectedEmergencyType!!)
+                    }
                 }
-
                 onSuccess()
             } catch (e: Exception) {
                 error = "Failed to save template: ${e.message}"

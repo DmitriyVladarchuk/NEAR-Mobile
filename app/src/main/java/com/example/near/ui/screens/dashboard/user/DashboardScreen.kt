@@ -20,10 +20,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Groups
+import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
@@ -40,9 +45,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
+import com.example.near.domain.models.EmergencyType
 import com.example.near.domain.models.NotificationOption
 import com.example.near.domain.models.UserTemplate
 import com.example.near.ui.screens.navigation.Routes
@@ -82,7 +89,7 @@ fun DashboardScreen(
                 .weight(0.5f)
                 .fillMaxWidth()
         ) {
-            BodyTemplates(navController, viewModel.notificationTemplates)
+            BodyTemplates(navController, viewModel.notificationTemplates, viewModel)
         }
     }
 }
@@ -184,7 +191,11 @@ private fun BodyButtons(navController: NavController) {
 }
 
 @Composable
-private fun BodyTemplates(navController: NavController, templates: List<UserTemplate>) {
+private fun BodyTemplates(
+    navController: NavController,
+    templates: List<UserTemplate>,
+    viewModel: DashboardViewModel
+) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -199,18 +210,102 @@ private fun BodyTemplates(navController: NavController, templates: List<UserTemp
             modifier = Modifier.fillMaxSize()
         ) {
             items(templates) { template ->
-                ItemTemplate(template)
+                ItemTemplate(
+                    template = template,
+                    onEdit = {
+                        navController.navigate("edit_template/${template.id}")
+                    },
+                    onDelete = {
+                        viewModel.deleteTemplate(template)
+                    }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }
 }
 
 @Composable
-private fun ItemTemplate(template: UserTemplate) {
-    Row {
-        Text(text = template.templateName)
-    }
+private fun ItemTemplate(
+    template: UserTemplate,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit
+) {
+    val expanded = remember { mutableStateOf(false) }
 
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = CustomTheme.colors.container_2,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .padding(horizontal = 8.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(vertical = 8.dp)
+        ) {
+            Text(
+                text = template.templateName,
+                style = AppTypography.titleMedium,
+                color = CustomTheme.colors.content
+            )
+            ItemEmergencyType(template.emergencyType)
+        }
+
+        Box {
+            Icon(
+                imageVector = Icons.Default.MoreHoriz,
+                contentDescription = "More options",
+                modifier = Modifier
+                    .size(32.dp)
+                    .clickable { expanded.value = true },
+                tint = CustomTheme.colors.content
+            )
+
+            DropdownMenu(
+                expanded = expanded.value,
+                onDismissRequest = { expanded.value = false }
+            ) {
+                DropdownMenuItem(
+                    text = { Text("Edit") },
+                    onClick = {
+                        expanded.value = false
+                        onEdit()
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text("Delete") },
+                    onClick = {
+                        expanded.value = false
+                        onDelete()
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ItemEmergencyType(emergencyType: EmergencyType, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .padding(vertical = 8.dp)
+            .background(
+                color = Color(emergencyType.color.toColorInt()),
+                shape = RoundedCornerShape(12.dp)
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = emergencyType.title,
+            style = AppTypography.bodySmall,
+            color = dark_content,
+            modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)
+        )
+    }
 }
 
 @Composable
