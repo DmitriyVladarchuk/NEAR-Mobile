@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.domain.models.EmergencyType
 import com.example.near.domain.models.UserTemplate
+import com.example.near.domain.repository.CommunityRepository
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.community.GetCommunityUseCase
 import com.example.near.domain.usecase.user.template.CreateTemplateUseCase
@@ -22,6 +23,7 @@ class CreateTemplateViewModel @Inject constructor(
     private val getCommunityUseCase: GetCommunityUseCase,
     private val createTemplateUseCase: CreateTemplateUseCase,
     private val updateTemplateUseCase: UpdateTemplateUseCase,
+    private val communityRepository: CommunityRepository
 ) : ViewModel() {
 
     var template by mutableStateOf<UserTemplate?>(null)
@@ -89,12 +91,14 @@ class CreateTemplateViewModel @Inject constructor(
                 if (templateId != null) {
                     if (isCommunity) {
                         //updateCommunityTemplateUseCase(templateId, templateName, message, selectedEmergencyType!!)
+                        communityRepository.updateTemplate(templateId, templateName, message, selectedEmergencyType!!)
                     } else {
                         updateTemplateUseCase(templateId, templateName, message, selectedEmergencyType!!)
                     }
                 } else {
                     if (isCommunity) {
                         //createCommunityTemplateUseCase(templateName, message, selectedEmergencyType!!)
+                        communityRepository.createTemplate(templateName, message, selectedEmergencyType!!)
                     } else {
                         createTemplateUseCase(templateName, message, selectedEmergencyType!!)
                     }

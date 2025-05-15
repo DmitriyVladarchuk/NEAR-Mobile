@@ -247,6 +247,21 @@ fun MainNavGraph(
                 composable(Routes.CreateTemplate.route) {
                     CreateTemplate(navController = navController, isCommunity = true)
                 }
+//                composable(
+//                    route = Routes.TemplateInfo.route + "/{templateId}",
+//                    arguments = listOf(navArgument("templateId") { type = NavType.StringType })
+//                ) { backStackEntry ->
+//                    val templateId = backStackEntry.arguments?.getString("templateId") ?: ""
+//                    InfoTemplateScreen(isCommunity = true, templateId = templateId!!, navController = navController)
+//                }
+
+                composable(
+                    route = Routes.TemplateCommunityInfo.route + "/{templateId}",
+                    arguments = listOf(navArgument("templateId") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    val templateId = backStackEntry.arguments?.getString("templateId") ?: ""
+                    InfoTemplateScreen(isCommunity = true, templateId = templateId!!, navController = navController)
+                }
             }
         }
     }

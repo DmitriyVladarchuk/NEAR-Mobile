@@ -122,6 +122,8 @@ interface UserService {
         @Body request: UserTemplate
     ): Response<Void>
 
+    // --- Action Subscribes
+
     @POST("NEAR/user/subscribe")
     suspend fun userSubscribe(
         @Header("Authorization") token: String,

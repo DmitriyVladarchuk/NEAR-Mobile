@@ -22,4 +22,5 @@ sealed class Routes(val route: String) {
     object CommunityDashboard : Routes("community_dashboard")
     object CommunitySubscribers : Routes("community_Subscribers")
     object CommunityProfile : Routes("community_profile")
+    object TemplateCommunityInfo: Routes("community_info_template")
 }

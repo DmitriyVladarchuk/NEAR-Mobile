@@ -51,6 +51,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
 import com.example.near.domain.models.User
+import com.example.near.domain.models.UserFriend
 import com.example.near.domain.models.UserGroup
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
@@ -60,6 +61,7 @@ import com.example.near.ui.views.SecondaryHeaderTextInfo
 
 @Composable
 fun InfoTemplateScreen(
+    isCommunity: Boolean = false,
     templateId: String,
     navController: NavController,
     modifier: Modifier = Modifier,
@@ -70,7 +72,7 @@ fun InfoTemplateScreen(
     var selectedTab by remember { mutableStateOf(0) }
 
     LaunchedEffect(templateId) {
-        viewModel.loadData(templateId)
+        viewModel.loadData(templateId, isCommunity)
     }
 
     LaunchedEffect(selectedTab) {
@@ -135,39 +137,50 @@ fun InfoTemplateScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        DynamicItemContainer(
-            items = tabs,
-            selectedItem = selectedTab,
-            onItemSelected = { tab -> selectedTab = tabs.indexOf(tab) },
-            modifier = Modifier.padding(bottom = 16.dp)
-        ) { item, isSelected, modifier, onClick ->
-            TabItem(
-                text = item.toString(),
-                isSelected = isSelected,
-                modifier = modifier,
-                onClick = { onClick(item) }
-            )
-        }
+        if (!isCommunity)
+            DynamicItemContainer(
+                items = tabs,
+                selectedItem = selectedTab,
+                onItemSelected = { tab -> selectedTab = tabs.indexOf(tab) },
+                modifier = Modifier.padding(bottom = 16.dp)
+            ) { item, isSelected, modifier, onClick ->
+                TabItem(
+                    text = item.toString(),
+                    isSelected = isSelected,
+                    modifier = modifier,
+                    onClick = { onClick(item) }
+                )
+            }
 
-        HorizontalPager(
-            state = pagerState,
-            userScrollEnabled = true,
-        ) { page ->
-            when (page) {
-                0 -> FriendsListScreen(
-                    friends = viewModel.friends?.friends ?: emptyList(),
-                    selectedRecipients = viewModel.recipients,
-                    onRecipientToggle = { friendId ->
-                        viewModel.toggleRecipient(friendId)
-                    }
-                )
-                1 -> GroupsListScreen(
-                    groups = viewModel.groups ?: emptyList(),
-                    selectedRecipients = viewModel.recipients,
-                    onRecipientToggle = { groupId, members ->
-                        viewModel.toggleGroupRecipients(groupId, members)
-                    }
-                )
+        if (isCommunity) {
+            RecipientsListScreen(
+                friends = viewModel.subscribers ?: emptyList(),
+                selectedRecipients = viewModel.recipients,
+                onRecipientToggle = { friendId ->
+                    viewModel.toggleRecipient(friendId)
+                }
+            )
+        } else {
+            HorizontalPager(
+                state = pagerState,
+                userScrollEnabled = true,
+            ) { page ->
+                when (page) {
+                    0 -> FriendsListScreen(
+                        friends = viewModel.friends?.friends ?: emptyList(),
+                        selectedRecipients = viewModel.recipients,
+                        onRecipientToggle = { friendId ->
+                            viewModel.toggleRecipient(friendId)
+                        }
+                    )
+                    1 -> GroupsListScreen(
+                        groups = viewModel.groups ?: emptyList(),
+                        selectedRecipients = viewModel.recipients,
+                        onRecipientToggle = { groupId, members ->
+                            viewModel.toggleGroupRecipients(groupId, members)
+                        }
+                    )
+                }
             }
         }
 
@@ -196,6 +209,47 @@ fun InfoTemplateScreen(
 @Composable
 private fun FriendsListScreen(
     friends: List<User>,
+    selectedRecipients: List<String>,
+    onRecipientToggle: (String) -> Unit
+) {
+    LazyColumn {
+        items(friends) { friend ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onRecipientToggle(friend.id) }
+                    .padding(vertical = 12.dp, horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    checked = selectedRecipients.contains(friend.id),
+                    onCheckedChange = { onRecipientToggle(friend.id) },
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = CustomTheme.colors.orange,
+                        uncheckedColor = CustomTheme.colors.content
+                    )
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                AsyncImage(
+                    model = "", // URL аватара
+                    contentDescription = "Avatar",
+                    modifier = Modifier.size(40.dp),
+                    placeholder = painterResource(R.drawable.default_avatar),
+                    error = painterResource(R.drawable.default_avatar)
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    text = "${friend.firstName} ${friend.lastName}",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun RecipientsListScreen(
+    friends: List<UserFriend>,
     selectedRecipients: List<String>,
     onRecipientToggle: (String) -> Unit
 ) {

@@ -6,9 +6,12 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.domain.models.AllFriendsInfoResponse
+import com.example.near.domain.models.UserFriend
 import com.example.near.domain.models.UserGroup
 import com.example.near.domain.models.UserTemplate
+import com.example.near.domain.repository.CommunityRepository
 import com.example.near.domain.usecase.GetUserUseCase
+import com.example.near.domain.usecase.community.GetCommunityUseCase
 import com.example.near.domain.usecase.user.friends.GetAllFriendsInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -17,7 +20,9 @@ import javax.inject.Inject
 @HiltViewModel
 class InfoTemplateViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
-    private val getAllFriendsInfoUseCase: GetAllFriendsInfoUseCase
+    private val getCommunityUseCase: GetCommunityUseCase,
+    private val getAllFriendsInfoUseCase: GetAllFriendsInfoUseCase,
+    private val communityRepository: CommunityRepository
 ) : ViewModel() {
 
     var template by mutableStateOf<UserTemplate?>(null)
@@ -26,18 +31,29 @@ class InfoTemplateViewModel @Inject constructor(
     var friends by mutableStateOf<AllFriendsInfoResponse?>(null)
         private set
 
+    var subscribers by mutableStateOf<List<UserFriend>?>(null)
+        private set
+
     var groups by mutableStateOf<List<UserGroup>?>(null)
         private set
 
     var recipients by mutableStateOf<List<String>>(emptyList())
         private set
 
-    fun loadData(templateId: String) {
+    fun loadData(templateId: String, isCommunity: Boolean) {
         viewModelScope.launch {
-            val user = getUserUseCase()
-            template = user?.notificationTemplates?.find { it.id == templateId }
-            friends = getAllFriendsInfoUseCase().getOrThrow()
-            groups = user?.groups
+            if (isCommunity) {
+                val community = getCommunityUseCase()
+                template = community?.notificationTemplates?.find { it.id == templateId }
+                recipients = community.subscribers.map { it.id }
+                subscribers = community.subscribers
+                //groups = community?.groups
+            } else {
+                val user = getUserUseCase()
+                template = user?.notificationTemplates?.find { it.id == templateId }
+                friends = getAllFriendsInfoUseCase().getOrThrow()
+                groups = user?.groups
+            }
         }
     }
 
@@ -64,6 +80,7 @@ class InfoTemplateViewModel @Inject constructor(
         viewModelScope.launch {
             template?.let {
                 // --
+                communityRepository.sendTemplate(template!!.id, recipients)
             }
         }
     }
