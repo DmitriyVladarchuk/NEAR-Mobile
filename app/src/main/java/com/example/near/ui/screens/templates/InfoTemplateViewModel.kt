@@ -40,20 +40,13 @@ class InfoTemplateViewModel @Inject constructor(
     var recipients by mutableStateOf<List<String>>(emptyList())
         private set
 
-    fun loadData(templateId: String, isCommunity: Boolean) {
+    fun loadData(templateId: String) {
         viewModelScope.launch {
-            if (isCommunity) {
-                val community = getCommunityUseCase()
-                template = community?.notificationTemplates?.find { it.id == templateId }
-                recipients = community.subscribers.map { it.id }
-                subscribers = community.subscribers
-                //groups = community?.groups
-            } else {
-                val user = getUserUseCase()
-                template = user?.notificationTemplates?.find { it.id == templateId }
-                friends = getAllFriendsInfoUseCase().getOrThrow()
-                groups = user?.groups
-            }
+            val user = getUserUseCase()
+            template = user?.notificationTemplates?.find { it.id == templateId }
+            friends = getAllFriendsInfoUseCase().getOrThrow()
+            groups = user?.groups
+
         }
     }
 
@@ -71,7 +64,6 @@ class InfoTemplateViewModel @Inject constructor(
         recipients = if (allMembersSelected) {
             recipients.filter { it !in members }
         } else {
-            // Добавляем только тех, кого еще нет в списке
             recipients + members.filter { it !in recipients }
         }
     }

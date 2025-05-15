@@ -36,6 +36,7 @@ import com.example.near.ui.screens.profile.community.ProfileCommunityScreen
 import com.example.near.ui.screens.profile.user.ProfileScreen
 import com.example.near.ui.screens.profile.user.ProfileViewModel
 import com.example.near.ui.screens.settings.SettingsScreen
+import com.example.near.ui.screens.subscriptions.SubscribersScreen
 import com.example.near.ui.screens.subscriptions.SubscriptionsScreen
 import com.example.near.ui.screens.templates.CreateTemplate
 import com.example.near.ui.screens.templates.InfoTemplateScreen
@@ -240,7 +241,10 @@ fun MainNavGraph(
                 composable(Routes.CommunityDashboard.route) {
                     DashboardCommunityScreen(navController = navController)
                 }
-                composable(Routes.CommunitySubscribers.route) { TestScreen("Subscribers") }
+                composable(Routes.CommunitySubscribers.route) {
+                    //TestScreen("Subscribers")
+                    SubscribersScreen(navController = navController)
+                }
                 composable(Routes.CommunityProfile.route) { ProfileCommunityScreen(navController = navController) }
 
                 // --- Template ---
@@ -260,7 +264,7 @@ fun MainNavGraph(
                     arguments = listOf(navArgument("templateId") { type = NavType.StringType })
                 ) { backStackEntry ->
                     val templateId = backStackEntry.arguments?.getString("templateId") ?: ""
-                    InfoTemplateScreen(isCommunity = true, templateId = templateId!!, navController = navController)
+                    //InfoTemplateScreen(isCommunity = true, templateId = templateId!!, navController = navController)
                 }
             }
         }

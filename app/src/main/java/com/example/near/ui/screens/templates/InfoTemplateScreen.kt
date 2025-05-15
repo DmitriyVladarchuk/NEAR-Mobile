@@ -61,7 +61,6 @@ import com.example.near.ui.views.SecondaryHeaderTextInfo
 
 @Composable
 fun InfoTemplateScreen(
-    isCommunity: Boolean = false,
     templateId: String,
     navController: NavController,
     modifier: Modifier = Modifier,
@@ -72,7 +71,7 @@ fun InfoTemplateScreen(
     var selectedTab by remember { mutableStateOf(0) }
 
     LaunchedEffect(templateId) {
-        viewModel.loadData(templateId, isCommunity)
+        viewModel.loadData(templateId)
     }
 
     LaunchedEffect(selectedTab) {
@@ -137,50 +136,38 @@ fun InfoTemplateScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        if (!isCommunity)
-            DynamicItemContainer(
-                items = tabs,
-                selectedItem = selectedTab,
-                onItemSelected = { tab -> selectedTab = tabs.indexOf(tab) },
-                modifier = Modifier.padding(bottom = 16.dp)
-            ) { item, isSelected, modifier, onClick ->
-                TabItem(
-                    text = item.toString(),
-                    isSelected = isSelected,
-                    modifier = modifier,
-                    onClick = { onClick(item) }
-                )
-            }
-
-        if (isCommunity) {
-            RecipientsListScreen(
-                friends = viewModel.subscribers ?: emptyList(),
-                selectedRecipients = viewModel.recipients,
-                onRecipientToggle = { friendId ->
-                    viewModel.toggleRecipient(friendId)
-                }
+        DynamicItemContainer(
+            items = tabs,
+            selectedItem = selectedTab,
+            onItemSelected = { tab -> selectedTab = tabs.indexOf(tab) },
+            modifier = Modifier.padding(bottom = 16.dp)
+        ) { item, isSelected, modifier, onClick ->
+            TabItem(
+                text = item.toString(),
+                isSelected = isSelected,
+                modifier = modifier,
+                onClick = { onClick(item) }
             )
-        } else {
-            HorizontalPager(
-                state = pagerState,
-                userScrollEnabled = true,
-            ) { page ->
-                when (page) {
-                    0 -> FriendsListScreen(
-                        friends = viewModel.friends?.friends ?: emptyList(),
-                        selectedRecipients = viewModel.recipients,
-                        onRecipientToggle = { friendId ->
-                            viewModel.toggleRecipient(friendId)
-                        }
-                    )
-                    1 -> GroupsListScreen(
-                        groups = viewModel.groups ?: emptyList(),
-                        selectedRecipients = viewModel.recipients,
-                        onRecipientToggle = { groupId, members ->
-                            viewModel.toggleGroupRecipients(groupId, members)
-                        }
-                    )
-                }
+        }
+        HorizontalPager(
+            state = pagerState,
+            userScrollEnabled = true,
+        ) { page ->
+            when (page) {
+                0 -> FriendsListScreen(
+                    friends = viewModel.friends?.friends ?: emptyList(),
+                    selectedRecipients = viewModel.recipients,
+                    onRecipientToggle = { friendId ->
+                        viewModel.toggleRecipient(friendId)
+                    }
+                )
+                1 -> GroupsListScreen(
+                    groups = viewModel.groups ?: emptyList(),
+                    selectedRecipients = viewModel.recipients,
+                    onRecipientToggle = { groupId, members ->
+                        viewModel.toggleGroupRecipients(groupId, members)
+                    }
+                )
             }
         }
 

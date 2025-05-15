@@ -224,8 +224,7 @@ private fun BodyTemplates(
                 Button(
                     onClick = {
                         selectedTemplate?.let { template ->
-                            // Здесь вызывайте метод viewModel для отправки шаблона
-                            viewModel.send(template.idCommunity!!)
+                            viewModel.send(template.id!!)
                             showDialog = false
                         }
                     },
