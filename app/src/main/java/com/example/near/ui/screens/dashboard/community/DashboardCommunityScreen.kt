@@ -41,7 +41,9 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -154,7 +156,7 @@ private fun BodyButtons(navController: NavController) {
                     .weight(1f)
                     .aspectRatio(1f)
             ) {
-                CreateNewGroup(
+                SubmittedTemplateButton(
                     onClick = { /* обработка клика */ },
                     modifier = Modifier.fillMaxSize()
                 )
@@ -407,6 +409,41 @@ private fun CreateNewGroup(
                 imageVector = Icons.Default.Groups,
                 contentDescription = null,
                 modifier = Modifier.size(32.dp),
+                tint = CustomTheme.colors.content
+            )
+        }
+    }
+}
+
+@Composable
+private fun SubmittedTemplateButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .background(
+                color = CustomTheme.colors.container_2,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .clickable { onClick() }
+            .padding(16.dp)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text(
+                text = stringResource(R.string.submitted_templates),
+                style = AppTypography.titleMedium,
+                color = CustomTheme.colors.content,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Icon(
+                imageVector = ImageVector.vectorResource(R.drawable.list),
+                contentDescription = null,
+                modifier = Modifier.weight(1f),
                 tint = CustomTheme.colors.content
             )
         }

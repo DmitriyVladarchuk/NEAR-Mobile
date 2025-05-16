@@ -254,8 +254,8 @@ private fun DescriptionCommunitySection(
         InfoRow(Icons.Default.Info, "Id", community.id)
         Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
 
-        InfoRow(Icons.Default.Description, stringResource(R.string.description), community.description.toString())
-        Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
+//        InfoRow(Icons.Default.Description, stringResource(R.string.description), community.description.toString())
+//        Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
 
         InfoRow(Icons.Default.LocationOn, stringResource(R.string.emergency_monitoring_region), community.country.toString())
         Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))

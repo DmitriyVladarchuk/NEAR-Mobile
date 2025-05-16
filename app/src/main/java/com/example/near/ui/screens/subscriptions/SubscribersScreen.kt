@@ -44,7 +44,7 @@ fun SubscribersScreen(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
     ) {
         MainHeaderTextInfo(
-            text = stringResource(R.string.subscriptions),
+            text = stringResource(R.string.subscribers),
             modifier = Modifier.padding(vertical = 16.dp)
         )
 
