@@ -14,7 +14,7 @@ class LoginUserUseCase @Inject constructor(
     suspend operator fun invoke(email: String, password: String): Result<LoginResponse> {
         return userRepository.login(email, password).also { result ->
             if (result.isSuccess) {
-                authDataStorage.saveCredentials(email, password, false)
+                authDataStorage.saveCredentials(result.getOrThrow().refreshToken!!, false)
                 sessionManager.saveAuthToken(result.getOrNull()!!)
 
                 // Отправка токена

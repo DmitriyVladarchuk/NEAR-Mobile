@@ -6,6 +6,7 @@ import com.example.near.data.models.GroupActionRequest
 import com.example.near.data.models.GroupCreateRequest
 import com.example.near.data.models.LoginRequest
 import com.example.near.data.models.LoginResponse
+import com.example.near.data.models.RefreshTokenRequest
 import com.example.near.data.models.SignUpRequest
 import com.example.near.data.models.TemplateCreateRequest
 import com.example.near.data.models.community.CommunityActionRequest
@@ -43,6 +44,11 @@ interface UserService {
         @Header("Authorization") token: String,
         @Query("id") userId: String
     ): Response<User>
+
+    @POST("NEAR/token/account")
+    suspend fun refreshToken(
+        @Body request: RefreshTokenRequest
+    ): Response<LoginResponse>
 
     @POST("NEAR/user/update-device-token")
     suspend fun sendFcmToken(

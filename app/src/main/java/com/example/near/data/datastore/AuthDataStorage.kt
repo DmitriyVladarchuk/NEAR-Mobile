@@ -12,20 +12,18 @@ class AuthDataStorage @Inject constructor(
         context.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
     }
 
-    fun saveCredentials(email: String, password: String, isCommunity: Boolean) {
+    fun saveCredentials(refreshToken: String, isCommunity: Boolean) {
         with(sharedPrefs.edit()) {
-            putString("email", email)
-            putString("password", password)
+            putString("refresh_token", refreshToken)
             putBoolean("is_community", isCommunity)
             apply()
         }
     }
 
-    fun getCredentials(): Triple<String, String, Boolean>? {
-        val email = sharedPrefs.getString("email", null)
-        val password = sharedPrefs.getString("password", null)
+    fun getCredentials(): Pair<String, Boolean>? {
+        val refreshToken = sharedPrefs.getString("refresh_token", null)
         val isCommunity = sharedPrefs.getBoolean("is_community", false)
-        return if (email != null && password != null) Triple(email, password, isCommunity) else null
+        return if (refreshToken != null) Pair(refreshToken, isCommunity) else null
     }
 
     fun clearCredentials() {

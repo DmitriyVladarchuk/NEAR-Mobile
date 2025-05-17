@@ -6,6 +6,7 @@ import com.example.near.data.datastore.SessionManager
 import com.example.near.data.models.FcmTokenRequest
 import com.example.near.data.models.LoginRequest
 import com.example.near.data.models.LoginResponse
+import com.example.near.data.models.RefreshTokenRequest
 import com.example.near.data.models.TemplateCreateRequest
 import com.example.near.data.models.community.CommunityResponse
 import com.example.near.data.models.community.SignUpCommunityRequest
@@ -73,6 +74,21 @@ class CommunityRepositoryImpl @Inject constructor(
             } else {
                 val errorBody = response.errorBody()?.string() ?: ""
                 Result.failure(Exception("Error ${response.code()}: $errorBody"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun refreshToken(token: String): Result<LoginResponse> {
+        return try {
+            val response = communityService.refreshToken(RefreshTokenRequest(token))
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    Result.success(it)
+                } ?: Result.failure(Exception("Empty response body"))
+            } else {
+                Result.failure(Exception("Failed to send token request"))
             }
         } catch (e: Exception) {
             Result.failure(e)

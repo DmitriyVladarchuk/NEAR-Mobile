@@ -23,6 +23,8 @@ interface UserRepository {
         password: String,
     ): Result<LoginResponse>
 
+    suspend fun refreshToken(token: String): Result<LoginResponse>
+
     suspend fun sendFcmToken(token: String): Result<Unit>
 
     suspend fun getUserInfo(): Result<User>

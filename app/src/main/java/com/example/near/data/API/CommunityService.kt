@@ -3,6 +3,7 @@ package com.example.near.data.API
 import com.example.near.data.models.FcmTokenRequest
 import com.example.near.data.models.LoginRequest
 import com.example.near.data.models.LoginResponse
+import com.example.near.data.models.RefreshTokenRequest
 import com.example.near.data.models.TemplateCreateRequest
 import com.example.near.data.models.community.CommunityResponse
 import com.example.near.data.models.community.SignUpCommunityRequest
@@ -32,6 +33,11 @@ interface CommunityService {
     suspend fun getCommunityInfo(
         @Header("Authorization") token: String
     ): Response<CommunityResponse>
+
+    @POST("NEAR/token/community")
+    suspend fun refreshToken(
+        @Body request: RefreshTokenRequest
+    ): Response<LoginResponse>
 
     @POST("")
     suspend fun sendFcmToken(

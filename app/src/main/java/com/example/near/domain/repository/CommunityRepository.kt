@@ -20,6 +20,8 @@ interface CommunityRepository {
 
     suspend fun getCommunityInfo(): Result<CommunityResponse>
 
+    suspend fun refreshToken(token: String): Result<LoginResponse>
+
     suspend fun sendFcmToken(token: String): Result<Unit>
 
     // --- Template actions ---

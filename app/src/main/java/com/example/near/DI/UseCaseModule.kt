@@ -20,6 +20,7 @@ import com.example.near.domain.usecase.community.LoginCommunityUseCase
 import com.example.near.domain.usecase.community.SignUpCommunityUseCase
 import com.example.near.domain.usecase.user.UserCancelSubscribeUseCase
 import com.example.near.domain.usecase.user.UserSubscribeUseCase
+import com.example.near.domain.usecase.user.auth.LoadUserUseCase
 import com.example.near.domain.usecase.user.auth.SignUpUserUseCase
 import com.example.near.domain.usecase.user.friends.GetAllFriendsInfoUseCase
 import com.example.near.domain.usecase.user.group.CreateGroupUseCase
@@ -55,6 +56,17 @@ object UseCaseModule {
         sessionManager: SessionManager
     ): LoginCommunityUseCase {
         return LoginCommunityUseCase(communityRepository, authDataStorage, sessionManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLoadUserUseCase(
+        userRepository: UserRepository,
+        communityRepository: CommunityRepository,
+        authDataStorage: AuthDataStorage,
+        sessionManager: SessionManager
+    ): LoadUserUseCase {
+        return LoadUserUseCase(userRepository, communityRepository, authDataStorage, sessionManager)
     }
 
     @Provides

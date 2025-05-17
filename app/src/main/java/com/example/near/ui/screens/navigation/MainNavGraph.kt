@@ -1,5 +1,6 @@
 package com.example.near.ui.screens.navigation
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.example.near.domain.usecase.user.auth.LoadUserUseCase
 import com.example.near.ui.screens.auth.login.account.LoginAccountScreen
 import com.example.near.ui.screens.auth.login.community.LoginCommunityScreen
 import com.example.near.ui.screens.auth.signup.account.SignupAccountScreen
@@ -62,27 +64,22 @@ fun MainNavGraph(
         }
     }
 
-    // --- Авторизация ---
+    // Авторизация
     LaunchedEffect(Unit) {
         if (!isLoggedIn) {
-            viewModel.authDataStorage.getCredentials()?.let { (email, password, isCommunity) ->
-                val result = withContext(Dispatchers.IO) {
-                    //viewModel.userRepository.login(email, password)
-                    if (isCommunity) {
-                        viewModel.communityRepository.login(email, password)
-                    } else {
-                        viewModel.userRepository.login(email, password)
-                    }
+            val success = withContext(Dispatchers.IO) {
+                viewModel.loadUserUseCase()
+            }
+
+            if (success) {
+                val isCommunity = viewModel.authDataStorage.getCredentials()?.second ?: false
+                val mainRoute = if (isCommunity) {
+                    Routes.CommunityDashboard.route
+                } else {
+                    Routes.Dashboards.route
                 }
-                if (result.isSuccess) {
-                    viewModel.sessionManager.saveAuthToken(result.getOrNull()!!)
-                    val mainRoute =
-                        if (isCommunity) Routes.CommunityDashboard.route else {
-                            Routes.Dashboards.route
-                        }
-                    navController.navigate(mainRoute) {
-                        popUpTo(0) { inclusive = true }
-                    }
+                navController.navigate(mainRoute) {
+                    popUpTo(0) { inclusive = true }
                 }
             }
         }
@@ -104,7 +101,7 @@ fun MainNavGraph(
             ) {
                 BottomBar(
                     navController = navController,
-                    isCommunity = viewModel.authDataStorage.getCredentials()?.third ?: false
+                    isCommunity = viewModel.authDataStorage.getCredentials()?.second ?: false
                 )
             }
         }
