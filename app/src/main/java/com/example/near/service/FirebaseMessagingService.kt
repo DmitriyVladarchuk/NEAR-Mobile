@@ -2,9 +2,11 @@ package com.example.near.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.near.App
 import com.example.near.R
 import com.example.near.data.datastore.AuthDataStorage
 import com.example.near.data.datastore.SessionManager
@@ -19,19 +21,18 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MyFirebaseMessagingService @Inject constructor(
-    private val userRepository: UserRepository,
-    private val communityRepository: CommunityRepository,
-    private val sessionManager: SessionManager,
-    private val authDataStorage: AuthDataStorage
-) : FirebaseMessagingService() {
+
+class MyFirebaseMessagingService : FirebaseMessagingService() {
+    private val fcmTokenManager: FcmTokenManager by lazy {
+        FcmTokenManagerHolder.getManager(applicationContext)
+    }
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         scope.launch {
-            handleNewToken(token)
+            fcmTokenManager.handleNewToken(token)
         }
     }
 
@@ -43,7 +44,10 @@ class MyFirebaseMessagingService @Inject constructor(
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        // --- Обработка уведомления ---
+        scope.launch {
+            fcmTokenManager.saveIsPush()
+        }
+
         message.notification?.let { notification ->
             sendNotification(notification.title ?: "", notification.body ?: "")
         }
@@ -53,7 +57,6 @@ class MyFirebaseMessagingService @Inject constructor(
         val channelId = "default_channel_id"
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
-        // --- Создаем канал для Android 8.0+ ---
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
@@ -63,7 +66,6 @@ class MyFirebaseMessagingService @Inject constructor(
             notificationManager.createNotificationChannel(channel)
         }
 
-        // --- Создаем уведомление ---
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(title)
@@ -72,38 +74,16 @@ class MyFirebaseMessagingService @Inject constructor(
 
         notificationManager.notify(0, notificationBuilder.build())
     }
+}
 
-    private suspend fun handleNewToken(token: String) {
-        Log.d("FCM", "New token received: $token")
+object FcmTokenManagerHolder {
+    private var manager: FcmTokenManager? = null
 
-        if (sessionManager.isLoggedIn) {
-            sendTokenForCurrentUser(token)
-        } else {
-            authDataStorage.saveFcmToken(token)
-        }
+    fun init(manager: FcmTokenManager) {
+        this.manager = manager
     }
 
-    private suspend fun sendTokenForCurrentUser(token: String) {
-        try {
-            val credentials = authDataStorage.getCredentials()
-            when {
-                credentials?.second == true -> { // Это сообщество
-                    communityRepository.sendFcmToken(token).onSuccess {
-                        Log.d("FCM", "Community token sent successfully")
-                    }.onFailure { e ->
-                        Log.e("FCM", "Failed to send community token", e)
-                    }
-                }
-                credentials != null -> { // Это обычный пользователь
-                    userRepository.sendFcmToken(token).onSuccess {
-                        Log.d("FCM", "User token sent successfully")
-                    }.onFailure { e ->
-                        Log.e("FCM", "Failed to send user token", e)
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            Log.e("FCM", "Error sending token", e)
-        }
+    fun getManager(context: Context): FcmTokenManager {
+        return manager ?: throw IllegalStateException("FcmTokenManager not initialized")
     }
 }

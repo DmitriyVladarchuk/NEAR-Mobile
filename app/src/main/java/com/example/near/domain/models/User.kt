@@ -10,6 +10,7 @@ data class User(
     val city: String,
     val district: String,
     val registrationDate: String,
+    val deviceToken: String,
     val friends: List<UserFriend>,
     val groups: List<UserGroup>,
     val subscriptions: List<UserSubscription>,

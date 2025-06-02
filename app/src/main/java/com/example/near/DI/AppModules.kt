@@ -10,6 +10,9 @@ import com.example.near.data.repository.CommunityRepositoryImpl
 import com.example.near.data.repository.UserRepositoryImpl
 import com.example.near.domain.repository.CommunityRepository
 import com.example.near.domain.repository.UserRepository
+import com.example.near.service.FcmTokenManager
+import com.example.near.service.MyFirebaseMessagingService
+import com.google.firebase.messaging.FirebaseMessagingService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,4 +50,21 @@ object AppModules {
     @Provides
     @Singleton
     fun provideSessionManager(): SessionManager = SessionManager()
+
+    @Provides
+    @Singleton
+    fun provideFcmTokenManager(
+        userRepository: UserRepository,
+        communityRepository: CommunityRepository,
+        sessionManager: SessionManager,
+        authDataStorage: AuthDataStorage
+    ): FcmTokenManager {
+        return FcmTokenManager(
+            userRepository,
+            communityRepository,
+            sessionManager,
+            authDataStorage
+        )
+    }
+
 }

@@ -73,9 +73,16 @@ fun MainNavGraph(
 
             if (success) {
                 val isCommunity = viewModel.authDataStorage.getCredentials()?.second ?: false
+                val fcmToken = viewModel.authDataStorage.getFcmToken()
+                if (fcmToken == null)
+                    viewModel.refreshToken()
+                Log.d("Test FCM TOKEN", fcmToken.toString())
+                Log.d("Test Push", viewModel.authDataStorage.getIsPush().toString())
                 val mainRoute = if (isCommunity) {
+                    fcmToken?.let { viewModel.communityRepository.sendFcmToken(it) }
                     Routes.CommunityDashboard.route
                 } else {
+                    fcmToken?.let { viewModel.userRepository.sendFcmToken(it) }
                     Routes.Dashboards.route
                 }
                 navController.navigate(mainRoute) {

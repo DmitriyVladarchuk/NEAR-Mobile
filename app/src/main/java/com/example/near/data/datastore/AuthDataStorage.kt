@@ -16,6 +16,7 @@ class AuthDataStorage @Inject constructor(
         with(sharedPrefs.edit()) {
             putString("refresh_token", refreshToken)
             putBoolean("is_community", isCommunity)
+            putBoolean("is_push", false)
             apply()
         }
     }
@@ -41,6 +42,17 @@ class AuthDataStorage @Inject constructor(
 
     fun getFcmToken(): String? {
         return sharedPrefs.getString("fcm_token", null)
+    }
+
+    fun saveIsPush() {
+        sharedPrefs.edit {
+            putBoolean("is_push", true)
+            apply()
+        }
+    }
+
+    fun getIsPush(): Boolean {
+        return sharedPrefs.getBoolean("is_push", false)
     }
 
     fun clearFcmToken() {
