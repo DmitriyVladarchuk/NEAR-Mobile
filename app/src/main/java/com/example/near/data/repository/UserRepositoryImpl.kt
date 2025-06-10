@@ -18,6 +18,7 @@ import com.example.near.domain.models.EmergencyType
 import com.example.near.domain.models.NotificationOption
 import com.example.near.domain.models.User
 import com.example.near.domain.models.UserTemplate
+import com.example.near.domain.models.UserUpdateRequest
 import com.example.near.domain.repository.UserRepository
 import javax.inject.Inject
 
@@ -136,6 +137,40 @@ class UserRepositoryImpl @Inject constructor(
                 response.body()?.let {
                     Result.success(it)
                 } ?: Result.failure(Exception("Empty response body"))
+            } else {
+                val errorBody = response.errorBody()?.string() ?: ""
+                Result.failure(Exception("Error ${response.code()}: $errorBody"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun updateUser(
+        firstName: String?,
+        lastName: String?,
+        birthday: String?,
+        country: String?,
+        city: String?,
+        district: String?,
+        selectedOptions: List<Int>?
+    ): Result<Unit> {
+        return try {
+            val response = userService.updateUser(
+                token = "Bearer ${sessionManager.authToken!!.accessToken}",
+                request = UserUpdateRequest(
+                    firstName = firstName,
+                    lastName = lastName,
+                    birthday = birthday,
+                    country = country,
+                    city = city,
+                    district = district,
+                    selectedOptions = selectedOptions
+                )
+            )
+
+            if (response.isSuccessful) {
+                Result.success(Unit)
             } else {
                 val errorBody = response.errorBody()?.string() ?: ""
                 Result.failure(Exception("Error ${response.code()}: $errorBody"))

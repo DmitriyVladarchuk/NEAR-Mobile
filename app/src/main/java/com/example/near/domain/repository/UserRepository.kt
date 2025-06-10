@@ -31,6 +31,16 @@ interface UserRepository {
 
     suspend fun getUserById(id: String): Result<User>
 
+    suspend fun updateUser(
+        firstName: String? = null,
+        lastName: String? = null,
+        birthday: String? = null,
+        country: String? = null,
+        city: String? = null,
+        district: String? = null,
+        selectedOptions: List<Int>? = null
+    ): Result<Unit>
+
     // --- Friends Actions ---
 
     suspend fun getAllFriendsInfo(): Result<AllFriendsInfoResponse>
