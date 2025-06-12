@@ -136,4 +136,12 @@
     <string name="save_template">Save Template</string>
     <string name="send_template">Send Template</string>
 
+    <!-- Edit Screen -->
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="country">Country</string>
+    <string name="city">City</string>
+    <string name="district">District</string>
+
+
 </resources>

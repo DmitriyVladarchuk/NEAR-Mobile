@@ -17,6 +17,7 @@ sealed class Routes(val route: String) {
     object CreateGroup : Routes("create_group")
     object CreateTemplate : Routes("create_template")
     object TemplateInfo: Routes("info_template")
+    object EditUserProfile : Routes("edit_user_profile")
 
     // --- Маршруты для сообщества ---
     object CommunityDashboard : Routes("community_dashboard")

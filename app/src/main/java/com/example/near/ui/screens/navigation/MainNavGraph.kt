@@ -35,6 +35,7 @@ import com.example.near.ui.screens.friendsAndGroups.FriendsAndSubscriptions
 import com.example.near.ui.screens.friendsAndGroups.groups.CreateGroupsScreen
 import com.example.near.ui.screens.onboarding.OnboardingScreen
 import com.example.near.ui.screens.profile.community.ProfileCommunityScreen
+import com.example.near.ui.screens.profile.edit.EditUserProfileScreen
 import com.example.near.ui.screens.profile.user.ProfileScreen
 import com.example.near.ui.screens.profile.user.ProfileViewModel
 import com.example.near.ui.screens.settings.SettingsScreen
@@ -181,6 +182,10 @@ fun MainNavGraph(
 
                 composable(Routes.Profile.route) {
                     ProfileScreen(navController = navController)
+                }
+
+                composable(Routes.EditUserProfile.route) {
+                    EditUserProfileScreen(navController = navController)
                 }
 
                 composable(

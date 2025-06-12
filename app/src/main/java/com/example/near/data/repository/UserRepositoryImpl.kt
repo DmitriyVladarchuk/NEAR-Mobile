@@ -173,9 +173,12 @@ class UserRepositoryImpl @Inject constructor(
                 Result.success(Unit)
             } else {
                 val errorBody = response.errorBody()?.string() ?: ""
+                Log.d("testEditRepo", response.code().toString())
                 Result.failure(Exception("Error ${response.code()}: $errorBody"))
+
             }
         } catch (e: Exception) {
+            Log.d("testEditRepo", e.toString())
             Result.failure(e)
         }
     }

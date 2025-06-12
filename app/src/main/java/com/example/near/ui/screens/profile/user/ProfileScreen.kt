@@ -157,6 +157,7 @@ fun ProfileScreen(
                         viewModel.user?.let { user ->
                             UserProfileCard(
                                 userId = userId != null,
+                                navController = navController,
                                 user = user,
                                 friendshipStatus = viewModel.friendshipStatus,
                                 onAccept = { userId?.let { viewModel.addFriend(it) } },
@@ -206,6 +207,7 @@ private fun UserAvatarSection(avatarUrl: String, modifier: Modifier = Modifier) 
 @Composable
 private fun UserProfileCard(
     userId: Boolean = false,
+    navController: NavController,
     user: User,
     friendshipStatus: FriendshipStatus,
     onAccept: () -> Unit,
@@ -249,7 +251,7 @@ private fun UserProfileCard(
             )
         } else {
             Button(
-                onClick = { /* Редактирование профиля */ },
+                onClick = { navController.navigate(Routes.EditUserProfile.route) },
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
                     contentColor = CustomTheme.colors.content,
