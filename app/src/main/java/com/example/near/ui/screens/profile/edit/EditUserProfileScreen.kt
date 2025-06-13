@@ -2,13 +2,17 @@ package com.example.near.ui.screens.profile.edit
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -16,6 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -109,6 +114,7 @@ private fun ScrollableForms(
         ) { navController.popBackStack() }
 
         ProfileForm(viewModel)
+        NotificationOptions(viewModel)
         Spacer(Modifier.height(80.dp))
     }
 }
@@ -137,7 +143,10 @@ private fun PersonalInfoSection(viewModel: EditUserProfileViewModel) {
 
     EditProfileField(
         value = viewModel.birthday,
-        onValueChange = { viewModel.birthday = it },
+        onValueChange = { newText ->
+            val filtered = newText.filter { it.isDigit() }.take(8)
+            viewModel.birthday = filtered
+        },
         labelRes = R.string.birthday,
         keyboardType = KeyboardType.Number,
         visualTransformation = DateTransformation()
@@ -163,6 +172,86 @@ private fun LocationSection(viewModel: EditUserProfileViewModel) {
         onValueChange = { viewModel.district = it },
         labelRes = R.string.district
     )
+}
+
+@Composable
+private fun NotificationOptions(viewModel: EditUserProfileViewModel) {
+    val selectedOptions by viewModel.selectedOptions
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            NotificationChip(
+                modifier = Modifier.weight(1f),
+                label = stringResource(R.string.telegram),
+                isSelected = selectedOptions.contains(1),
+                onToggle = { viewModel.toggleNotificationOption(1) }
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            NotificationChip(
+                modifier = Modifier.weight(1f),
+                label = stringResource(R.string.email),
+                isSelected = selectedOptions.contains(2),
+                onToggle = { viewModel.toggleNotificationOption(2) }
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            NotificationChip(
+                modifier = Modifier.weight(1f),
+                label = stringResource(R.string.mobile_app),
+                isSelected = selectedOptions.contains(3),
+                onToggle = { viewModel.toggleNotificationOption(3) }
+            )
+        }
+    }
+}
+
+@Composable
+private fun NotificationChip(
+    modifier: Modifier = Modifier,
+    label: String,
+    isSelected: Boolean,
+    onToggle: () -> Unit
+) {
+    val containerColor = if (isSelected) {
+        CustomTheme.colors.currentContainer
+    } else {
+        CustomTheme.colors.background
+    }
+
+    val contentColor = if (isSelected) {
+        CustomTheme.colors.currentContent
+    } else {
+        CustomTheme.colors.content
+    }
+
+    val borderColor = if (isSelected) {
+        CustomTheme.colors.currentContent
+    } else {
+        CustomTheme.colors.container
+    }
+
+    OutlinedButton(
+        modifier = modifier,
+        onClick = { onToggle() },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = containerColor,
+            contentColor = contentColor
+        ),
+        border = BorderStroke(1.dp, borderColor),
+        shape = RoundedCornerShape(12.dp),
+    ) {
+        Text(
+            text = label,
+            style = AppTypography.bodySmall,
+        )
+    }
 }
 
 @Composable
@@ -221,5 +310,42 @@ private fun LoadingIndicator(state: UIState) {
 }
 
 private class DateTransformation : VisualTransformation {
-    override fun filter(text: AnnotatedString) = TransformedText(text, OffsetMapping.Identity)
+    override fun filter(text: AnnotatedString): TransformedText {
+        val digits = text.text.filter { it.isDigit() }.take(8)
+
+        val formatted = buildString {
+            digits.forEachIndexed { index, char ->
+                when (index) {
+                    4 -> append('-')
+                    6 -> append('-')
+                }
+                append(char)
+            }
+        }
+
+        return TransformedText(
+            text = AnnotatedString(formatted),
+            offsetMapping = DateOffsetMapping
+        )
+    }
+}
+
+private object DateOffsetMapping : OffsetMapping {
+    override fun originalToTransformed(offset: Int): Int {
+        return when {
+            offset <= 4 -> offset
+            offset <= 6 -> offset + 1
+            offset <= 8 -> offset + 2
+            else -> 10
+        }
+    }
+
+    override fun transformedToOriginal(offset: Int): Int {
+        return when {
+            offset <= 4 -> offset
+            offset <= 7 -> offset - 1
+            offset <= 10 -> offset - 2
+            else -> 8
+        }
+    }
 }

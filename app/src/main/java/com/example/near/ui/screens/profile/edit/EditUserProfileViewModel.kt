@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.domain.models.NotificationOptionRequest
 import com.example.near.domain.models.User
 import com.example.near.domain.models.common.UIState
 import com.example.near.domain.usecase.GetUserUseCase
@@ -57,10 +56,8 @@ class EditUserProfileViewModel @Inject constructor(
         get() = _district
         set(value) { _district = value }
 
-    private var _selectedOptions by mutableStateOf<List<Int>>(emptyList())
-    var selectedOptions
-        get() = _selectedOptions
-        private set(value) { _selectedOptions = value }
+    private var _selectedOptions = mutableStateOf<List<Int>>(emptyList())
+    val selectedOptions: State<List<Int>> = _selectedOptions
 
     private val _uiState = mutableStateOf<UIState>(UIState.Idle)
     val uiState: State<UIState> = _uiState
@@ -81,7 +78,7 @@ class EditUserProfileViewModel @Inject constructor(
 
                 val optionsResult = getNotificationOptionsUseCase()
                 if (optionsResult.isSuccess) {
-                    _selectedOptions = optionsResult.getOrNull()?.map { it.id } ?: emptyList()
+                    _selectedOptions.value = optionsResult.getOrNull()?.map { it.id } ?: emptyList()
                 } else {
                     UIState.Error("Failed to load notification options")
                 }
@@ -94,10 +91,10 @@ class EditUserProfileViewModel @Inject constructor(
     }
 
     fun toggleNotificationOption(optionId: Int) {
-        _selectedOptions = if (_selectedOptions.contains(optionId)) {
-            _selectedOptions - optionId
+        _selectedOptions.value = if (_selectedOptions.value.contains(optionId)) {
+            _selectedOptions.value.filterNot { it == optionId }
         } else {
-            _selectedOptions + optionId
+            _selectedOptions.value + optionId
         }
     }
 
@@ -112,7 +109,7 @@ class EditUserProfileViewModel @Inject constructor(
                     country = country.takeIf { it.isNotBlank() },
                     city = city.takeIf { it.isNotBlank() },
                     district = district.takeIf { it.isNotBlank() },
-                    selectedOptions = selectedOptions.takeIf { it.isNotEmpty() }
+                    selectedOptions = selectedOptions.value.takeIf { it.isNotEmpty() }
                 )
 
                 if (result.isSuccess) _uiState.value = UIState.Success
