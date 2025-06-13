@@ -18,6 +18,7 @@ import com.example.near.domain.usecase.SetThemeUseCase
 import com.example.near.domain.usecase.community.GetCommunityUseCase
 import com.example.near.domain.usecase.community.LoginCommunityUseCase
 import com.example.near.domain.usecase.community.SignUpCommunityUseCase
+import com.example.near.domain.usecase.user.GetNotificationOptionsUseCase
 import com.example.near.domain.usecase.user.UpdateUserUseCase
 import com.example.near.domain.usecase.user.UserCancelSubscribeUseCase
 import com.example.near.domain.usecase.user.UserSubscribeUseCase
@@ -122,6 +123,11 @@ object UseCaseModule {
     }
 
     @Provides
+    fun provideGetNotificationOptionsUseCase(userRepository: UserRepository): GetNotificationOptionsUseCase {
+        return GetNotificationOptionsUseCase(userRepository)
+    }
+
+    @Provides
     @Singleton
     fun provideGetAllFriendsInfoUseCase(userRepository: UserRepository): GetAllFriendsInfoUseCase {
         return GetAllFriendsInfoUseCase(userRepository)
@@ -163,37 +169,52 @@ object UseCaseModule {
         return SetThemeUseCase(settingsDataStorage)
     }
 
+    @Provides
+    @Singleton
     fun provideCreateGroupUseCase(userRepository: UserRepository): CreateGroupUseCase {
         return CreateGroupUseCase(userRepository)
     }
 
+    @Provides
+    @Singleton
     fun provideUpdateGroupUseCase(userRepository: UserRepository): UpdateGroupUseCase {
         return UpdateGroupUseCase(userRepository)
     }
 
+    @Provides
+    @Singleton
     fun provideDeleteGroupUseCase(userRepository: UserRepository): DeleteGroupUseCase {
         return DeleteGroupUseCase(userRepository)
     }
 
     // --- Template ---
 
+    @Provides
+    @Singleton
     fun provideCreateTemplateUseCase(userRepository: UserRepository): CreateTemplateUseCase {
         return CreateTemplateUseCase(userRepository)
     }
 
+    @Provides
+    @Singleton
     fun provideUpdateTemplateUseCase(userRepository: UserRepository): UpdateTemplateUseCase {
         return UpdateTemplateUseCase(userRepository)
     }
 
+    @Provides
+    @Singleton
     fun provideDeleteTemplateUseCase(userRepository: UserRepository): DeleteTemplateUseCase {
         return DeleteTemplateUseCase(userRepository)
     }
 
-
+    @Provides
+    @Singleton
     fun provideUserSubscribeUseCase(userRepository: UserRepository): UserSubscribeUseCase {
         return UserSubscribeUseCase(userRepository)
     }
 
+    @Provides
+    @Singleton
     fun provideUserCancelSubscribeUseCase(userRepository: UserRepository): UserCancelSubscribeUseCase {
         return UserCancelSubscribeUseCase(userRepository)
     }

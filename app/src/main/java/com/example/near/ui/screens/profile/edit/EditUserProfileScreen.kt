@@ -1,7 +1,7 @@
 package com.example.near.ui.screens.profile.edit
 
+import android.content.Context
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,10 +21,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -43,7 +41,6 @@ import com.example.near.ui.views.SecondaryHeaderTextInfo
 import com.example.near.ui.views.TextFieldLabel
 import com.example.near.ui.views.TextFieldPlaceholder
 import com.example.near.ui.views.textFieldColors
-import kotlinx.coroutines.launch
 
 @Composable
 fun EditUserProfileScreen(
@@ -54,69 +51,71 @@ fun EditUserProfileScreen(
 
     val uiState by viewModel.uiState
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
 
-    // Обработка состояний UI
-    LaunchedEffect(uiState) {
-        when (uiState) {
-            is UIState.Success -> {
-                // Закрываем экран при успешном обновлении
-                navController.popBackStack()
-                // Показываем подтверждение
-                scope.launch {
-                    Toast.makeText(
-                        context,
-                        "Profile updated successfully",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-            is UIState.Error -> {
-                // Показываем ошибку
-                scope.launch {
-                    Toast.makeText(
-                        context,
-                        "Operation failed",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-            else -> {}
-        }
-    }
+    HandleUiState(uiState, navController, context)
 
-    // Индикатор загрузки
-    if (uiState is UIState.Loading) {
-        LoadingOverlay()
-    }
-
-    Box(modifier.fillMaxSize()) {
-        Column(
-            Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-        ) {
-            SecondaryHeaderTextInfo(
-                text = stringResource(R.string.edit_profile),
-                modifier = Modifier.padding(vertical = 16.dp)
-            ) { navController.popBackStack() }
-
-            ProfileForm(viewModel)
-        }
-
+    Box(modifier.fillMaxSize().padding(16.dp)) {
+        LoadingIndicator(uiState)
+        ScrollableForms(viewModel, navController)
         SaveButton(
             modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .padding(16.dp),
-            onClick = { viewModel.submitChanges() }
+                .align(Alignment.BottomCenter),
+            onClick = viewModel::submitChanges
         )
     }
 }
 
 @Composable
+private fun HandleUiState(
+    state: UIState,
+    navController: NavController,
+    context: Context
+) {
+    LaunchedEffect(state) {
+        when (state) {
+            is UIState.Success -> {
+                navController.popBackStack()
+                Toast.makeText(
+                    context,
+                    "Profile updated successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            is UIState.Error -> {
+                Toast.makeText(
+                    context,
+                    state.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            else -> {}
+        }
+    }
+}
+
+@Composable
+private fun ScrollableForms(
+    viewModel: EditUserProfileViewModel,
+    navController: NavController
+) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
+        SecondaryHeaderTextInfo(
+            text = stringResource(R.string.edit_profile),
+            modifier = Modifier.padding(vertical = 16.dp)
+        ) { navController.popBackStack() }
+
+        ProfileForm(viewModel)
+        Spacer(Modifier.height(80.dp))
+    }
+}
+
+@Composable
 private fun ProfileForm(viewModel: EditUserProfileViewModel) {
-    Column(Modifier.padding(horizontal = 16.dp)) {
+    Column(Modifier) {
         PersonalInfoSection(viewModel)
         LocationSection(viewModel)
     }
@@ -189,13 +188,12 @@ private fun EditProfileField(
 }
 
 @Composable
-private fun SaveButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
-) {
+private fun SaveButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Button(
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = CustomTheme.colors.orange,
@@ -210,13 +208,15 @@ private fun SaveButton(
 }
 
 @Composable
-private fun LoadingOverlay() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
+private fun LoadingIndicator(state: UIState) {
+    if (state is UIState.Loading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
     }
 }
 

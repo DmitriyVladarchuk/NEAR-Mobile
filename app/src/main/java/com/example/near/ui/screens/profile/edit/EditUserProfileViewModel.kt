@@ -6,9 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.near.domain.models.NotificationOptionRequest
 import com.example.near.domain.models.User
 import com.example.near.domain.models.common.UIState
 import com.example.near.domain.usecase.GetUserUseCase
+import com.example.near.domain.usecase.user.GetNotificationOptionsUseCase
 import com.example.near.domain.usecase.user.UpdateUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,6 +20,7 @@ import javax.inject.Inject
 class EditUserProfileViewModel @Inject constructor(
     private val updateUserUseCase: UpdateUserUseCase,
     private val getUserUseCase: GetUserUseCase,
+    private val getNotificationOptionsUseCase: GetNotificationOptionsUseCase,
 ) : ViewModel() {
 
     private var user: User? = null
@@ -54,7 +57,6 @@ class EditUserProfileViewModel @Inject constructor(
         get() = _district
         set(value) { _district = value }
 
-    // TODO добавить это поле
     private var _selectedOptions by mutableStateOf<List<Int>>(emptyList())
     var selectedOptions
         get() = _selectedOptions
@@ -76,10 +78,26 @@ class EditUserProfileViewModel @Inject constructor(
                     _city = user!!.city
                     _district = user!!.district
                 }
+
+                val optionsResult = getNotificationOptionsUseCase()
+                if (optionsResult.isSuccess) {
+                    _selectedOptions = optionsResult.getOrNull()?.map { it.id } ?: emptyList()
+                } else {
+                    UIState.Error("Failed to load notification options")
+                }
+
                 _uiState.value = UIState.Idle
             } catch (e: Exception) {
                 _uiState.value = UIState.Error("Failed to load user data")
             }
+        }
+    }
+
+    fun toggleNotificationOption(optionId: Int) {
+        _selectedOptions = if (_selectedOptions.contains(optionId)) {
+            _selectedOptions - optionId
+        } else {
+            _selectedOptions + optionId
         }
     }
 
