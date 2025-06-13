@@ -3,6 +3,7 @@ package com.example.near.data.repository
 import android.util.Log
 import com.example.near.data.API.UserService
 import com.example.near.data.datastore.SessionManager
+import com.example.near.data.mapper.toDomain
 import com.example.near.data.models.FcmTokenRequest
 import com.example.near.data.models.FriendRequest
 import com.example.near.data.models.GroupActionRequest
@@ -15,7 +16,8 @@ import com.example.near.data.models.TemplateCreateRequest
 import com.example.near.data.models.community.CommunityActionRequest
 import com.example.near.domain.models.AllFriendsInfoResponse
 import com.example.near.domain.models.EmergencyType
-import com.example.near.domain.models.NotificationOption
+import com.example.near.domain.models.NotificationOptionRequest
+import com.example.near.domain.models.user.NotificationOption
 import com.example.near.domain.models.User
 import com.example.near.domain.models.UserTemplate
 import com.example.near.domain.models.UserUpdateRequest
@@ -35,7 +37,7 @@ class UserRepositoryImpl @Inject constructor(
         birthday: String,
         phoneNumber: String,
         telegramShortName: String,
-        selectedOptions: List<NotificationOption>
+        selectedOptions: List<NotificationOptionRequest>
     ): Result<Unit> {
         return try {
             Log.d("Test", SignUpRequest(
@@ -80,6 +82,24 @@ class UserRepositoryImpl @Inject constructor(
                 } ?: Result.failure(Exception("Empty response body"))
             } else {
                 Result.failure(Exception("Login failed: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getNotificationOptions(): Result<List<NotificationOption>> {
+        return try {
+            val response = userService.getNotificationOptions(
+                "Bearer ${sessionManager.authToken!!.accessToken}"
+            )
+            if (response.isSuccessful) {
+                response.body()?.let { options ->
+                    Result.success(options.map { it.toDomain() })
+                } ?: Result.failure(Exception("Empty response body"))
+            } else {
+                val errorBody = response.errorBody()?.string() ?: ""
+                Result.failure(Exception("Error ${response.code()}: $errorBody"))
             }
         } catch (e: Exception) {
             Result.failure(e)

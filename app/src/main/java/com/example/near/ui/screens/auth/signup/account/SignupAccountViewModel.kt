@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.domain.models.NotificationOption
+import com.example.near.domain.models.NotificationOptionRequest
 import com.example.near.domain.usecase.user.auth.SignUpUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -23,9 +23,9 @@ class SignupAccountViewModel @Inject constructor(
     var phone by mutableStateOf("")
     var telegramShortName by mutableStateOf("")
 
-    val selectedNotifications = mutableStateOf(setOf<NotificationOption>())
+    val selectedNotifications = mutableStateOf(setOf<NotificationOptionRequest>())
 
-    fun toggleNotification(option: NotificationOption) {
+    fun toggleNotification(option: NotificationOptionRequest) {
         selectedNotifications.value = if (selectedNotifications.value.contains(option)) {
             selectedNotifications.value - option
         } else {

@@ -1,6 +1,6 @@
 package com.example.near.data.models
 
-import com.example.near.domain.models.NotificationOption
+import com.example.near.domain.models.NotificationOptionRequest
 
 data class SignUpRequest(
     val userName: String,
@@ -10,5 +10,5 @@ data class SignUpRequest(
     val birthday: String,
     val phoneNumber: String,
     val telegramShortName: String,
-    val selectedOptions: List<NotificationOption>
+    val selectedOptions: List<NotificationOptionRequest>
 )

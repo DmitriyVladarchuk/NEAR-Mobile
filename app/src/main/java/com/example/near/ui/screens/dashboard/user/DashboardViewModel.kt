@@ -5,11 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.domain.models.NotificationOption
 import com.example.near.domain.models.UserTemplate
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.user.template.DeleteTemplateUseCase
-import com.example.near.domain.usecase.user.template.UpdateTemplateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -50,7 +50,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
 import com.example.near.domain.models.EmergencyType
-import com.example.near.domain.models.NotificationOption
 import com.example.near.domain.models.UserTemplate
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography

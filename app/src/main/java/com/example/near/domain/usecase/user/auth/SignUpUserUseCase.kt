@@ -1,6 +1,6 @@
 package com.example.near.domain.usecase.user.auth
 
-import com.example.near.domain.models.NotificationOption
+import com.example.near.domain.models.NotificationOptionRequest
 import com.example.near.domain.repository.UserRepository
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ class SignUpUserUseCase @Inject constructor(
         birthday: String,
         phoneNumber: String,
         telegramShortName: String,
-        selectedOptions: List<NotificationOption>
+        selectedOptions: List<NotificationOptionRequest>
     ): Result<Unit> {
         val result = userRepository.signUp(userName, email, password, location, birthday, phoneNumber, telegramShortName, selectedOptions)
         if (result.isSuccess)

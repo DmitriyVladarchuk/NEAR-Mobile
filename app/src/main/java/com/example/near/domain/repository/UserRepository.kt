@@ -1,10 +1,12 @@
 package com.example.near.domain.repository
 
 import com.example.near.data.models.LoginResponse
+import com.example.near.data.models.user.NotificationOptionResponse
 import com.example.near.domain.models.AllFriendsInfoResponse
 import com.example.near.domain.models.EmergencyType
-import com.example.near.domain.models.NotificationOption
+import com.example.near.domain.models.NotificationOptionRequest
 import com.example.near.domain.models.User
+import com.example.near.domain.models.user.NotificationOption
 
 interface UserRepository {
     suspend fun signUp(
@@ -15,13 +17,15 @@ interface UserRepository {
         birthday: String,
         phoneNumber: String,
         telegramShortName: String,
-        selectedOptions: List<NotificationOption>
+        selectedOptions: List<NotificationOptionRequest>
     ): Result<Unit>
 
     suspend fun login(
         email: String,
         password: String,
     ): Result<LoginResponse>
+
+    suspend fun getNotificationOptions(): Result<List<NotificationOption>>
 
     suspend fun refreshToken(token: String): Result<LoginResponse>
 

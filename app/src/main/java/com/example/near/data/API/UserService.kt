@@ -10,6 +10,7 @@ import com.example.near.data.models.RefreshTokenRequest
 import com.example.near.data.models.SignUpRequest
 import com.example.near.data.models.TemplateCreateRequest
 import com.example.near.data.models.community.CommunityActionRequest
+import com.example.near.data.models.user.NotificationOptionResponse
 import com.example.near.domain.models.AllFriendsInfoResponse
 import com.example.near.domain.models.User
 import com.example.near.domain.models.UserTemplate
@@ -52,6 +53,11 @@ interface UserService {
         @Header("Authorization") token: String,
         @Body request: UserUpdateRequest
     ): Response<Void>
+
+    @GET("NEAR/user/get-notification-options")
+    suspend fun getNotificationOptions(
+        @Header("Authorization") token: String
+    ): Response<List<NotificationOptionResponse>>
 
     @POST("NEAR/token/account")
     suspend fun refreshToken(
