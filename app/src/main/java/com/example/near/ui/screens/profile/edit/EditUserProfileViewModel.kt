@@ -1,12 +1,13 @@
 package com.example.near.ui.screens.profile.edit
 
-import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.domain.models.User
+import com.example.near.domain.models.common.UIState
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.user.UpdateUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -59,33 +60,49 @@ class EditUserProfileViewModel @Inject constructor(
         get() = _selectedOptions
         private set(value) { _selectedOptions = value }
 
+    private val _uiState = mutableStateOf<UIState>(UIState.Idle)
+    val uiState: State<UIState> = _uiState
+
     init {
         viewModelScope.launch {
-            user = getUserUseCase()
-            user.let {
-                _firstName = user!!.firstName
-                _lastName = user!!.lastName
-                _birthday = user!!.birthday
-                _country = user!!.country
-                _city = user!!.city
-                _district = user!!.district
+            _uiState.value = UIState.Loading
+            try {
+                user = getUserUseCase()
+                user?.let {
+                    _firstName = user!!.firstName
+                    _lastName = user!!.lastName
+                    _birthday = user!!.birthday
+                    _country = user!!.country
+                    _city = user!!.city
+                    _district = user!!.district
+                }
+                _uiState.value = UIState.Idle
+            } catch (e: Exception) {
+                _uiState.value = UIState.Error("Failed to load user data")
             }
         }
     }
 
     fun submitChanges() {
         viewModelScope.launch {
-            val result = updateUserUseCase(
-                firstName = firstName.takeIf { it.isNotBlank() },
-                lastName = lastName.takeIf { it.isNotBlank() },
-                birthday = birthday.takeIf { it.isNotBlank() },
-                country = country.takeIf { it.isNotBlank() },
-                city = city.takeIf { it.isNotBlank() },
-                district = district.takeIf { it.isNotBlank() },
-                selectedOptions = selectedOptions.takeIf { it.isNotEmpty() }
-            )
+            _uiState.value = UIState.Loading
+            try {
+                val result = updateUserUseCase(
+                    firstName = firstName.takeIf { it.isNotBlank() },
+                    lastName = lastName.takeIf { it.isNotBlank() },
+                    birthday = birthday.takeIf { it.isNotBlank() },
+                    country = country.takeIf { it.isNotBlank() },
+                    city = city.takeIf { it.isNotBlank() },
+                    district = district.takeIf { it.isNotBlank() },
+                    selectedOptions = selectedOptions.takeIf { it.isNotEmpty() }
+                )
 
-            Log.d("testEdit", result.isSuccess.toString())
+                if (result.isSuccess) _uiState.value = UIState.Success
+                else _uiState.value = UIState.Error("Update failed")
+
+            } catch (e: Exception) {
+                _uiState.value = UIState.Error("Update failed")
+            }
         }
     }
 }

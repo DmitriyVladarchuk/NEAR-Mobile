@@ -1,5 +1,7 @@
 package com.example.near.ui.screens.profile.edit
 
+import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,11 +15,17 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
@@ -28,12 +36,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
+import com.example.near.domain.models.common.UIState
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.views.SecondaryHeaderTextInfo
 import com.example.near.ui.views.TextFieldLabel
 import com.example.near.ui.views.TextFieldPlaceholder
 import com.example.near.ui.views.textFieldColors
+import kotlinx.coroutines.launch
 
 @Composable
 fun EditUserProfileScreen(
@@ -41,6 +51,45 @@ fun EditUserProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: EditUserProfileViewModel = hiltViewModel()
 ) {
+
+    val uiState by viewModel.uiState
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    // Обработка состояний UI
+    LaunchedEffect(uiState) {
+        when (uiState) {
+            is UIState.Success -> {
+                // Закрываем экран при успешном обновлении
+                navController.popBackStack()
+                // Показываем подтверждение
+                scope.launch {
+                    Toast.makeText(
+                        context,
+                        "Profile updated successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            is UIState.Error -> {
+                // Показываем ошибку
+                scope.launch {
+                    Toast.makeText(
+                        context,
+                        "Operation failed",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            else -> {}
+        }
+    }
+
+    // Индикатор загрузки
+    if (uiState is UIState.Loading) {
+        LoadingOverlay()
+    }
+
     Box(modifier.fillMaxSize()) {
         Column(
             Modifier
@@ -149,7 +198,7 @@ private fun SaveButton(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = CustomTheme.colors.container_2,
+            containerColor = CustomTheme.colors.orange,
             contentColor = CustomTheme.colors.content
         )
     ) {
@@ -157,6 +206,17 @@ private fun SaveButton(
             text = stringResource(R.string.save_changes),
             style = AppTypography.bodyMedium
         )
+    }
+}
+
+@Composable
+private fun LoadingOverlay() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
     }
 }
 

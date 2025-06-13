@@ -2,7 +2,7 @@ package com.example.near.data.datastore
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.near.domain.models.ThemeType
+import com.example.near.domain.models.common.ThemeType
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
