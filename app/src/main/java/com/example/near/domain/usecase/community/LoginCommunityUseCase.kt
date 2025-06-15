@@ -1,7 +1,7 @@
 package com.example.near.domain.usecase.community
 
-import com.example.near.data.datastore.AuthDataStorage
-import com.example.near.data.datastore.SessionManager
+import com.example.near.data.storage.AuthDataStorage
+import com.example.near.data.storage.SessionManager
 import com.example.near.domain.models.common.AuthTokens
 import com.example.near.domain.repository.CommunityRepository
 import javax.inject.Inject

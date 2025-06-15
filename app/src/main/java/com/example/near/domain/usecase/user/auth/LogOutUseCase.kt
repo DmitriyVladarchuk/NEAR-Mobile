@@ -1,7 +1,7 @@
 package com.example.near.domain.usecase.user.auth
 
-import com.example.near.data.datastore.AuthDataStorage
-import com.example.near.data.datastore.SessionManager
+import com.example.near.data.storage.AuthDataStorage
+import com.example.near.data.storage.SessionManager
 import javax.inject.Inject
 
 class LogOutUseCase @Inject constructor(

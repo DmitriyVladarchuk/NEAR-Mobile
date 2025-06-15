@@ -1,6 +1,6 @@
 package com.example.near.domain.repository
 
-import com.example.near.data.models.community.CommunityResponse
+import com.example.near.data.community.models.CommunityResponse
 import com.example.near.domain.models.common.AuthTokens
 import com.example.near.domain.models.user.EmergencyType
 

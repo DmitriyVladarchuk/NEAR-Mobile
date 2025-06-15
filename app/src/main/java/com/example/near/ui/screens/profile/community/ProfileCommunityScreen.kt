@@ -20,7 +20,6 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
-import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Notifications
@@ -47,7 +46,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
-import com.example.near.data.models.community.CommunityResponse
+import com.example.near.data.community.models.CommunityResponse
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme

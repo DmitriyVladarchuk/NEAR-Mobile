@@ -1,8 +1,8 @@
 package com.example.near.DI
 
-import com.example.near.data.datastore.AuthDataStorage
-import com.example.near.data.datastore.SessionManager
-import com.example.near.data.datastore.SettingsDataStorage
+import com.example.near.data.storage.AuthDataStorage
+import com.example.near.data.storage.SessionManager
+import com.example.near.data.storage.SettingsDataStorage
 import com.example.near.domain.repository.CommunityRepository
 import com.example.near.domain.repository.UserRepository
 import com.example.near.domain.usecase.user.friends.AddFriendRequestUseCase

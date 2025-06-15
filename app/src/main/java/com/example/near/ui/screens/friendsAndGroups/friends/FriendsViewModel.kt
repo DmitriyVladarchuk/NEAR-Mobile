@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.data.models.user.AllFriendsInfoResponse
 import com.example.near.domain.models.user.AllFriendsInfo
 import com.example.near.domain.models.user.User
 import com.example.near.domain.usecase.GetUserByIdUseCase

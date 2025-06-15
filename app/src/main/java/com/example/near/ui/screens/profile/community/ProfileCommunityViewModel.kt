@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.data.models.community.CommunityResponse
+import com.example.near.data.community.models.CommunityResponse
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.community.GetCommunityUseCase
 import com.example.near.domain.usecase.user.UserCancelSubscribeUseCase

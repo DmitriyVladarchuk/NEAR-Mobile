@@ -1,8 +1,8 @@
 package com.example.near.service
 
 import android.util.Log
-import com.example.near.data.datastore.AuthDataStorage
-import com.example.near.data.datastore.SessionManager
+import com.example.near.data.storage.AuthDataStorage
+import com.example.near.data.storage.SessionManager
 import com.example.near.domain.repository.CommunityRepository
 import com.example.near.domain.repository.UserRepository
 import com.google.firebase.messaging.FirebaseMessaging

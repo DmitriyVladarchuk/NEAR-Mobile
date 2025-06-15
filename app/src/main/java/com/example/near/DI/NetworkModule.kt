@@ -1,7 +1,7 @@
 package com.example.near.DI
 
-import com.example.near.data.API.CommunityService
-import com.example.near.data.API.UserService
+import com.example.near.data.api.CommunityService
+import com.example.near.data.api.UserService
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module

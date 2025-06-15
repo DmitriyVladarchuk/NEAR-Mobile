@@ -1,18 +1,16 @@
 package com.example.near.DI
 
 import android.content.Context
-import com.example.near.data.API.CommunityService
-import com.example.near.data.API.UserService
-import com.example.near.data.datastore.AuthDataStorage
-import com.example.near.data.datastore.SessionManager
-import com.example.near.data.datastore.SettingsDataStorage
-import com.example.near.data.repository.CommunityRepositoryImpl
-import com.example.near.data.repository.UserRepositoryImpl
+import com.example.near.data.api.CommunityService
+import com.example.near.data.api.UserService
+import com.example.near.data.storage.AuthDataStorage
+import com.example.near.data.storage.SessionManager
+import com.example.near.data.storage.SettingsDataStorage
+import com.example.near.data.community.repositories.CommunityRepositoryImpl
+import com.example.near.data.user.repositories.UserRepositoryImpl
 import com.example.near.domain.repository.CommunityRepository
 import com.example.near.domain.repository.UserRepository
 import com.example.near.service.FcmTokenManager
-import com.example.near.service.MyFirebaseMessagingService
-import com.google.firebase.messaging.FirebaseMessagingService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

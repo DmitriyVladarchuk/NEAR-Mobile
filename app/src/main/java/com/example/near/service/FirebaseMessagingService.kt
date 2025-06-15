@@ -4,14 +4,8 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.example.near.App
 import com.example.near.R
-import com.example.near.data.datastore.AuthDataStorage
-import com.example.near.data.datastore.SessionManager
-import com.example.near.domain.repository.CommunityRepository
-import com.example.near.domain.repository.UserRepository
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
