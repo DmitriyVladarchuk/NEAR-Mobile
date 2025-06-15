@@ -1,7 +1,7 @@
 package com.example.near.data.models.community
 
-import com.example.near.domain.models.UserFriend
-import com.example.near.domain.models.UserTemplate
+import com.example.near.domain.models.user.UserFriend
+import com.example.near.domain.models.user.UserTemplate
 
 data class CommunityResponse(
     val id: String,

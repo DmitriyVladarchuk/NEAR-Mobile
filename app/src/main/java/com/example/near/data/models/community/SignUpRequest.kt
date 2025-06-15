@@ -1,6 +1,4 @@
-package com.example.near.data.models
-
-import com.example.near.domain.models.NotificationOptionRequest
+package com.example.near.data.models.community
 
 data class SignUpRequest(
     val userName: String,

@@ -1,8 +1,8 @@
 package com.example.near.domain.repository
 
-import com.example.near.data.models.LoginResponse
 import com.example.near.data.models.community.CommunityResponse
-import com.example.near.domain.models.EmergencyType
+import com.example.near.domain.models.common.AuthTokens
+import com.example.near.domain.models.user.EmergencyType
 
 interface CommunityRepository {
     suspend fun signUp(
@@ -16,11 +16,11 @@ interface CommunityRepository {
     suspend fun login(
         email: String,
         password: String,
-    ): Result<LoginResponse>
+    ): Result<AuthTokens>
 
     suspend fun getCommunityInfo(): Result<CommunityResponse>
 
-    suspend fun refreshToken(token: String): Result<LoginResponse>
+    suspend fun refreshToken(token: String): Result<AuthTokens>
 
     suspend fun sendFcmToken(token: String): Result<Unit>
 

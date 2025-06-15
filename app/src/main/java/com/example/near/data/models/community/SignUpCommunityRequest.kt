@@ -1,6 +1,6 @@
 package com.example.near.data.models.community
 
-import com.example.near.domain.models.EmergencyType
+import com.example.near.domain.models.user.EmergencyType
 
 data class SignUpCommunityRequest(
     val communityName: String,

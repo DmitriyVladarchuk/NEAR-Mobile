@@ -1,17 +1,17 @@
 package com.example.near.data.API
 
-import com.example.near.data.models.FcmTokenRequest
-import com.example.near.data.models.LoginRequest
-import com.example.near.data.models.LoginResponse
-import com.example.near.data.models.RefreshTokenRequest
-import com.example.near.data.models.TemplateCreateRequest
+import com.example.near.data.shared.models.FcmTokenRequest
+import com.example.near.data.models.community.LoginRequest
+import com.example.near.data.shared.models.RefreshTokenRequest
+import com.example.near.data.models.user.TemplateCreateRequest
 import com.example.near.data.models.community.CommunityResponse
 import com.example.near.data.models.community.SignUpCommunityRequest
-import com.example.near.domain.models.TemplateSend
-import com.example.near.domain.models.UserTemplate
+import com.example.near.data.shared.models.LoginResponse
+import com.example.near.data.shared.models.TemplateSendRequest
+import com.example.near.domain.models.common.AuthTokens
+import com.example.near.domain.models.user.UserTemplate
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.Header
@@ -27,7 +27,7 @@ interface CommunityService {
     @POST("NEAR/login/community")
     suspend fun login(
         @Body request: LoginRequest
-    ): Response<LoginResponse>
+    ): Response<AuthTokens>
 
     @GET("NEAR/community/me")
     suspend fun getCommunityInfo(
@@ -68,7 +68,7 @@ interface CommunityService {
     @POST("NEAR/community/template/send")
     suspend fun sendTemplate(
         @Header("Authorization") token: String,
-        @Body request: TemplateSend
+        @Body request: TemplateSendRequest
     ): Response<Void>
 
 }

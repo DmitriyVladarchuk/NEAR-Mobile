@@ -4,23 +4,23 @@ import android.util.Log
 import com.example.near.data.API.UserService
 import com.example.near.data.datastore.SessionManager
 import com.example.near.data.mapper.toDomain
-import com.example.near.data.models.FcmTokenRequest
-import com.example.near.data.models.FriendRequest
-import com.example.near.data.models.GroupActionRequest
-import com.example.near.data.models.GroupCreateRequest
-import com.example.near.data.models.LoginRequest
-import com.example.near.data.models.LoginResponse
-import com.example.near.data.models.RefreshTokenRequest
-import com.example.near.data.models.SignUpRequest
-import com.example.near.data.models.TemplateCreateRequest
+import com.example.near.data.mapper.toRequest
 import com.example.near.data.models.community.CommunityActionRequest
-import com.example.near.domain.models.AllFriendsInfoResponse
-import com.example.near.domain.models.EmergencyType
-import com.example.near.domain.models.NotificationOptionRequest
+import com.example.near.data.models.user.FriendRequest
+import com.example.near.data.models.user.GroupActionRequest
+import com.example.near.data.models.user.GroupCreateRequest
+import com.example.near.data.models.user.TemplateCreateRequest
+import com.example.near.data.models.user.UserUpdateRequest
+import com.example.near.data.shared.models.FcmTokenRequest
+import com.example.near.data.shared.models.RefreshTokenRequest
+import com.example.near.domain.models.common.AuthTokens
+import com.example.near.domain.models.user.AllFriendsInfo
+import com.example.near.domain.models.user.EmergencyType
+import com.example.near.domain.models.user.LoginCredentials
 import com.example.near.domain.models.user.NotificationOption
-import com.example.near.domain.models.User
-import com.example.near.domain.models.UserTemplate
-import com.example.near.domain.models.UserUpdateRequest
+import com.example.near.domain.models.user.User
+import com.example.near.domain.models.user.UserSignUp
+import com.example.near.domain.models.user.UserTemplate
 import com.example.near.domain.repository.UserRepository
 import javax.inject.Inject
 
@@ -29,55 +29,30 @@ class UserRepositoryImpl @Inject constructor(
     private val sessionManager: SessionManager
 ) : UserRepository {
 
+    // Исправлено
     override suspend fun signUp(
-        userName: String,
-        email: String,
-        password: String,
-        location: String,
-        birthday: String,
-        phoneNumber: String,
-        telegramShortName: String,
-        selectedOptions: List<NotificationOptionRequest>
+        userSignUp: UserSignUp
     ): Result<Unit> {
         return try {
-            Log.d("Test", SignUpRequest(
-                userName,
-                email,
-                password,
-                location,
-                birthday,
-                phoneNumber,
-                telegramShortName,
-                selectedOptions
-            ).toString())
-            val response = userService.signUp(
-                SignUpRequest(
-                    userName,
-                    email,
-                    password,
-                    location,
-                    birthday,
-                    phoneNumber,
-                    telegramShortName,
-                    selectedOptions
-                )
-            )
+            val request = userSignUp.toRequest()
+            val response = userService.signUp(request)
+
             if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
                 val errorBody = response.errorBody()?.string() ?: ""
-                Result.failure(Exception("Error ${response.code()}: $errorBody"))
+                Result.failure(Exception("SignUp error ${response.code()}: $errorBody"))
             }
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
-
-    override suspend fun login(email: String, password: String): Result<LoginResponse> {
+    // Исправлено
+    override suspend fun login(credentials: LoginCredentials): Result<AuthTokens> {
         return try {
-            val response = userService.login(LoginRequest(email, password))
+            val response = userService.login(credentials.toRequest())
             if (response.isSuccessful) {
-                response.body()?.let {
+                response.body()?.toDomain()?.let {
                     Result.success(it)
                 } ?: Result.failure(Exception("Empty response body"))
             } else {
@@ -87,7 +62,7 @@ class UserRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
-
+    // Исправлено
     override suspend fun getNotificationOptions(): Result<List<NotificationOption>> {
         return try {
             val response = userService.getNotificationOptions(
@@ -105,22 +80,23 @@ class UserRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
-
-    override suspend fun refreshToken(token: String): Result<LoginResponse> {
+    // Исправлено
+    override suspend fun refreshToken(token: String): Result<AuthTokens> {
         return try {
             val response = userService.refreshToken(RefreshTokenRequest(token))
+
             if (response.isSuccessful) {
-                response.body()?.let {
+                response.body()?.toDomain()?.let {
                     Result.success(it)
                 } ?: Result.failure(Exception("Empty response body"))
             } else {
-                Result.failure(Exception("Failed to send token request"))
+                Result.failure(Exception("Refresh failed: ${response.code()}"))
             }
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
-
+    // Исправлено
     override suspend fun sendFcmToken(token: String): Result<Unit> {
         return try {
             val response = userService.sendFcmToken("Bearer ${sessionManager.authToken!!.accessToken}", FcmTokenRequest(token))
@@ -133,12 +109,12 @@ class UserRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
-
+    // Исправлено
     override suspend fun getUserInfo(): Result<User> {
         return try {
             val response = userService.getUserInfo("Bearer ${sessionManager.authToken!!.accessToken}")
             if (response.isSuccessful) {
-                response.body()?.let {
+                response.body()?.toDomain()?.let {
                     Result.success(it)
                 } ?: Result.failure(Exception("Empty response body"))
             } else {
@@ -149,12 +125,12 @@ class UserRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
-
+    // Исправлено
     override suspend fun getUserById(id: String): Result<User> {
         return try {
             val response = userService.getUserById("Bearer ${sessionManager.authToken!!.accessToken}", id)
             if (response.isSuccessful) {
-                response.body()?.let {
+                response.body()?.toDomain()?.let {
                     Result.success(it)
                 } ?: Result.failure(Exception("Empty response body"))
             } else {
@@ -203,13 +179,13 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllFriendsInfo(): Result<AllFriendsInfoResponse> {
+    override suspend fun getAllFriendsInfo(): Result<AllFriendsInfo> {
         return try {
             val response = userService.getAllFriendsInfo(
                 "Bearer ${sessionManager.authToken!!.accessToken}"
             )
             if (response.isSuccessful) {
-                response.body()?.let {
+                response.body()?.toDomain()?.let {
                     Result.success(it)
                 } ?: Result.failure(Exception("Empty response body"))
             } else {

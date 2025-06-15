@@ -1,38 +1,27 @@
 package com.example.near.domain.repository
 
-import com.example.near.data.models.LoginResponse
-import com.example.near.data.models.user.NotificationOptionResponse
-import com.example.near.domain.models.AllFriendsInfoResponse
-import com.example.near.domain.models.EmergencyType
-import com.example.near.domain.models.NotificationOptionRequest
-import com.example.near.domain.models.User
+import com.example.near.domain.models.user.EmergencyType
+import com.example.near.domain.models.user.User
+import com.example.near.domain.models.common.AuthTokens
+import com.example.near.domain.models.user.AllFriendsInfo
+import com.example.near.domain.models.user.LoginCredentials
 import com.example.near.domain.models.user.NotificationOption
+import com.example.near.domain.models.user.UserSignUp
 
 interface UserRepository {
-    suspend fun signUp(
-        userName: String,
-        email: String,
-        password: String,
-        location: String,
-        birthday: String,
-        phoneNumber: String,
-        telegramShortName: String,
-        selectedOptions: List<NotificationOptionRequest>
-    ): Result<Unit>
-
-    suspend fun login(
-        email: String,
-        password: String,
-    ): Result<LoginResponse>
-
+    // Исправил
+    suspend fun signUp(userSignUp: UserSignUp): Result<Unit>
+    // Исправил
+    suspend fun login(credentials: LoginCredentials): Result<AuthTokens>
+    // Исправил
     suspend fun getNotificationOptions(): Result<List<NotificationOption>>
-
-    suspend fun refreshToken(token: String): Result<LoginResponse>
-
+    // Исправил
+    suspend fun refreshToken(token: String): Result<AuthTokens>
+    // Исправил
     suspend fun sendFcmToken(token: String): Result<Unit>
-
+    // Исправил
     suspend fun getUserInfo(): Result<User>
-
+    // Исправил
     suspend fun getUserById(id: String): Result<User>
 
     suspend fun updateUser(
@@ -47,7 +36,7 @@ interface UserRepository {
 
     // --- Friends Actions ---
 
-    suspend fun getAllFriendsInfo(): Result<AllFriendsInfoResponse>
+    suspend fun getAllFriendsInfo(): Result<AllFriendsInfo>
 
     suspend fun sendFriendRequest(friendId: String): Result<Unit>
 

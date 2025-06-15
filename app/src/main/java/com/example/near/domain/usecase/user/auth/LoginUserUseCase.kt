@@ -2,7 +2,8 @@ package com.example.near.domain.usecase.user.auth
 
 import com.example.near.data.datastore.AuthDataStorage
 import com.example.near.data.datastore.SessionManager
-import com.example.near.data.models.LoginResponse
+import com.example.near.domain.models.common.AuthTokens
+import com.example.near.domain.models.user.LoginCredentials
 import com.example.near.domain.repository.UserRepository
 import javax.inject.Inject
 
@@ -11,11 +12,12 @@ class LoginUserUseCase @Inject constructor(
     private val authDataStorage: AuthDataStorage,
     private val sessionManager: SessionManager
 ) {
-    suspend operator fun invoke(email: String, password: String): Result<LoginResponse> {
-        return userRepository.login(email, password).also { result ->
+    suspend operator fun invoke(email: String, password: String): Result<AuthTokens> {
+        return userRepository.login(LoginCredentials(email, password)).also { result ->
             if (result.isSuccess) {
-                authDataStorage.saveCredentials(result.getOrThrow().refreshToken!!, false)
-                sessionManager.saveAuthToken(result.getOrNull()!!)
+                val tokens = result.getOrThrow()
+                authDataStorage.saveCredentials(tokens.refreshToken, false)
+                sessionManager.saveAuthToken(tokens)
 
                 // Отправка токена
                 authDataStorage.getFcmToken()?.let { token ->

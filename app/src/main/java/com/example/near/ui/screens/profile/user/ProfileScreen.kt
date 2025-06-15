@@ -48,8 +48,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
-import com.example.near.domain.models.NotificationOptionRequest
-import com.example.near.domain.models.User
+import com.example.near.data.models.community.NotificationOptionRequest
+import com.example.near.domain.models.user.User
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme

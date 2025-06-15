@@ -1,6 +1,4 @@
-package com.example.near.data.models
-
-import com.google.gson.annotations.SerializedName
+package com.example.near.data.models.user
 
 data class FriendRequest(
     //@SerializedName("friendId")

@@ -6,9 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.domain.models.AllFriendsInfoResponse
-import com.example.near.domain.models.User
-import com.example.near.domain.models.UserFriend
+import com.example.near.data.models.user.AllFriendsInfoResponse
+import com.example.near.domain.models.user.AllFriendsInfo
+import com.example.near.domain.models.user.User
 import com.example.near.domain.usecase.GetUserByIdUseCase
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.user.friends.GetAllFriendsInfoUseCase
@@ -31,7 +31,7 @@ class FriendsViewModel @Inject constructor(
     var error by mutableStateOf<String?>(null)
         private set
 
-    var friendsData by mutableStateOf<AllFriendsInfoResponse?>(null)
+    var friendsData by mutableStateOf<AllFriendsInfo?>(null)
         private set
 
     var selectedTab by mutableStateOf(FriendsTab.ALL)

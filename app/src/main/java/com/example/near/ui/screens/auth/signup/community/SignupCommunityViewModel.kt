@@ -5,8 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.domain.models.EmergencyType
-import com.example.near.domain.models.emergencyTypes
+import com.example.near.domain.models.user.emergencyTypes
 import com.example.near.domain.usecase.community.SignUpCommunityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -24,7 +23,8 @@ class SignupCommunityViewModel @Inject constructor(
 
     fun onSignUpClick(navigateToDashboards: () -> Unit) {
         viewModelScope.launch {
-            if (signUpCommunityUseCase(communityName, email, password, monitoringRegion, listOf(emergencyTypes.get(0))).isSuccess) {
+            if (signUpCommunityUseCase(communityName, email, password, monitoringRegion, listOf(
+                    emergencyTypes.get(0))).isSuccess) {
                 navigateToDashboards()
             }
         }

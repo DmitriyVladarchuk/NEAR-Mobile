@@ -1,6 +1,7 @@
 package com.example.near.domain.usecase.user.auth
 
-import com.example.near.domain.models.NotificationOptionRequest
+import com.example.near.domain.models.user.SignupNotificationOption
+import com.example.near.domain.models.user.UserSignUp
 import com.example.near.domain.repository.UserRepository
 import javax.inject.Inject
 
@@ -16,9 +17,20 @@ class SignUpUserUseCase @Inject constructor(
         birthday: String,
         phoneNumber: String,
         telegramShortName: String,
-        selectedOptions: List<NotificationOptionRequest>
+        selectedOptions: List<SignupNotificationOption>
     ): Result<Unit> {
-        val result = userRepository.signUp(userName, email, password, location, birthday, phoneNumber, telegramShortName, selectedOptions)
+        val result = userRepository.signUp(
+            UserSignUp(
+                userName = userName,
+                email = email,
+                password = password,
+                phoneNumber = phoneNumber,
+                telegramShortName = telegramShortName,
+                location = location,
+                birthday = birthday,
+                selectedOptions = selectedOptions
+            )
+        )
         if (result.isSuccess)
             loginUserUseCase(email, password)
         return result

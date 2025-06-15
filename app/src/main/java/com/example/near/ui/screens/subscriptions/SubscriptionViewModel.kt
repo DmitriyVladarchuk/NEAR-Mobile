@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.domain.models.UserFriend
-import com.example.near.domain.models.UserSubscription
+import com.example.near.domain.models.user.UserFriend
+import com.example.near.domain.models.user.UserSubscription
 import com.example.near.domain.usecase.GetUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

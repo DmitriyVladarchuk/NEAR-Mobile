@@ -1,6 +1,6 @@
-package com.example.near.domain.models
+package com.example.near.domain.models.user
 
-data class AllFriendsInfoResponse(
+data class AllFriendsInfo(
     val friends: List<User>,
     val sentRequests: List<User>,
     val receivedRequests: List<User>

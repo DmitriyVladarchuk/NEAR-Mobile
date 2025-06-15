@@ -5,10 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.domain.models.AllFriendsInfoResponse
-import com.example.near.domain.models.UserFriend
-import com.example.near.domain.models.UserGroup
-import com.example.near.domain.models.UserTemplate
+import com.example.near.data.models.user.AllFriendsInfoResponse
+import com.example.near.domain.models.user.AllFriendsInfo
+import com.example.near.domain.models.user.UserFriend
+import com.example.near.domain.models.user.UserGroup
+import com.example.near.domain.models.user.UserTemplate
 import com.example.near.domain.repository.CommunityRepository
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.community.GetCommunityUseCase
@@ -28,7 +29,7 @@ class InfoTemplateViewModel @Inject constructor(
     var template by mutableStateOf<UserTemplate?>(null)
         private set
 
-    var friends by mutableStateOf<AllFriendsInfoResponse?>(null)
+    var friends by mutableStateOf<AllFriendsInfo?>(null)
         private set
 
     var subscribers by mutableStateOf<List<UserFriend>?>(null)

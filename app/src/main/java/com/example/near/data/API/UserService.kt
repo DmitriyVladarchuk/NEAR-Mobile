@@ -1,20 +1,20 @@
 package com.example.near.data.API
 
-import com.example.near.data.models.FcmTokenRequest
-import com.example.near.data.models.FriendRequest
-import com.example.near.data.models.GroupActionRequest
-import com.example.near.data.models.GroupCreateRequest
-import com.example.near.data.models.LoginRequest
-import com.example.near.data.models.LoginResponse
-import com.example.near.data.models.RefreshTokenRequest
-import com.example.near.data.models.SignUpRequest
-import com.example.near.data.models.TemplateCreateRequest
+import com.example.near.data.shared.models.FcmTokenRequest
+import com.example.near.data.models.user.FriendRequest
+import com.example.near.data.models.user.GroupActionRequest
+import com.example.near.data.models.user.GroupCreateRequest
+import com.example.near.data.models.user.TemplateCreateRequest
 import com.example.near.data.models.community.CommunityActionRequest
-import com.example.near.data.models.user.NotificationOptionResponse
-import com.example.near.domain.models.AllFriendsInfoResponse
-import com.example.near.domain.models.User
-import com.example.near.domain.models.UserTemplate
-import com.example.near.domain.models.UserUpdateRequest
+import com.example.near.data.shared.models.LoginRequest
+import com.example.near.data.shared.models.LoginResponse
+import com.example.near.data.shared.models.NotificationOptionResponse
+import com.example.near.data.shared.models.RefreshTokenRequest
+import com.example.near.data.models.user.UserResponse
+import com.example.near.data.models.user.UserSignUpRequest
+import com.example.near.data.models.user.AllFriendsInfoResponse
+import com.example.near.data.models.user.UserUpdateRequest
+import com.example.near.domain.models.user.UserTemplate
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -29,7 +29,7 @@ import retrofit2.http.Query
 interface UserService {
     @POST("NEAR/signup/account")
     suspend fun signUp(
-        @Body request: SignUpRequest
+        @Body request: UserSignUpRequest
     ): Response<Void>
 
     @POST("NEAR/login/account")
@@ -40,13 +40,13 @@ interface UserService {
     @GET("NEAR/user/me")
     suspend fun getUserInfo(
         @Header("Authorization") token: String
-    ): Response<User>
+    ): Response<UserResponse>
 
     @GET("NEAR/user/get")
     suspend fun getUserById(
         @Header("Authorization") token: String,
         @Query("id") userId: String
-    ): Response<User>
+    ): Response<UserResponse>
 
     @PATCH("NEAR/user/update")
     suspend fun updateUser(

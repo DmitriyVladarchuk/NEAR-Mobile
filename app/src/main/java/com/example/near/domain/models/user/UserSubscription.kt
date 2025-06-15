@@ -1,4 +1,4 @@
-package com.example.near.domain.models
+package com.example.near.domain.models.user
 
 data class UserSubscription(
     val id: String,

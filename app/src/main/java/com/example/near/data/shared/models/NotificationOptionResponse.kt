@@ -1,4 +1,4 @@
-package com.example.near.data.models.user
+package com.example.near.data.shared.models
 
 import com.google.gson.annotations.SerializedName
 

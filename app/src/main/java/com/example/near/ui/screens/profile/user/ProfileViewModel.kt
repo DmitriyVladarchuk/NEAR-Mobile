@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.domain.models.User
+import com.example.near.domain.models.user.User
 import com.example.near.domain.usecase.GetUserByIdUseCase
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.user.auth.LogOutUseCase

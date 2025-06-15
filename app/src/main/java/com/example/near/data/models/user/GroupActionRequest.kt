@@ -1,4 +1,4 @@
-package com.example.near.data.models
+package com.example.near.data.models.user
 
 data class GroupActionRequest(
     val id: String,

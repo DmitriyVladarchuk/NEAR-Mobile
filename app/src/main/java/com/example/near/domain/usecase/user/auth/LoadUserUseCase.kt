@@ -2,7 +2,7 @@ package com.example.near.domain.usecase.user.auth
 
 import com.example.near.data.datastore.AuthDataStorage
 import com.example.near.data.datastore.SessionManager
-import com.example.near.data.models.LoginResponse
+import com.example.near.domain.models.common.AuthTokens
 import com.example.near.domain.repository.CommunityRepository
 import com.example.near.domain.repository.UserRepository
 import javax.inject.Inject
@@ -26,8 +26,7 @@ class LoadUserUseCase @Inject constructor(
             if (result.isSuccess) {
                 result.getOrNull()?.let { token ->
                     sessionManager.saveAuthToken(
-                        LoginResponse(
-                            type = token.type,
+                        AuthTokens(
                             accessToken = token.accessToken,
                             refreshToken = credentials.first,
                             uuid = null

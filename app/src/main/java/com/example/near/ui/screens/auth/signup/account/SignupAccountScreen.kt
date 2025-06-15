@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
-import com.example.near.domain.models.NotificationOptionRequest
+import com.example.near.domain.models.user.SignupNotificationOption
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
@@ -224,19 +224,19 @@ private fun NotificationOptions(viewModel: SignupAccountViewModel) {
             NotificationChip(
                 label = stringResource(R.string.telegram),
                 isSelected = viewModel.selectedNotifications.value.any { it.id == 2 },
-                onToggle = { viewModel.toggleNotification(NotificationOptionRequest(2, "Telegram")) }
+                onToggle = { viewModel.toggleNotification(SignupNotificationOption(2, "Telegram")) }
             )
 
             NotificationChip(
                 label = stringResource(R.string.email),
                 isSelected = viewModel.selectedNotifications.value.any { it.id == 1 },
-                onToggle = { viewModel.toggleNotification(NotificationOptionRequest(1, "Email")) }
+                onToggle = { viewModel.toggleNotification(SignupNotificationOption(1, "Email")) }
             )
 
             NotificationChip(
                 label = stringResource(R.string.mobile_app),
                 isSelected = viewModel.selectedNotifications.value.any { it.id == 3 },
-                onToggle = { viewModel.toggleNotification(NotificationOptionRequest(3, "Mobile Notification")) }
+                onToggle = { viewModel.toggleNotification(SignupNotificationOption(3, "Mobile Notification")) }
             )
         }
     }

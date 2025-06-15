@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.domain.models.UserFriend
-import com.example.near.domain.models.UserGroup
+import com.example.near.domain.models.user.UserFriend
+import com.example.near.domain.models.user.UserGroup
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.user.group.CreateGroupUseCase
 import com.example.near.domain.usecase.user.group.DeleteGroupUseCase

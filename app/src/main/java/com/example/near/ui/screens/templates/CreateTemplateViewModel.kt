@@ -5,13 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.domain.models.EmergencyType
-import com.example.near.domain.models.UserTemplate
+import com.example.near.domain.models.user.EmergencyType
+import com.example.near.domain.models.user.UserTemplate
 import com.example.near.domain.repository.CommunityRepository
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.community.GetCommunityUseCase
 import com.example.near.domain.usecase.user.template.CreateTemplateUseCase
-import com.example.near.domain.usecase.user.template.DeleteTemplateUseCase
 import com.example.near.domain.usecase.user.template.UpdateTemplateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

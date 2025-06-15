@@ -1,4 +1,4 @@
-package com.example.near.domain.models
+package com.example.near.domain.models.user
 
 data class User(
     val id: String,
@@ -10,7 +10,7 @@ data class User(
     val city: String,
     val district: String,
     val registrationDate: String,
-    val deviceToken: String,
+    val deviceToken: String? = null,
     val friends: List<UserFriend>,
     val groups: List<UserGroup>,
     val subscriptions: List<UserSubscription>,

@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.domain.models.UserTemplate
+import com.example.near.domain.models.user.UserTemplate
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.user.template.DeleteTemplateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

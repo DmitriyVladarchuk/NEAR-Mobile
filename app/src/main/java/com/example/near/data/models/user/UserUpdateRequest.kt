@@ -1,4 +1,4 @@
-package com.example.near.domain.models
+package com.example.near.data.models.user
 
 data class UserUpdateRequest(
     val firstName: String? = null,

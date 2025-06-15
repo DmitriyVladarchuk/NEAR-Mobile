@@ -33,10 +33,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
-import com.example.near.domain.models.UserFriend
-import com.example.near.domain.models.UserSubscription
-import com.example.near.ui.screens.friendsAndGroups.friends.FriendsScreen
-import com.example.near.ui.screens.friendsAndGroups.groups.GroupsScreen
+import com.example.near.domain.models.user.UserFriend
+import com.example.near.domain.models.user.UserSubscription
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme

@@ -1,6 +1,6 @@
 package com.example.near.domain.usecase
 
-import com.example.near.domain.models.User
+import com.example.near.domain.models.user.User
 import com.example.near.domain.repository.UserRepository
 import javax.inject.Inject
 
