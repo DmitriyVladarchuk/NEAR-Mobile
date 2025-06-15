@@ -1,11 +1,12 @@
 package com.example.near.data.community.models
 
-import com.example.near.domain.models.user.EmergencyType
+import com.example.near.domain.models.common.EmergencyType
+import com.google.gson.annotations.SerializedName
 
 data class SignUpCommunityRequest(
-    val communityName: String,
-    val email: String,
-    val password: String,
-    val location: String,
-    val monitoredEmergencyTypes: List<EmergencyType>
+    @SerializedName("communityName") val communityName: String,
+    @SerializedName("email") val email: String,
+    @SerializedName("password") val password: String,
+    @SerializedName("location") val location: String,
+    @SerializedName("monitoredEmergencyTypes") val monitoredEmergencyTypes: List<EmergencyType>
 )

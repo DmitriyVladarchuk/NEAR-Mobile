@@ -46,7 +46,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
-import com.example.near.data.community.models.CommunityResponse
+import com.example.near.domain.models.community.Community
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
@@ -231,7 +231,7 @@ private fun SubscribersSection(text: String, modifier: Modifier = Modifier) {
 
 @Composable
 private fun DescriptionCommunitySection(
-    community: CommunityResponse,
+    community: Community,
     modifier: Modifier = Modifier,
     communityId: Boolean = false,
     onClick: () -> Unit

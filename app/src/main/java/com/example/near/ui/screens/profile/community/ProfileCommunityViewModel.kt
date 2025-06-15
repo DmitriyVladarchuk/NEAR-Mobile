@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.data.community.models.CommunityResponse
+import com.example.near.domain.models.community.Community
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.community.GetCommunityUseCase
 import com.example.near.domain.usecase.user.UserCancelSubscribeUseCase
@@ -25,7 +26,7 @@ class ProfileCommunityViewModel @Inject constructor(
     private val cancelSubscribeUseCase: UserCancelSubscribeUseCase
 ) : ViewModel() {
     val avatarUrl: String = ""
-    var community by mutableStateOf<CommunityResponse?>(null)
+    var community by mutableStateOf<Community?>(null)
         private set
 
     var isLoading by mutableStateOf(false)
@@ -59,7 +60,7 @@ class ProfileCommunityViewModel @Inject constructor(
             try {
                 val user = getUserUseCase()
                 val sub = user!!.subscriptions.find { it.id == communityId  }
-                community = CommunityResponse(
+                community = Community(
                     id = sub!!.id,
                     communityName = sub!!.communityName,
                     description = sub?.description,

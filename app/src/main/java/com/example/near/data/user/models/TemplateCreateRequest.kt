@@ -1,6 +1,6 @@
 package com.example.near.data.user.models
 
-import com.example.near.domain.models.user.EmergencyType
+import com.example.near.domain.models.common.EmergencyType
 
 data class TemplateCreateRequest(
     val templateName: String,

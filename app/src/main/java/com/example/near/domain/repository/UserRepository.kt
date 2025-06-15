@@ -1,11 +1,11 @@
 package com.example.near.domain.repository
 
-import com.example.near.domain.models.user.EmergencyType
+import com.example.near.domain.models.common.EmergencyType
 import com.example.near.domain.models.user.User
 import com.example.near.domain.models.common.AuthTokens
 import com.example.near.domain.models.user.AllFriendsInfo
-import com.example.near.domain.models.user.LoginCredentials
-import com.example.near.domain.models.user.NotificationOption
+import com.example.near.domain.models.common.LoginCredentials
+import com.example.near.domain.models.common.NotificationOption
 import com.example.near.domain.models.user.UserSignUp
 
 interface UserRepository {

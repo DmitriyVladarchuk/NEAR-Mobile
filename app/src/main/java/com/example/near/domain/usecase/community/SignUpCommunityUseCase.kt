@@ -1,6 +1,6 @@
 package com.example.near.domain.usecase.community
 
-import com.example.near.domain.models.user.EmergencyType
+import com.example.near.domain.models.common.EmergencyType
 import com.example.near.domain.repository.CommunityRepository
 import javax.inject.Inject
 

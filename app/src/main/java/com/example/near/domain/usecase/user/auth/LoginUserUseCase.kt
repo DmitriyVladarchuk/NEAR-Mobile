@@ -3,7 +3,7 @@ package com.example.near.domain.usecase.user.auth
 import com.example.near.data.storage.AuthDataStorage
 import com.example.near.data.storage.SessionManager
 import com.example.near.domain.models.common.AuthTokens
-import com.example.near.domain.models.user.LoginCredentials
+import com.example.near.domain.models.common.LoginCredentials
 import com.example.near.domain.repository.UserRepository
 import javax.inject.Inject
 

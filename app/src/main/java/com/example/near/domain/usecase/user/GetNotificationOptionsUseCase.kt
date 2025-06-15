@@ -1,6 +1,6 @@
 package com.example.near.domain.usecase.user
 
-import com.example.near.domain.models.user.NotificationOption
+import com.example.near.domain.models.common.NotificationOption
 import com.example.near.domain.repository.UserRepository
 import javax.inject.Inject
 

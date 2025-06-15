@@ -1,4 +1,4 @@
-package com.example.near.domain.models.user
+package com.example.near.domain.models.common
 
 data class NotificationOption(
     val id: Int,

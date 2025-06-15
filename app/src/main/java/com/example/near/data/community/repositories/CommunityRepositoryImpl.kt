@@ -2,18 +2,20 @@ package com.example.near.data.community.repositories
 
 import android.util.Log
 import com.example.near.data.api.CommunityService
+import com.example.near.data.community.mappers.toDomain
 import com.example.near.data.storage.SessionManager
 import com.example.near.data.user.mappers.toDomain
 import com.example.near.data.shared.models.FcmTokenRequest
-import com.example.near.data.community.models.LoginRequest
 import com.example.near.data.shared.models.RefreshTokenRequest
 import com.example.near.data.user.models.TemplateCreateRequest
 import com.example.near.data.community.models.CommunityResponse
 import com.example.near.data.community.models.SignUpCommunityRequest
-import com.example.near.domain.models.user.EmergencyType
+import com.example.near.data.shared.models.LoginRequest
+import com.example.near.domain.models.common.EmergencyType
 import com.example.near.data.shared.models.TemplateSendRequest
 import com.example.near.domain.models.user.UserTemplate
 import com.example.near.domain.models.common.AuthTokens
+import com.example.near.domain.models.community.Community
 import com.example.near.domain.repository.CommunityRepository
 import javax.inject.Inject
 
@@ -65,11 +67,11 @@ class CommunityRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCommunityInfo(): Result<CommunityResponse> {
+    override suspend fun getCommunityInfo(): Result<Community> {
         return try {
             val response = communityService.getCommunityInfo("Bearer ${sessionManager.authToken!!.accessToken}")
             if (response.isSuccessful) {
-                response.body()?.let {
+                response.body()?.toDomain()?.let {
                     Result.success(it)
                 } ?: Result.failure(Exception("Empty response body"))
             } else {

@@ -48,7 +48,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
-import com.example.near.data.community.models.NotificationOptionRequest
+import com.example.near.domain.models.common.SignupNotificationOption
 import com.example.near.domain.models.user.User
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
@@ -359,7 +359,7 @@ private fun FriendshipActionButton(
 }
 
 @Composable
-private fun NotificationsOptions(notificationTemplates: List<NotificationOptionRequest>, modifier: Modifier = Modifier) {
+private fun NotificationsOptions(notificationTemplates: List<SignupNotificationOption>, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
     ) {
