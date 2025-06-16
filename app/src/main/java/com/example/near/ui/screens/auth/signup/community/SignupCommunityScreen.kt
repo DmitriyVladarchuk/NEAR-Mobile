@@ -1,40 +1,49 @@
 package com.example.near.ui.screens.auth.signup.community
 
+import android.graphics.Color.parseColor
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation.Companion.None
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.near.R
+import com.example.near.domain.models.common.EmergencyType
+import com.example.near.domain.models.common.UIState
+import com.example.near.domain.models.common.emergencyTypes
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
+import com.example.near.ui.views.AppTextField
 import com.example.near.ui.views.AuthScreenButtons
+import com.example.near.ui.views.ErrorText
 import com.example.near.ui.views.HeaderTextInfo
-import com.example.near.ui.views.TextFieldLabel
-import com.example.near.ui.views.TextFieldPlaceholder
-import com.example.near.ui.views.textFieldColors
+import com.example.near.ui.views.PasswordVisibilityToggle
+import androidx.core.graphics.toColorInt
+import com.example.near.ui.theme.dark_content
 
 @Composable
 fun SignupCommunityScreen(
@@ -43,15 +52,28 @@ fun SignupCommunityScreen(
     onLoginClick: () -> Unit,
     navController: NavController
 ) {
-    val defaultModifier = Modifier.padding(horizontal = 40.dp, vertical = 40.dp)
+    val uiState by viewModel.uiState
+    val scrollState = rememberScrollState()
+    val defaultModifier = Modifier.padding(horizontal = 40.dp, vertical = 20.dp)
 
-    Column(modifier = defaultModifier.then(modifier)) {
-        HeaderTextInfo(
-            stringResource(R.string.lets_get_you_started),
-            stringResource(R.string.create_a_community)
-        )
-        TextFieldCommunity(viewModel)
+    Box(
+        modifier = defaultModifier.then(modifier).fillMaxSize()
+    ) {
+        Column(modifier = Modifier.verticalScroll(scrollState).padding(bottom = 24.dp)) {
+            HeaderTextInfo(
+                stringResource(R.string.lets_get_you_started),
+                stringResource(R.string.create_a_community)
+            )
+            AnimatedVisibility(
+                uiState is UIState.Error
+            ) {
+                ErrorText(message = (uiState as UIState.Error).message)
+            }
+            TextFieldCommunity(viewModel)
+        }
         AuthScreenButtons(
+            enabled = uiState != UIState.Loading,
+            modifier = Modifier.align(Alignment.BottomCenter),
             primaryButtonText = stringResource(R.string.get_started).uppercase(),
             secondaryText = stringResource(R.string.already_have_an_account),
             secondaryActionText = stringResource(R.string.login_here).uppercase(),
@@ -65,7 +87,6 @@ fun SignupCommunityScreen(
             onSecondaryActionClick = { onLoginClick() }
         )
     }
-
 }
 
 @Composable
@@ -73,91 +94,121 @@ private fun TextFieldCommunity(viewModel: SignupCommunityViewModel) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // Community Name field
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+        // Community Name
+        AppTextField(
             value = viewModel.communityName,
             onValueChange = { viewModel.communityName = it },
-            singleLine = true,
-            label = {
-                TextFieldLabel(stringResource(R.string.community_name))
-            },
-            placeholder = { TextFieldPlaceholder(stringResource(R.string.community_name)) },
-            textStyle = AppTypography.bodyMedium,
-            colors = textFieldColors()
+            labelRes = R.string.community_name,
+            placeholderRes = R.string.community_name
         )
 
-        // Email field
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+        // Email
+        AppTextField(
             value = viewModel.email,
             onValueChange = { viewModel.email = it },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            label = {
-                TextFieldLabel(stringResource(R.string.email))
-            },
-            placeholder = { TextFieldPlaceholder(stringResource(R.string.email)) },
-            textStyle = AppTypography.bodyMedium,
-            colors = textFieldColors()
+            labelRes = R.string.email,
+            placeholderRes = R.string.email,
+            keyboardType = KeyboardType.Email
         )
 
-        // Password field
-        var passwordVisible by remember { mutableStateOf(false) }
-
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+        // Password
+        var isPasswordVisible by remember { mutableStateOf(false) }
+        AppTextField(
             value = viewModel.password,
             onValueChange = { viewModel.password = it },
-            singleLine = true,
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            label = { TextFieldLabel(stringResource(R.string.password)) },
-            placeholder = { TextFieldPlaceholder(stringResource(R.string.password)) },
-            textStyle = AppTypography.bodyMedium,
-            colors = textFieldColors(),
+            labelRes = R.string.password,
+            placeholderRes = R.string.password,
+            keyboardType = KeyboardType.Password,
+            visualTransformation = if (isPasswordVisible) None else PasswordVisualTransformation(),
             trailingIcon = {
-                IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Icon(
-                        imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                        contentDescription = if (passwordVisible) stringResource(R.string.hide_password) else stringResource(R.string.show_password),
-                        tint = CustomTheme.colors.content
-                    )
-                }
+                PasswordVisibilityToggle(
+                    isVisible = isPasswordVisible,
+                    onToggle = { isPasswordVisible = !isPasswordVisible }
+                )
             }
         )
 
-        // Monitoring region field
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+        // Monitoring Region
+        AppTextField(
             value = viewModel.monitoringRegion,
             onValueChange = { viewModel.monitoringRegion = it },
-            singleLine = true,
-            label = {
-                TextFieldLabel(stringResource(R.string.monitoring_region))
-            },
-            placeholder = { TextFieldPlaceholder(stringResource(R.string.monitoring_region)) },
-            textStyle = AppTypography.bodyMedium,
-            colors = textFieldColors()
+            labelRes = R.string.monitoring_region,
+            placeholderRes = R.string.monitoring_region
         )
 
-        // Emergency type field
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
-            value = viewModel.emergencyType,
-            onValueChange = { viewModel.emergencyType = it },
-            singleLine = true,
-            label = {
-                TextFieldLabel(stringResource(R.string.emergency_type))
-            },
-            placeholder = { TextFieldPlaceholder(stringResource(R.string.emergency_type)) },
-            textStyle = AppTypography.bodyMedium,
-            colors = textFieldColors()
+        // Emergency Types
+        Text(
+            text = stringResource(R.string.select_emergency_types),
+            style = AppTypography.bodyMedium,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+
+        EmergencyTypeGrid(
+            selectedTypes = viewModel.selectedEmergencyTypes,
+            onTypeSelected = viewModel::toggleEmergencyType
         )
     }
+}
+
+@Composable
+private fun EmergencyTypeGrid(
+    selectedTypes: List<EmergencyType>,
+    onTypeSelected: (EmergencyType) -> Unit
+) {
+    val columns = 3
+    val chunkedList = emergencyTypes.chunked(columns)
+
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        chunkedList.forEach { rowTypes ->
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                rowTypes.forEach { type ->
+                    EmergencyTypeChip(
+                        type = type,
+                        isSelected = selectedTypes.contains(type),
+                        onSelected = { onTypeSelected(type) },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+
+                // Добавляем пустые элементы для выравнивания
+                if (rowTypes.size < columns) {
+                    repeat(columns - rowTypes.size) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun EmergencyTypeChip(
+    type: EmergencyType,
+    isSelected: Boolean,
+    onSelected: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val textColor = Color(type.color.toColorInt())
+
+    FilterChip(
+        selected = isSelected,
+        onClick = onSelected,
+        label = {
+            Text(
+                text = type.title,
+                style = AppTypography.bodySmall,
+                color = if (isSelected) dark_content else textColor
+            )
+        },
+        colors = FilterChipDefaults.filterChipColors(
+            selectedContainerColor = textColor,
+            containerColor = CustomTheme.colors.background,
+            selectedLabelColor = CustomTheme.colors.background,
+            labelColor = textColor
+        ),
+        modifier = modifier
+    )
 }

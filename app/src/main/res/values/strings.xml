@@ -153,6 +153,9 @@
     <string name="error_password_weak">Password must be at least 8 characters</string>
     <string name="error_country">Please enter your country</string>
     <string name="error_signup_failed">Registration failed, please try again</string>
+    <string name="error_region">Please enter monitoring region</string>
+    <string name="error_emergency_type">Please select at least one emergency type</string>
+    <string name="select_emergency_types">Select emergency types</string>
 
 
 </resources>
