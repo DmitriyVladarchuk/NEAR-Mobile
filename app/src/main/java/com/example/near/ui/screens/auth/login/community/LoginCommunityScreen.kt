@@ -3,19 +3,12 @@ package com.example.near.ui.screens.auth.login.community
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -26,11 +19,12 @@ import androidx.navigation.NavController
 import com.example.near.R
 import com.example.near.domain.models.common.UIState
 import com.example.near.ui.screens.navigation.Routes
-import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.views.AppTextField
 import com.example.near.ui.views.AuthScreenButtons
+import com.example.near.ui.views.ErrorText
 import com.example.near.ui.views.ForgotPassword
 import com.example.near.ui.views.HeaderTextInfo
+import com.example.near.ui.views.PasswordVisibilityToggle
 
 @Composable
 fun LoginCommunityScreen(
@@ -101,29 +95,4 @@ private fun TextFieldCommunity(viewModel: LoginCommunityViewModel, errorMessage:
             isError = errorMessage != null && viewModel.password.isBlank()
         )
     }
-}
-
-@Composable
-private fun PasswordVisibilityToggle(
-    isVisible: Boolean,
-    onToggle: () -> Unit
-) {
-    IconButton(onClick = onToggle) {
-        Icon(
-            imageVector = if (isVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-            contentDescription = stringResource(
-                if (isVisible) R.string.hide_password else R.string.show_password
-            )
-        )
-    }
-}
-
-@Composable
-private fun ErrorText(message: String) {
-    Text(
-        text = message,
-        color = Color.Red,
-        style = AppTypography.bodySmall,
-        modifier = Modifier.padding(top = 4.dp)
-    )
 }

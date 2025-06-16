@@ -30,10 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.OffsetMapping
-import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -46,6 +43,7 @@ import com.example.near.ui.views.SecondaryHeaderTextInfo
 import com.example.near.ui.views.TextFieldLabel
 import com.example.near.ui.views.TextFieldPlaceholder
 import com.example.near.ui.views.textFieldColors
+import com.example.near.ui.views.transformations.DateTransformation
 
 @Composable
 fun EditUserProfileScreen(
@@ -305,47 +303,6 @@ private fun LoadingIndicator(state: UIState) {
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()
-        }
-    }
-}
-
-private class DateTransformation : VisualTransformation {
-    override fun filter(text: AnnotatedString): TransformedText {
-        val digits = text.text.filter { it.isDigit() }.take(8)
-
-        val formatted = buildString {
-            digits.forEachIndexed { index, char ->
-                when (index) {
-                    4 -> append('-')
-                    6 -> append('-')
-                }
-                append(char)
-            }
-        }
-
-        return TransformedText(
-            text = AnnotatedString(formatted),
-            offsetMapping = DateOffsetMapping
-        )
-    }
-}
-
-private object DateOffsetMapping : OffsetMapping {
-    override fun originalToTransformed(offset: Int): Int {
-        return when {
-            offset <= 4 -> offset
-            offset <= 6 -> offset + 1
-            offset <= 8 -> offset + 2
-            else -> 10
-        }
-    }
-
-    override fun transformedToOriginal(offset: Int): Int {
-        return when {
-            offset <= 4 -> offset
-            offset <= 7 -> offset - 1
-            offset <= 10 -> offset - 2
-            else -> 8
         }
     }
 }

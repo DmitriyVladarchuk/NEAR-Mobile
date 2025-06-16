@@ -1,49 +1,46 @@
 package com.example.near.ui.screens.auth.signup.account
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation.Companion.None
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
 import com.example.near.domain.models.common.SignupNotificationOption
+import com.example.near.domain.models.common.UIState
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
+import com.example.near.ui.views.AppTextField
 import com.example.near.ui.views.AuthScreenButtons
+import com.example.near.ui.views.ErrorText
 import com.example.near.ui.views.HeaderTextInfo
-import com.example.near.ui.views.TextFieldLabel
-import com.example.near.ui.views.TextFieldPlaceholder
-import com.example.near.ui.views.textFieldColors
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.example.near.ui.views.PasswordVisibilityToggle
+import com.example.near.ui.views.transformations.DateTransformation
 
 
 @Composable
@@ -54,18 +51,29 @@ fun SignupAccountScreen(
     navController: NavController
 ) {
     val defaultModifier = Modifier.padding(horizontal = 40.dp, vertical = 20.dp)
-
+    val uiState by viewModel.uiState
     val scrollState = rememberScrollState()
 
-    Column(modifier = defaultModifier.then(modifier).verticalScroll(scrollState)) {
-        HeaderTextInfo(
-            stringResource(R.string.lets_get_you_started),
-            stringResource(R.string.create_an_account)
-        )
-        TextFieldAccount(viewModel)
-        NotificationOptions(viewModel)
+    Box(
+        modifier = defaultModifier.then(modifier).fillMaxSize()
+    ) {
+        Column(modifier = Modifier.verticalScroll(scrollState).padding(bottom = 24.dp)) {
+            HeaderTextInfo(
+                stringResource(R.string.lets_get_you_started),
+                stringResource(R.string.create_an_account)
+            )
+            AnimatedVisibility(
+                uiState is UIState.Error
+            ) {
+                ErrorText(message = (uiState as UIState.Error).message)
+            }
+            TextFieldAccount(viewModel)
+            NotificationOptions(viewModel)
+        }
 
         AuthScreenButtons(
+            enabled = uiState != UIState.Loading,
+            modifier = Modifier.align(Alignment.BottomCenter),
             primaryButtonText = stringResource(R.string.get_started).uppercase(),
             secondaryText = stringResource(R.string.already_have_an_account),
             secondaryActionText = stringResource(R.string.login_here).uppercase(),
@@ -83,130 +91,80 @@ fun SignupAccountScreen(
 
 @Composable
 private fun TextFieldAccount(viewModel: SignupAccountViewModel) {
+    var isPasswordVisible by remember { mutableStateOf(false) }
+
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         // Name field
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+        AppTextField(
             value = viewModel.nameUser,
             onValueChange = { viewModel.nameUser = it },
-            singleLine = true,
-            label = {
-                TextFieldLabel(stringResource(R.string.your_name))
-            },
-            placeholder = { TextFieldPlaceholder(stringResource(R.string.your_name)) },
-            textStyle = AppTypography.bodyMedium,
-            colors = textFieldColors()
+            labelRes = R.string.your_name,
+            placeholderRes = R.string.your_name
         )
 
         // Email field
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+        AppTextField(
             value = viewModel.email,
             onValueChange = { viewModel.email = it },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            label = {
-                TextFieldLabel(stringResource(R.string.email))
-            },
-            placeholder = { TextFieldPlaceholder(stringResource(R.string.email)) },
-            textStyle = AppTypography.bodyMedium,
-            colors = textFieldColors()
+            labelRes = R.string.email,
+            placeholderRes = R.string.email,
+            keyboardType = KeyboardType.Email
         )
 
         // Password field
-        var passwordVisible by remember { mutableStateOf(false) }
-
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+        AppTextField(
             value = viewModel.password,
             onValueChange = { viewModel.password = it },
-            singleLine = true,
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            label = { TextFieldLabel(stringResource(R.string.password)) },
-            placeholder = { TextFieldPlaceholder(stringResource(R.string.password)) },
-            textStyle = AppTypography.bodyMedium,
-            colors = textFieldColors(),
+            labelRes = R.string.password,
+            placeholderRes = R.string.password,
+            keyboardType = KeyboardType.Password,
+            visualTransformation = if (isPasswordVisible) None else PasswordVisualTransformation(),
             trailingIcon = {
-                IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Icon(
-                        imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                        contentDescription = if (passwordVisible) stringResource(R.string.hide_password) else stringResource(R.string.show_password),
-                        tint = CustomTheme.colors.content
-                    )
-                }
+                PasswordVisibilityToggle(
+                    isVisible = isPasswordVisible,
+                    onToggle = { isPasswordVisible = !isPasswordVisible }
+                )
             }
         )
 
-        // Country, city, district field
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+        // Country field
+        AppTextField(
             value = viewModel.country,
             onValueChange = { viewModel.country = it },
-            singleLine = true,
-            label = {
-                TextFieldLabel(stringResource(R.string.country_city_district))
-            },
-            placeholder = { TextFieldPlaceholder(stringResource(R.string.country_city_district)) },
-            textStyle = AppTypography.bodyMedium,
-            colors = textFieldColors()
+            labelRes = R.string.country_city_district,
+            placeholderRes = R.string.country_city_district
         )
 
         // Birthday field
-        val dateFormatter = remember {
-            SimpleDateFormat("d MMMM yyyy", Locale.getDefault())
-        }
-
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+        AppTextField(
             value = viewModel.birthday,
-            onValueChange = { newValue ->
-                viewModel.birthday = newValue
+            onValueChange = { newText ->
+                val filtered = newText.filter { it.isDigit() }.take(8)
+                viewModel.birthday = filtered
             },
-            singleLine = true,
-            label = { TextFieldLabel(stringResource(R.string.birthday)) },
-            placeholder = { TextFieldPlaceholder(stringResource(R.string.birthday)) },
-            textStyle = AppTypography.bodyMedium,
-            colors = textFieldColors(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            labelRes = R.string.birthday,
+            placeholderRes = R.string.birthday,
+            keyboardType = KeyboardType.Number,
+            visualTransformation = DateTransformation()
         )
 
         // Phone number
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+        AppTextField(
             value = viewModel.phone,
-            onValueChange = { newValue ->
-                viewModel.phone = newValue
-            },
-            singleLine = true,
-            label = { TextFieldLabel(stringResource(R.string.phone_number)) },
-            placeholder = { TextFieldPlaceholder(stringResource(R.string.phone_number)) },
-            textStyle = AppTypography.bodyMedium,
-            colors = textFieldColors(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            onValueChange = { viewModel.phone = it },
+            labelRes = R.string.phone_number,
+            placeholderRes = R.string.phone_number,
+            keyboardType = KeyboardType.Phone
         )
 
         // Telegram short name
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+        AppTextField(
             value = viewModel.telegramShortName,
             onValueChange = { viewModel.telegramShortName = it },
-            singleLine = true,
-            label = {
-                TextFieldLabel(stringResource(R.string.telegram_short_name))
-            },
-            placeholder = { TextFieldPlaceholder(stringResource(R.string.telegram_short_name)) },
-            textStyle = AppTypography.bodyMedium,
-            colors = textFieldColors()
+            labelRes = R.string.telegram_short_name,
+            placeholderRes = R.string.telegram_short_name
         )
     }
 }

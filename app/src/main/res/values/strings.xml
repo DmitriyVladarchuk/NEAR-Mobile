@@ -148,6 +148,11 @@
     <string name="error_password">Please enter your password</string>
     <string name="error_network">Network error, please try again</string>
     <string name="error_auth">Invalid email or password</string>
+    <string name="error_name">Please enter your name</string>
+    <string name="error_invalid_email">Please enter a valid email</string>
+    <string name="error_password_weak">Password must be at least 8 characters</string>
+    <string name="error_country">Please enter your country</string>
+    <string name="error_signup_failed">Registration failed, please try again</string>
 
 
 </resources>
