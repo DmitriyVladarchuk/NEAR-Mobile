@@ -22,6 +22,7 @@ import com.example.near.ui.theme.CustomTheme
 
 @Composable
 fun AuthScreenButtons(
+    enabled: Boolean = true,
     primaryButtonText: String,
     secondaryText: String,
     secondaryActionText: String,
@@ -35,6 +36,7 @@ fun AuthScreenButtons(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Button(
+            enabled = enabled,
             onClick = onPrimaryButtonClick,
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),

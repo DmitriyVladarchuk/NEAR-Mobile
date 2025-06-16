@@ -143,5 +143,11 @@
     <string name="city">City</string>
     <string name="district">District</string>
 
+    <!-- Validate data -->
+    <string name="error_email">Please enter your email</string>
+    <string name="error_password">Please enter your password</string>
+    <string name="error_network">Network error, please try again</string>
+    <string name="error_auth">Invalid email or password</string>
+
 
 </resources>
