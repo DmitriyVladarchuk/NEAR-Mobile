@@ -54,9 +54,7 @@ fun LoginAccountScreen(
 
         if (uiState is UIState.Error) ErrorText((uiState as UIState.Error).message)
 
-        ForgotPassword {
-
-        }
+        ForgotPassword { }
         AuthScreenButtons(
             enabled = uiState != UIState.Loading,
             primaryButtonText = stringResource(R.string.continue_text).uppercase(),
