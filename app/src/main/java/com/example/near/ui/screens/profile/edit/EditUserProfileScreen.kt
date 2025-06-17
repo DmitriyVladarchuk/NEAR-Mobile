@@ -39,6 +39,7 @@ import com.example.near.R
 import com.example.near.domain.models.common.UIState
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
+import com.example.near.ui.views.AppTextField
 import com.example.near.ui.views.SecondaryHeaderTextInfo
 import com.example.near.ui.views.TextFieldLabel
 import com.example.near.ui.views.TextFieldPlaceholder
@@ -127,25 +128,28 @@ private fun ProfileForm(viewModel: EditUserProfileViewModel) {
 
 @Composable
 private fun PersonalInfoSection(viewModel: EditUserProfileViewModel) {
-    EditProfileField(
+    AppTextField(
         value = viewModel.firstName,
         onValueChange = { viewModel.firstName = it },
-        labelRes = R.string.first_name
+        labelRes = R.string.first_name,
+        placeholderRes = R.string.first_name
     )
 
-    EditProfileField(
+    AppTextField(
         value = viewModel.lastName,
         onValueChange = { viewModel.lastName = it },
-        labelRes = R.string.last_name
+        labelRes = R.string.last_name,
+        placeholderRes = R.string.last_name
     )
 
-    EditProfileField(
+    AppTextField(
         value = viewModel.birthday,
         onValueChange = { newText ->
             val filtered = newText.filter { it.isDigit() }.take(8)
             viewModel.birthday = filtered
         },
         labelRes = R.string.birthday,
+        placeholderRes = R.string.birthday,
         keyboardType = KeyboardType.Number,
         visualTransformation = DateTransformation()
     )
@@ -153,22 +157,25 @@ private fun PersonalInfoSection(viewModel: EditUserProfileViewModel) {
 
 @Composable
 private fun LocationSection(viewModel: EditUserProfileViewModel) {
-    EditProfileField(
+    AppTextField(
         value = viewModel.country,
         onValueChange = { viewModel.country = it },
-        labelRes = R.string.country
+        labelRes = R.string.country,
+        placeholderRes = R.string.country
     )
 
-    EditProfileField(
+    AppTextField(
         value = viewModel.city,
         onValueChange = { viewModel.city = it },
-        labelRes = R.string.city
+        labelRes = R.string.city,
+        placeholderRes = R.string.city
     )
 
-    EditProfileField(
+    AppTextField(
         value = viewModel.district,
         onValueChange = { viewModel.district = it },
-        labelRes = R.string.district
+        labelRes = R.string.district,
+        placeholderRes = R.string.district
     )
 }
 
@@ -250,28 +257,6 @@ private fun NotificationChip(
             style = AppTypography.bodySmall,
         )
     }
-}
-
-@Composable
-private fun EditProfileField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    labelRes: Int,
-    keyboardType: KeyboardType = KeyboardType.Text,
-    visualTransformation: VisualTransformation = VisualTransformation.None
-) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = Modifier.fillMaxWidth(),
-        label = { TextFieldLabel(stringResource(labelRes)) },
-        placeholder = { TextFieldPlaceholder(stringResource(labelRes)) },
-        textStyle = AppTypography.bodyMedium,
-        colors = textFieldColors(),
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-        visualTransformation = visualTransformation
-    )
-    Spacer(Modifier.height(16.dp))
 }
 
 @Composable
