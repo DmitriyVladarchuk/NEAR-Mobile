@@ -1,6 +1,5 @@
 package com.example.near.ui.screens.auth.signup.community
 
-import android.graphics.Color.parseColor
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,6 +27,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation.Companion.None
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
@@ -37,13 +37,12 @@ import com.example.near.domain.models.common.emergencyTypes
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
+import com.example.near.ui.theme.dark_content
 import com.example.near.ui.views.AppTextField
 import com.example.near.ui.views.AuthScreenButtons
 import com.example.near.ui.views.ErrorText
 import com.example.near.ui.views.HeaderTextInfo
 import com.example.near.ui.views.PasswordVisibilityToggle
-import androidx.core.graphics.toColorInt
-import com.example.near.ui.theme.dark_content
 
 @Composable
 fun SignupCommunityScreen(

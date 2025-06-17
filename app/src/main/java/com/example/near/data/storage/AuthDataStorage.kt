@@ -13,7 +13,7 @@ class AuthDataStorage @Inject constructor(
     }
 
     fun saveCredentials(refreshToken: String, isCommunity: Boolean) {
-        with(sharedPrefs.edit()) {
+        sharedPrefs.edit {
             putString("refresh_token", refreshToken)
             putBoolean("is_community", isCommunity)
             putBoolean("is_push", false)

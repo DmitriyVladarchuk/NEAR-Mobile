@@ -29,7 +29,6 @@ class UserRepositoryImpl @Inject constructor(
     private val sessionManager: SessionManager
 ) : UserRepository {
 
-    // Исправлено
     override suspend fun signUp(
         userSignUp: UserSignUp
     ): Result<Unit> {
@@ -47,7 +46,7 @@ class UserRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
-    // Исправлено
+
     override suspend fun login(credentials: LoginCredentials): Result<AuthTokens> {
         return try {
             val response = userService.login(credentials.toRequest())
@@ -62,7 +61,7 @@ class UserRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
-    // Исправлено
+
     override suspend fun getNotificationOptions(): Result<List<NotificationOption>> {
         return try {
             val response = userService.getNotificationOptions(
@@ -80,7 +79,7 @@ class UserRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
-    // Исправлено
+
     override suspend fun refreshToken(token: String): Result<AuthTokens> {
         return try {
             val response = userService.refreshToken(RefreshTokenRequest(token))
@@ -96,7 +95,7 @@ class UserRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
-    // Исправлено
+
     override suspend fun sendFcmToken(token: String): Result<Unit> {
         return try {
             val response = userService.sendFcmToken("Bearer ${sessionManager.authToken!!.accessToken}", FcmTokenRequest(token))
@@ -109,7 +108,7 @@ class UserRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
-    // Исправлено
+
     override suspend fun getUserInfo(): Result<User> {
         return try {
             val response = userService.getUserInfo("Bearer ${sessionManager.authToken!!.accessToken}")
@@ -125,7 +124,7 @@ class UserRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
-    // Исправлено
+
     override suspend fun getUserById(id: String): Result<User> {
         return try {
             val response = userService.getUserById("Bearer ${sessionManager.authToken!!.accessToken}", id)

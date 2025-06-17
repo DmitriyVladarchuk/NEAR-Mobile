@@ -27,7 +27,6 @@ class NavigationViewModel @Inject constructor(
     fun refreshToken() {
         viewModelScope.launch {
             fcmTokenManager.forceGenerateNewToken()
-
         }
     }
 }

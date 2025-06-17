@@ -9,19 +9,19 @@ import com.example.near.domain.models.common.NotificationOption
 import com.example.near.domain.models.user.UserSignUp
 
 interface UserRepository {
-    // Исправил
+
     suspend fun signUp(userSignUp: UserSignUp): Result<Unit>
-    // Исправил
+
     suspend fun login(credentials: LoginCredentials): Result<AuthTokens>
-    // Исправил
+
     suspend fun getNotificationOptions(): Result<List<NotificationOption>>
-    // Исправил
+
     suspend fun refreshToken(token: String): Result<AuthTokens>
-    // Исправил
+
     suspend fun sendFcmToken(token: String): Result<Unit>
-    // Исправил
+
     suspend fun getUserInfo(): Result<User>
-    // Исправил
+
     suspend fun getUserById(id: String): Result<User>
 
     suspend fun updateUser(

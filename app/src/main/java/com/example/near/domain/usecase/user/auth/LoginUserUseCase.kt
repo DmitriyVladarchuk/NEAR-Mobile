@@ -16,7 +16,7 @@ class LoginUserUseCase @Inject constructor(
         return userRepository.login(LoginCredentials(email, password)).also { result ->
             if (result.isSuccess) {
                 val tokens = result.getOrThrow()
-                authDataStorage.saveCredentials(tokens.refreshToken, false)
+                authDataStorage.saveCredentials(tokens.refreshToken!!, false)
                 sessionManager.saveAuthToken(tokens)
 
                 // Отправка токена
