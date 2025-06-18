@@ -27,6 +27,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -63,6 +64,11 @@ fun DashboardScreen(
     navController: NavController,
     viewModel: DashboardViewModel = hiltViewModel()
 ) {
+
+    LaunchedEffect(Unit) {
+        viewModel.loadData()
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -73,7 +79,6 @@ fun DashboardScreen(
             modifier = Modifier.padding(vertical = 16.dp)
         )
 
-        // BodyButtons занимает ровно 50% экрана
         Box(
             modifier = Modifier
                 .weight(0.5f)
@@ -82,7 +87,6 @@ fun DashboardScreen(
             BodyButtons(navController)
         }
 
-        // BodyTemplates занимает оставшееся место
         Box(
             modifier = Modifier
                 .weight(0.5f)
@@ -92,8 +96,6 @@ fun DashboardScreen(
         }
     }
 }
-
-// 69ac213b-99a1-42d0-96fa-999c7cc69fa0
 
 @SuppressLint("SuspiciousModifierThen")
 fun Modifier.dashedBorder(

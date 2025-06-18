@@ -1,4 +1,4 @@
-package com.example.near.data.user.models
+package com.example.near.data.shared.models
 
 import com.example.near.domain.models.common.EmergencyType
 

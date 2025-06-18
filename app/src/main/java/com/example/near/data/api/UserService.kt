@@ -1,20 +1,20 @@
 package com.example.near.data.api
 
-import com.example.near.data.shared.models.FcmTokenRequest
-import com.example.near.data.user.models.FriendRequest
-import com.example.near.data.user.models.GroupActionRequest
-import com.example.near.data.user.models.GroupCreateRequest
-import com.example.near.data.user.models.TemplateCreateRequest
 import com.example.near.data.community.models.CommunityActionRequest
+import com.example.near.data.shared.models.FcmTokenRequest
 import com.example.near.data.shared.models.LoginRequest
 import com.example.near.data.shared.models.LoginResponse
 import com.example.near.data.shared.models.NotificationOptionResponse
 import com.example.near.data.shared.models.RefreshTokenRequest
+import com.example.near.data.shared.models.TemplateActionRequest
+import com.example.near.data.shared.models.TemplateCreateRequest
+import com.example.near.data.user.models.AllFriendsInfoResponse
+import com.example.near.data.user.models.FriendRequest
+import com.example.near.data.user.models.GroupActionRequest
+import com.example.near.data.user.models.GroupCreateRequest
 import com.example.near.data.user.models.UserResponse
 import com.example.near.data.user.models.UserSignUpRequest
-import com.example.near.data.user.models.AllFriendsInfoResponse
 import com.example.near.data.user.models.UserUpdateRequest
-import com.example.near.domain.models.user.UserTemplate
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -133,13 +133,13 @@ interface UserService {
     @PUT("NEAR/user/template/update")
     suspend fun updateTemplate(
         @Header("Authorization") token: String,
-        @Body request: UserTemplate
+        @Body request: TemplateActionRequest
     ): Response<Void>
 
-    @DELETE("NEAR/user/template/delete")
+    @HTTP(method = "DELETE", path = "NEAR/user/template/delete", hasBody = true)
     suspend fun deleteTemplate(
         @Header("Authorization") token: String,
-        @Body request: UserTemplate
+        @Body request: TemplateActionRequest
     ): Response<Void>
 
     // --- Action Subscribes

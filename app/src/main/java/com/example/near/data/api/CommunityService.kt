@@ -2,7 +2,7 @@ package com.example.near.data.api
 
 import com.example.near.data.shared.models.FcmTokenRequest
 import com.example.near.data.shared.models.RefreshTokenRequest
-import com.example.near.data.user.models.TemplateCreateRequest
+import com.example.near.data.shared.models.TemplateCreateRequest
 import com.example.near.data.community.models.CommunityResponse
 import com.example.near.data.community.models.SignUpCommunityRequest
 import com.example.near.data.shared.models.LoginRequest

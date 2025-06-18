@@ -1,10 +1,12 @@
 package com.example.near.ui.screens.dashboard.user
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.near.domain.models.common.UIState
 import com.example.near.domain.models.user.UserTemplate
 import com.example.near.domain.usecase.GetUserUseCase
 import com.example.near.domain.usecase.user.template.DeleteTemplateUseCase
@@ -17,36 +19,31 @@ class DashboardViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val deleteTemplateUseCase: DeleteTemplateUseCase
 ): ViewModel() {
-    var isLoading by mutableStateOf(false)
-        private set
 
-    var error by mutableStateOf<String?>(null)
-        private set
+    private val _uiState = mutableStateOf<UIState>(UIState.Idle)
+    val uiState: State<UIState> = _uiState
 
     var notificationTemplates: List<UserTemplate> by mutableStateOf(listOf())
         private set
 
-    init {
-        loadData()
-    }
 
     fun loadData() {
         viewModelScope.launch {
-            isLoading = true
-            error = null
+            _uiState.value = UIState.Loading
             try {
                 notificationTemplates = getUserUseCase()?.notificationTemplates ?: listOf()
+                _uiState.value = UIState.Success
             } catch (e: Exception) {
-                error = e.message ?: "Failed to load user data"
+                _uiState.value = UIState.Error("Failed to load user data: ${e.message}")
             } finally {
-                isLoading = false
+                _uiState.value = UIState.Idle
             }
         }
     }
 
     fun deleteTemplate(template: UserTemplate) {
         viewModelScope.launch {
-            isLoading = true
+            _uiState.value = UIState.Loading
             try {
                 deleteTemplateUseCase(
                     template.id,
@@ -54,12 +51,15 @@ class DashboardViewModel @Inject constructor(
                     template.message,
                     template.emergencyType
                 ).onSuccess {
+                    _uiState.value = UIState.Success
                     loadData()
                 }.onFailure {
-                    error = it.message ?: "Failed to delete template"
+                    _uiState.value = UIState.Error("Failed to delete template: ${it.message}")
                 }
+            } catch (e: Exception) {
+                _uiState.value = UIState.Error("Error: ${e.localizedMessage}")
             } finally {
-                isLoading = false
+                _uiState.value = UIState.Idle
             }
         }
     }

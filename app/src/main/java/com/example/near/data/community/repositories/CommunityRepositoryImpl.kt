@@ -7,7 +7,7 @@ import com.example.near.data.storage.SessionManager
 import com.example.near.data.user.mappers.toDomain
 import com.example.near.data.shared.models.FcmTokenRequest
 import com.example.near.data.shared.models.RefreshTokenRequest
-import com.example.near.data.user.models.TemplateCreateRequest
+import com.example.near.data.shared.models.TemplateCreateRequest
 import com.example.near.data.community.models.SignUpCommunityRequest
 import com.example.near.data.shared.models.LoginRequest
 import com.example.near.domain.models.common.EmergencyType

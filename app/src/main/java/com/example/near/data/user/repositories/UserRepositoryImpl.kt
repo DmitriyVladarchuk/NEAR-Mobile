@@ -2,25 +2,25 @@ package com.example.near.data.user.repositories
 
 import android.util.Log
 import com.example.near.data.api.UserService
+import com.example.near.data.community.models.CommunityActionRequest
+import com.example.near.data.shared.models.FcmTokenRequest
+import com.example.near.data.shared.models.RefreshTokenRequest
+import com.example.near.data.shared.models.TemplateActionRequest
+import com.example.near.data.shared.models.TemplateCreateRequest
 import com.example.near.data.storage.SessionManager
 import com.example.near.data.user.mappers.toDomain
 import com.example.near.data.user.mappers.toRequest
-import com.example.near.data.community.models.CommunityActionRequest
 import com.example.near.data.user.models.FriendRequest
 import com.example.near.data.user.models.GroupActionRequest
 import com.example.near.data.user.models.GroupCreateRequest
-import com.example.near.data.user.models.TemplateCreateRequest
 import com.example.near.data.user.models.UserUpdateRequest
-import com.example.near.data.shared.models.FcmTokenRequest
-import com.example.near.data.shared.models.RefreshTokenRequest
 import com.example.near.domain.models.common.AuthTokens
-import com.example.near.domain.models.user.AllFriendsInfo
 import com.example.near.domain.models.common.EmergencyType
 import com.example.near.domain.models.common.LoginCredentials
 import com.example.near.domain.models.common.NotificationOption
+import com.example.near.domain.models.user.AllFriendsInfo
 import com.example.near.domain.models.user.User
 import com.example.near.domain.models.user.UserSignUp
-import com.example.near.domain.models.user.UserTemplate
 import com.example.near.domain.repository.UserRepository
 import javax.inject.Inject
 
@@ -341,7 +341,7 @@ class UserRepositoryImpl @Inject constructor(
         return try {
             val response = userService.updateTemplate(
                 token = "Bearer ${sessionManager.authToken!!.accessToken}",
-                request = UserTemplate(id, templateName, message, emergencyType)
+                request = TemplateActionRequest(id, templateName, message, emergencyType)
             )
             if (response.isSuccessful) {
                 Result.success(Unit)
@@ -362,7 +362,7 @@ class UserRepositoryImpl @Inject constructor(
         return try {
             val response = userService.deleteTemplate(
                 token = "Bearer ${sessionManager.authToken!!.accessToken}",
-                request = UserTemplate(id, templateName, message, emergencyType)
+                request = TemplateActionRequest(id, templateName, message, emergencyType)
             )
             if (response.isSuccessful) {
                 Result.success(Unit)
