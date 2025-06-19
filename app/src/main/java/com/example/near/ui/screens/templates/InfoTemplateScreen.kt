@@ -1,11 +1,13 @@
 package com.example.near.ui.screens.templates
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -46,6 +48,7 @@ import com.example.near.R
 import com.example.near.domain.models.user.User
 import com.example.near.domain.models.user.UserFriend
 import com.example.near.domain.models.user.UserGroup
+import com.example.near.domain.models.user.UserTemplate
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.dark_content
@@ -59,21 +62,18 @@ fun InfoTemplateScreen(
     modifier: Modifier = Modifier,
     viewModel: InfoTemplateViewModel = hiltViewModel()
 ) {
-    val tabs = listOf("Friends", "Groups")
-    val pagerState = rememberPagerState { tabs.size }
-    var selectedTab by remember { mutableStateOf(0) }
+    val tabs = listOf(stringResource(R.string.friends), stringResource(R.string.groups))
+    var selectedTab by remember { mutableStateOf(tabs[0]) }
+    val pagerState = rememberPagerState(pageCount = { tabs.size })
 
     LaunchedEffect(templateId) {
         viewModel.loadData(templateId)
     }
 
     LaunchedEffect(selectedTab) {
-        pagerState.animateScrollToPage(selectedTab)
-    }
-
-    LaunchedEffect(pagerState.currentPage, pagerState.isScrollInProgress) {
-        if (!pagerState.isScrollInProgress) {
-            selectedTab = pagerState.currentPage
+        val page = tabs.indexOf(selectedTab)
+        if (page != pagerState.currentPage) {
+            pagerState.animateScrollToPage(page)
         }
     }
 
@@ -83,60 +83,22 @@ fun InfoTemplateScreen(
             .padding(16.dp)
     ) {
         SecondaryHeaderTextInfo(
-            text = "Template Info"
+            text = stringResource(R.string.template_info),
+            modifier = Modifier.padding(bottom = 16.dp)
         ) {
             navController.popBackStack()
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Информация о шаблоне
-        viewModel.template?.let { template ->
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = Color(template.emergencyType.color.toColorInt()),
-                        shape = RoundedCornerShape(12.dp)
-                    )
-                    .padding(16.dp)
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                ) {
-                    Text(
-                        text = template.emergencyType.title,
-                        style = AppTypography.titleMedium,
-                        color = dark_content
-                    )
-                }
-
-                Text(
-                    text = template.templateName,
-                    style = AppTypography.titleLarge,
-                    color = dark_content,
-                    modifier = Modifier.padding(bottom = 4.dp)
-                )
-
-                Text(
-                    text = template.message,
-                    style = AppTypography.bodyMedium,
-                    color = dark_content
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
+        TemplateInfo(viewModel.template)
 
         DynamicItemContainer(
             items = tabs,
             selectedItem = selectedTab,
-            onItemSelected = { tab -> selectedTab = tabs.indexOf(tab) },
-            modifier = Modifier.padding(bottom = 16.dp)
+            onItemSelected = { tab -> selectedTab = tab },
+            modifier = Modifier.padding(top = 24.dp, bottom = 16.dp)
         ) { item, isSelected, modifier, onClick ->
             TabItem(
-                text = item.toString(),
+                text = item,
                 isSelected = isSelected,
                 modifier = modifier,
                 onClick = { onClick(item) }
@@ -157,28 +119,68 @@ fun InfoTemplateScreen(
                 1 -> GroupsListScreen(
                     groups = viewModel.groups ?: emptyList(),
                     selectedRecipients = viewModel.recipients,
-                    onRecipientToggle = { groupId, members ->
-                        viewModel.toggleGroupRecipients(groupId, members)
+                    onRecipientToggle = { members ->
+                        viewModel.toggleGroupRecipients(members)
                     }
                 )
             }
         }
 
-        Button(
-            onClick = {
-                viewModel.saveRecipients()
-                navController.popBackStack()
-            },
+        AnimatedVisibility(viewModel.recipients.isNotEmpty()) {
+            Button(
+                onClick = {
+                    viewModel.saveRecipients()
+                    navController.popBackStack()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = CustomTheme.colors.orange
+                )
+            ) {
+                Text(
+                    text = stringResource(R.string.send_template),
+                    style = AppTypography.bodyMedium,
+                    color = dark_content
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun TemplateInfo(template: UserTemplate?) {
+    template?.let {
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp),
-            enabled = viewModel.recipients.isNotEmpty(),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = CustomTheme.colors.orange
-            )
+                .background(
+                    color = Color(template.emergencyType.color.toColorInt()),
+                    shape = RoundedCornerShape(12.dp)
+                )
+                .padding(16.dp)
         ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(bottom = 8.dp)
+            ) {
+                Text(
+                    text = template.emergencyType.title,
+                    style = AppTypography.titleMedium,
+                    color = dark_content
+                )
+            }
+
             Text(
-                text = stringResource(R.string.send_template),
+                text = template.templateName,
+                style = AppTypography.titleLarge,
+                color = dark_content,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+
+            Text(
+                text = template.message,
                 style = AppTypography.bodyMedium,
                 color = dark_content
             )
@@ -204,64 +206,27 @@ private fun FriendsListScreen(
                 Checkbox(
                     checked = selectedRecipients.contains(friend.id),
                     onCheckedChange = { onRecipientToggle(friend.id) },
+                    modifier = Modifier.padding(end = 8.dp),
                     colors = CheckboxDefaults.colors(
                         checkedColor = CustomTheme.colors.orange,
                         uncheckedColor = CustomTheme.colors.content
                     )
                 )
-                Spacer(modifier = Modifier.width(16.dp))
                 AsyncImage(
-                    model = "", // URL аватара
-                    contentDescription = "Avatar",
-                    modifier = Modifier.size(40.dp),
+                    model = "",
+                    contentDescription = "user avatar",
+                    modifier = Modifier
+                        .size(48.dp)
+                        .aspectRatio(1f)
+                        .padding(end = 8.dp),
                     placeholder = painterResource(R.drawable.default_avatar),
                     error = painterResource(R.drawable.default_avatar)
                 )
-                Spacer(modifier = Modifier.width(16.dp))
-                Text(
-                    text = "${friend.firstName} ${friend.lastName}",
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            }
-        }
-    }
-}
 
-@Composable
-private fun RecipientsListScreen(
-    friends: List<UserFriend>,
-    selectedRecipients: List<String>,
-    onRecipientToggle: (String) -> Unit
-) {
-    LazyColumn {
-        items(friends) { friend ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onRecipientToggle(friend.id) }
-                    .padding(vertical = 12.dp, horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    checked = selectedRecipients.contains(friend.id),
-                    onCheckedChange = { onRecipientToggle(friend.id) },
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = CustomTheme.colors.orange,
-                        uncheckedColor = CustomTheme.colors.content
-                    )
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                AsyncImage(
-                    model = "", // URL аватара
-                    contentDescription = "Avatar",
-                    modifier = Modifier.size(40.dp),
-                    placeholder = painterResource(R.drawable.default_avatar),
-                    error = painterResource(R.drawable.default_avatar)
-                )
-                Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     text = "${friend.firstName} ${friend.lastName}",
-                    style = MaterialTheme.typography.bodyLarge
+                    style = AppTypography.bodyMedium,
+                    color = CustomTheme.colors.content,
                 )
             }
         }
@@ -272,7 +237,7 @@ private fun RecipientsListScreen(
 private fun GroupsListScreen(
     groups: List<UserGroup>,
     selectedRecipients: List<String>,
-    onRecipientToggle: (String, List<String>) -> Unit
+    onRecipientToggle: (List<String>) -> Unit
 ) {
     LazyColumn {
         items(groups) { group ->
@@ -286,7 +251,6 @@ private fun GroupsListScreen(
                         .fillMaxWidth()
                         .clickable {
                             onRecipientToggle(
-                                group.id,
                                 group.members.map { it.id }
                             )
                         }
@@ -297,52 +261,62 @@ private fun GroupsListScreen(
                         checked = allMembersSelected,
                         onCheckedChange = {
                             onRecipientToggle(
-                                group.id,
                                 group.members.map { it.id }
                             )
-                        }
+                        },
+                        modifier = Modifier.padding(end = 8.dp),
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = CustomTheme.colors.orange,
+                            uncheckedColor = CustomTheme.colors.content
+                        )
                     )
-                    Spacer(modifier = Modifier.width(16.dp))
+
                     Icon(
                         imageVector = Icons.Default.Group,
                         contentDescription = "Group",
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier
+                            .size(48.dp)
+                            .aspectRatio(1f)
+                            .padding(end = 8.dp),
                     )
-                    Spacer(modifier = Modifier.width(16.dp))
                     Column {
                         Text(
                             text = group.groupName,
-                            style = MaterialTheme.typography.bodyLarge
+                            style = AppTypography.bodyMedium,
+                            color = CustomTheme.colors.content,
                         )
                         Text(
-                            text = "${group.members.size} members",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            text = "${group.members.size} ${stringResource(R.string.members)}",
+                            style = AppTypography.bodyMedium,
+                            color = CustomTheme.colors.content.copy(alpha = 0.7f),
                         )
                     }
                 }
 
                 // Показываем членов группы, если группа выбрана
-                if (allMembersSelected) {
-                    group.members.forEach { member ->
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 72.dp, end = 16.dp, bottom = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            AsyncImage(
-                                model = "", // URL аватара
-                                contentDescription = "Avatar",
-                                modifier = Modifier.size(32.dp),
-                                placeholder = painterResource(R.drawable.default_avatar),
-                                error = painterResource(R.drawable.default_avatar)
-                            )
-                            Spacer(modifier = Modifier.width(16.dp))
-                            Text(
-                                text = "${member.firstName} ${member.lastName}",
-                                style = MaterialTheme.typography.bodyMedium
-                            )
+                AnimatedVisibility(allMembersSelected) {
+                    Column {
+                        group.members.forEach { member ->
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 72.dp, end = 16.dp, bottom = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                AsyncImage(
+                                    model = "", // URL аватара
+                                    contentDescription = "Avatar",
+                                    modifier = Modifier.size(32.dp),
+                                    placeholder = painterResource(R.drawable.default_avatar),
+                                    error = painterResource(R.drawable.default_avatar)
+                                )
+                                Spacer(modifier = Modifier.width(16.dp))
+                                Text(
+                                    text = "${member.firstName} ${member.lastName}",
+                                    style = AppTypography.bodyMedium,
+                                    color = CustomTheme.colors.content,
+                                )
+                            }
                         }
                     }
                 }

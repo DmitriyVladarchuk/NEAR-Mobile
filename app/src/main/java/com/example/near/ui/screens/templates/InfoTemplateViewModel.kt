@@ -20,9 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class InfoTemplateViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
-    private val getCommunityUseCase: GetCommunityUseCase,
     private val getAllFriendsInfoUseCase: GetAllFriendsInfoUseCase,
-    private val communityRepository: CommunityRepository
 ) : ViewModel() {
 
     var template by mutableStateOf<UserTemplate?>(null)
@@ -58,7 +56,7 @@ class InfoTemplateViewModel @Inject constructor(
         }
     }
 
-    fun toggleGroupRecipients(groupId: String, members: List<String>) {
+    fun toggleGroupRecipients(members: List<String>) {
         val allMembersSelected = members.all { it in recipients }
 
         recipients = if (allMembersSelected) {
@@ -71,8 +69,7 @@ class InfoTemplateViewModel @Inject constructor(
     fun saveRecipients() {
         viewModelScope.launch {
             template?.let {
-                // --
-                communityRepository.sendTemplate(template!!.id, recipients)
+                //communityRepository.sendTemplate(template!!.id, recipients)
             }
         }
     }

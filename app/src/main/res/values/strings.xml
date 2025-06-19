@@ -131,6 +131,7 @@
     <string name="subscribe">Subscribe</string>
 
     <!-- Template -->
+    <string name="template_info">Template Info</string>
     <string name="create_template">Create template</string>
     <string name="update_template">Update template</string>
     <string name="template_name">Template Name</string>
@@ -138,6 +139,7 @@
     <string name="select_emergency_type">Select Emergency Type</string>
     <string name="save_template">Save Template</string>
     <string name="send_template">Send Template</string>
+    <string name="members">members</string>
 
     <!-- Edit Screen -->
     <string name="first_name">First name</string>
