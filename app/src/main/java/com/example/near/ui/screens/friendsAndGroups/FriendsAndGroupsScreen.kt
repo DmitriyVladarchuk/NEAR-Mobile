@@ -32,7 +32,10 @@ fun FriendsAndGroupsScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
 ) {
-    val tabs = listOf("Friends", "Groups")
+    val tabs = listOf(
+        stringResource(R.string.friends),
+        stringResource(R.string.groups)
+    )
     var selectedTab by remember { mutableStateOf(tabs[0]) }
     val pagerState = rememberPagerState(pageCount = { tabs.size })
 

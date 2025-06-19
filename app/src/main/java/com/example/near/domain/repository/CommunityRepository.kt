@@ -20,7 +20,7 @@ interface CommunityRepository {
 
     suspend fun getCommunityInfo(): Result<Community>
 
-    suspend fun refreshToken(token: String): Result<AuthTokens>
+    suspend fun refreshToken(): Result<Unit>
 
     suspend fun sendFcmToken(token: String): Result<Unit>
 

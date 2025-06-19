@@ -1,19 +1,30 @@
 package com.example.near.ui.screens.navigation
 
-import android.util.Log
+import android.widget.Toast
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
@@ -22,7 +33,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.example.near.domain.usecase.user.auth.LoadUserUseCase
+import com.example.near.R
+import com.example.near.domain.models.common.UIState
 import com.example.near.ui.screens.auth.login.account.LoginAccountScreen
 import com.example.near.ui.screens.auth.login.community.LoginCommunityScreen
 import com.example.near.ui.screens.auth.signup.account.SignupAccountScreen
@@ -55,38 +67,35 @@ fun MainNavGraph(
     startDestination: String = Routes.Onboarding.route
 ) {
     val navController = rememberNavController()
-    val isLoggedIn = viewModel.sessionManager.isLoggedIn
     val currentRoute = remember { mutableStateOf(startDestination) }
+    val uiState by viewModel.uiState.collectAsState()
+    val navigationRoute by viewModel.navigationRoute.collectAsState()
+    val context = LocalContext.current
+    var isNavHostReady by remember { mutableStateOf(false) }
 
-    // Следим за изменениями маршрута
-    LaunchedEffect(navController) {
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            currentRoute.value = destination.route ?: startDestination
+    // Обработка навигации
+    LaunchedEffect(navigationRoute, isNavHostReady) {
+        if (isNavHostReady && navigationRoute != null) {
+            navController.navigate(navigationRoute!!) {
+                popUpTo(Routes.Splash.route) { inclusive = true }
+            }
         }
     }
 
-    // Авторизация
-    LaunchedEffect(Unit) {
-        val success = withContext(Dispatchers.IO) {
-            viewModel.loadUserUseCase()
+    LaunchedEffect(uiState) {
+        if (uiState is UIState.Error) {
+            Toast.makeText(
+                context,
+                (uiState as UIState.Error).message,
+                Toast.LENGTH_SHORT
+            ).show()
         }
+    }
 
-        if (success) {
-            val isCommunity = viewModel.authDataStorage.getCredentials()?.third ?: false
-            val fcmToken = viewModel.authDataStorage.getFcmToken()
-            if (fcmToken == null)
-                viewModel.refreshToken()
-
-            val mainRoute = if (isCommunity) {
-                fcmToken?.let { viewModel.communityRepository.sendFcmToken(it) }
-                Routes.CommunityDashboard.route
-            } else {
-                fcmToken?.let { viewModel.userRepository.sendFcmToken(it) }
-                Routes.Dashboards.route
-            }
-            navController.navigate(mainRoute) {
-                popUpTo(0) { inclusive = true }
-            }
+    // Отслеживание текущего маршрута
+    LaunchedEffect(navController) {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            currentRoute.value = destination.route ?: startDestination
         }
     }
 
@@ -106,7 +115,7 @@ fun MainNavGraph(
             ) {
                 BottomBar(
                     navController = navController,
-                    isCommunity = viewModel.authDataStorage.getCredentials()?.third ?: false
+                    isCommunity = viewModel.authDataStorage.getCredentials()?.isCommunity ?: false
                 )
             }
         }
@@ -119,6 +128,19 @@ fun MainNavGraph(
             val baseModifier = Modifier.padding(innerPadding)
 
             // --- Общие экраны  ---
+
+            composable(Routes.Splash.route) {
+                LaunchedEffect(Unit) {
+                    isNavHostReady = true
+                }
+                when (uiState) {
+                    UIState.Loading -> SplashScreen(loading = true)
+                    is UIState.Error -> SplashScreen(loading = false)
+                    UIState.Success -> {}
+                    UIState.Idle -> SplashScreen(loading = false)
+                }
+            }
+
             composable(Routes.Onboarding.route) {
                 OnboardingScreen(
                     onAccountClick = { navController.navigate(Routes.SignupAccount.route) },
@@ -278,24 +300,25 @@ fun MainNavGraph(
 }
 
 @Composable
-private fun TestScreen(text: String, profileViewModel: ProfileViewModel = hiltViewModel()) {
-    Column (
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+fun SplashScreen(loading: Boolean) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(CustomTheme.colors.background),
+        contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = text,
-            style = AppTypography.titleLarge,
-            color = CustomTheme.colors.content
-        )
-        Text(
-            text = "LogOut",
-            style = AppTypography.titleMedium,
-            color = CustomTheme.colors.content,
-            modifier = Modifier.padding(top = 16.dp).clickable {
-                profileViewModel.logOut()
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            // Ваше лого
+            Image(
+                painter = painterResource(R.drawable.logo),
+                contentDescription = null
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            if (loading) {
+                CircularProgressIndicator(color = CustomTheme.colors.orange)
             }
-        )
+        }
     }
 }

@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContent {
             NEARTheme {
                 MainNavGraph(
-                    startDestination = Routes.Onboarding.route
+                    startDestination = Routes.Splash.route
                 )
             }
         }

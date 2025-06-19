@@ -3,11 +3,12 @@ package com.example.near.DI
 import android.content.Context
 import com.example.near.data.api.CommunityService
 import com.example.near.data.api.UserService
-import com.example.near.data.storage.AuthDataStorage
+import com.example.near.data.storage.AuthDataStorageImpl
 import com.example.near.data.storage.SessionManager
 import com.example.near.data.storage.SettingsDataStorage
 import com.example.near.data.community.repositories.CommunityRepositoryImpl
 import com.example.near.data.user.repositories.UserRepositoryImpl
+import com.example.near.domain.repository.AuthDataStorage
 import com.example.near.domain.repository.CommunityRepository
 import com.example.near.domain.repository.UserRepository
 import com.example.near.service.FcmTokenManager
@@ -33,15 +34,19 @@ object AppModules {
 
     @Provides
     @Singleton
-    fun provideCommunityRepository(communityService: CommunityService, sessionManager: SessionManager): CommunityRepository {
-        return CommunityRepositoryImpl(communityService, sessionManager)
+    fun provideCommunityRepository(
+        communityService: CommunityService,
+        sessionManager: SessionManager,
+        authDataStorage: AuthDataStorage
+    ): CommunityRepository {
+        return CommunityRepositoryImpl(communityService, sessionManager, authDataStorage)
     }
 
     @Provides
     @Singleton
     fun provideAuthDataStorage(
         @ApplicationContext context: Context
-    ): AuthDataStorage = AuthDataStorage(context)
+    ): AuthDataStorage = AuthDataStorageImpl(context)
 
     @Provides
     @Singleton

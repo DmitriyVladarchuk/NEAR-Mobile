@@ -7,7 +7,6 @@ import com.example.near.data.shared.models.FcmTokenRequest
 import com.example.near.data.shared.models.RefreshTokenRequest
 import com.example.near.data.shared.models.TemplateActionRequest
 import com.example.near.data.shared.models.TemplateCreateRequest
-import com.example.near.data.storage.AuthDataStorage
 import com.example.near.data.storage.SessionManager
 import com.example.near.data.user.mappers.toDomain
 import com.example.near.data.user.mappers.toRequest
@@ -22,6 +21,7 @@ import com.example.near.domain.models.common.NotificationOption
 import com.example.near.domain.models.user.AllFriendsInfo
 import com.example.near.domain.models.user.User
 import com.example.near.domain.models.user.UserSignUp
+import com.example.near.domain.repository.AuthDataStorage
 import com.example.near.domain.repository.UserRepository
 import javax.inject.Inject
 
@@ -54,6 +54,7 @@ class UserRepositoryImpl @Inject constructor(
             val response = userService.login(credentials.toRequest())
             if (response.isSuccessful) {
                 response.body()?.toDomain()?.let {
+                    sessionManager.saveAuthToken(it)
                     Result.success(it)
                 } ?: Result.failure(Exception("Empty response body"))
             } else {
@@ -82,17 +83,18 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun refreshToken(): Result<AuthTokens> {
+    override suspend fun refreshToken(): Result<Unit> {
         return try {
             val tokens = authDataStorage.getCredentials()
             val response = userService.refreshToken(
-                token = "Bearer ${tokens?.first}",
-                request = RefreshTokenRequest(tokens?.second ?: "")
+                token = "Bearer ${tokens?.accessToken}",
+                request = RefreshTokenRequest(tokens?.refreshToken ?: "")
             )
 
             if (response.isSuccessful) {
                 response.body()?.toDomain()?.let {
-                    Result.success(it)
+                    sessionManager.saveAuthToken(it)
+                    Result.success(Unit)
                 } ?: Result.failure(Exception("Empty response body"))
             } else {
                 Result.failure(Exception("Refresh failed: ${response.code()}"))

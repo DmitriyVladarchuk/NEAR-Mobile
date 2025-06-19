@@ -3,24 +3,26 @@ package com.example.near.data.community.repositories
 import android.util.Log
 import com.example.near.data.api.CommunityService
 import com.example.near.data.community.mappers.toDomain
-import com.example.near.data.storage.SessionManager
-import com.example.near.data.user.mappers.toDomain
+import com.example.near.data.community.models.SignUpCommunityRequest
 import com.example.near.data.shared.models.FcmTokenRequest
+import com.example.near.data.shared.models.LoginRequest
 import com.example.near.data.shared.models.RefreshTokenRequest
 import com.example.near.data.shared.models.TemplateCreateRequest
-import com.example.near.data.community.models.SignUpCommunityRequest
-import com.example.near.data.shared.models.LoginRequest
-import com.example.near.domain.models.common.EmergencyType
 import com.example.near.data.shared.models.TemplateSendRequest
-import com.example.near.domain.models.user.UserTemplate
+import com.example.near.data.storage.SessionManager
+import com.example.near.data.user.mappers.toDomain
 import com.example.near.domain.models.common.AuthTokens
+import com.example.near.domain.models.common.EmergencyType
 import com.example.near.domain.models.community.Community
+import com.example.near.domain.models.user.UserTemplate
+import com.example.near.domain.repository.AuthDataStorage
 import com.example.near.domain.repository.CommunityRepository
 import javax.inject.Inject
 
 class CommunityRepositoryImpl @Inject constructor(
     private val communityService: CommunityService,
-    private val sessionManager: SessionManager
+    private val sessionManager: SessionManager,
+    private val authDataStorage: AuthDataStorage
 ) : CommunityRepository {
 
     override suspend fun signUp(
@@ -56,6 +58,7 @@ class CommunityRepositoryImpl @Inject constructor(
             val response = communityService.login(LoginRequest(email, password))
             if (response.isSuccessful) {
                 response.body()?.let {
+                    sessionManager.saveAuthToken(it)
                     Result.success(it)
                 } ?: Result.failure(Exception("Empty response body"))
             } else {
@@ -82,12 +85,14 @@ class CommunityRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun refreshToken(token: String): Result<AuthTokens> {
+    override suspend fun refreshToken(): Result<Unit> {
         return try {
-            val response = communityService.refreshToken(RefreshTokenRequest(token))
+            val tokens = authDataStorage.getCredentials()
+            val response = communityService.refreshToken(RefreshTokenRequest(tokens?.refreshToken ?: ""))
             if (response.isSuccessful) {
                 response.body()?.toDomain()?.let {
-                    Result.success(it)
+                    sessionManager.saveAuthToken(it)
+                    Result.success(Unit)
                 } ?: Result.failure(Exception("Empty response body"))
             } else {
                 Result.failure(Exception("Failed to send token request"))
@@ -122,12 +127,9 @@ class CommunityRepositoryImpl @Inject constructor(
                 "Bearer ${sessionManager.authToken!!.accessToken}",
                 TemplateCreateRequest(templateName, message, emergencyType)
             )
-            Log.d("Test", response.message())
-            Log.d("Test", response.code().toString())
             if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
-                Log.d("TestError", sessionManager.authToken!!.accessToken.toString())
                 Result.failure(Exception("Failed to send token request"))
             }
         } catch (e: Exception) {

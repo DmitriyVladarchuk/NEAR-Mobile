@@ -1,8 +1,8 @@
 package com.example.near.DI
 
-import com.example.near.data.storage.AuthDataStorage
 import com.example.near.data.storage.SessionManager
 import com.example.near.data.storage.SettingsDataStorage
+import com.example.near.domain.repository.AuthDataStorage
 import com.example.near.domain.repository.CommunityRepository
 import com.example.near.domain.repository.UserRepository
 import com.example.near.domain.usecase.user.friends.AddFriendRequestUseCase
@@ -45,9 +45,8 @@ object UseCaseModule {
     fun provideUserLoginUseCase(
         userRepository: UserRepository,
         authDataStorage: AuthDataStorage,
-        sessionManager: SessionManager
     ): LoginUserUseCase {
-        return LoginUserUseCase(userRepository, authDataStorage, sessionManager)
+        return LoginUserUseCase(userRepository, authDataStorage)
     }
 
     @Provides
@@ -55,9 +54,8 @@ object UseCaseModule {
     fun provideCommunityLoginUseCase(
         communityRepository: CommunityRepository,
         authDataStorage: AuthDataStorage,
-        sessionManager: SessionManager
     ): LoginCommunityUseCase {
-        return LoginCommunityUseCase(communityRepository, authDataStorage, sessionManager)
+        return LoginCommunityUseCase(communityRepository, authDataStorage)
     }
 
     @Provides
@@ -66,9 +64,8 @@ object UseCaseModule {
         userRepository: UserRepository,
         communityRepository: CommunityRepository,
         authDataStorage: AuthDataStorage,
-        sessionManager: SessionManager
     ): LoadUserUseCase {
-        return LoadUserUseCase(userRepository, communityRepository, authDataStorage, sessionManager)
+        return LoadUserUseCase(userRepository, communityRepository, authDataStorage)
     }
 
     @Provides

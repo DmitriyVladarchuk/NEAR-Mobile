@@ -2,6 +2,7 @@ package com.example.near.ui.screens.navigation
 
 sealed class Routes(val route: String) {
     // --- Общие маршруты ---
+    object Splash : Routes("splash")
     object Onboarding : Routes("onboarding")
     object LoginAccount : Routes("login/account")
     object LoginCommunity : Routes("login/community")

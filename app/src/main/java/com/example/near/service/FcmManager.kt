@@ -1,8 +1,8 @@
 package com.example.near.service
 
 import android.util.Log
-import com.example.near.data.storage.AuthDataStorage
 import com.example.near.data.storage.SessionManager
+import com.example.near.domain.repository.AuthDataStorage
 import com.example.near.domain.repository.CommunityRepository
 import com.example.near.domain.repository.UserRepository
 import com.google.firebase.messaging.FirebaseMessaging
@@ -60,7 +60,7 @@ class FcmTokenManager @Inject constructor(
         try {
             val credentials = authDataStorage.getCredentials()
             when {
-                credentials?.third == true -> { // Это сообщество
+                credentials?.isCommunity == true -> { // Это сообщество
                     communityRepository.sendFcmToken(token).onSuccess {
                         Log.d("FCM", "Community token sent successfully")
                     }.onFailure { e ->
