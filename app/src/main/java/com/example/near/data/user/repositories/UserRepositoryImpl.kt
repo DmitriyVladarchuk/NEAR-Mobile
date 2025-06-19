@@ -7,6 +7,7 @@ import com.example.near.data.shared.models.FcmTokenRequest
 import com.example.near.data.shared.models.RefreshTokenRequest
 import com.example.near.data.shared.models.TemplateActionRequest
 import com.example.near.data.shared.models.TemplateCreateRequest
+import com.example.near.data.storage.AuthDataStorage
 import com.example.near.data.storage.SessionManager
 import com.example.near.data.user.mappers.toDomain
 import com.example.near.data.user.mappers.toRequest
@@ -26,7 +27,8 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userService: UserService,
-    private val sessionManager: SessionManager
+    private val sessionManager: SessionManager,
+    private val authDataStorage: AuthDataStorage,
 ) : UserRepository {
 
     override suspend fun signUp(
@@ -80,9 +82,13 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun refreshToken(token: String): Result<AuthTokens> {
+    override suspend fun refreshToken(): Result<AuthTokens> {
         return try {
-            val response = userService.refreshToken(RefreshTokenRequest(token))
+            val tokens = authDataStorage.getCredentials()
+            val response = userService.refreshToken(
+                token = "Bearer ${tokens?.first}",
+                request = RefreshTokenRequest(tokens?.second ?: "")
+            )
 
             if (response.isSuccessful) {
                 response.body()?.toDomain()?.let {

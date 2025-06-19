@@ -61,6 +61,7 @@ interface UserService {
 
     @POST("NEAR/token/account")
     suspend fun refreshToken(
+        @Header("Authorization") token: String,
         @Body request: RefreshTokenRequest
     ): Response<LoginResponse>
 

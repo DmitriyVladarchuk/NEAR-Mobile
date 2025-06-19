@@ -1,5 +1,6 @@
 package com.example.near.domain.usecase.user.auth
 
+import android.util.Log
 import com.example.near.data.storage.AuthDataStorage
 import com.example.near.data.storage.SessionManager
 import com.example.near.domain.models.common.AuthTokens
@@ -16,7 +17,8 @@ class LoginUserUseCase @Inject constructor(
         return userRepository.login(LoginCredentials(email, password)).also { result ->
             if (result.isSuccess) {
                 val tokens = result.getOrThrow()
-                authDataStorage.saveCredentials(tokens.refreshToken!!, false)
+                Log.d("tokens", tokens.toString())
+                authDataStorage.saveCredentials(tokens.accessToken, tokens.refreshToken!!, false)
                 sessionManager.saveAuthToken(tokens)
 
                 // Отправка токена

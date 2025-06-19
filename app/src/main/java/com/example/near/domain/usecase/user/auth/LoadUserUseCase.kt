@@ -1,5 +1,6 @@
 package com.example.near.domain.usecase.user.auth
 
+import android.util.Log
 import com.example.near.data.storage.AuthDataStorage
 import com.example.near.data.storage.SessionManager
 import com.example.near.domain.models.common.AuthTokens
@@ -17,10 +18,10 @@ class LoadUserUseCase @Inject constructor(
         val credentials = authDataStorage.getCredentials() ?: return false
 
         return try {
-            val result = if (credentials.second) {
+            val result = if (credentials.third) {
                 communityRepository.refreshToken(credentials.first)
             } else {
-                userRepository.refreshToken(credentials.first)
+                userRepository.refreshToken()
             }
 
             if (result.isSuccess) {
@@ -35,11 +36,11 @@ class LoadUserUseCase @Inject constructor(
                     true
                 } ?: false
             } else {
-                authDataStorage.clearCredentials()
+                //authDataStorage.clearCredentials()
                 false
             }
         } catch (e: Exception) {
-            authDataStorage.clearCredentials()
+            //authDataStorage.clearCredentials()
             false
         }
     }

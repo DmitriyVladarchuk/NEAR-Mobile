@@ -60,7 +60,7 @@ class FcmTokenManager @Inject constructor(
         try {
             val credentials = authDataStorage.getCredentials()
             when {
-                credentials?.second == true -> { // Это сообщество
+                credentials?.third == true -> { // Это сообщество
                     communityRepository.sendFcmToken(token).onSuccess {
                         Log.d("FCM", "Community token sent successfully")
                     }.onFailure { e ->

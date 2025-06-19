@@ -23,8 +23,12 @@ import javax.inject.Singleton
 object AppModules {
     @Provides
     @Singleton
-    fun provideUserRepository(userService: UserService, sessionManager: SessionManager): UserRepository {
-        return UserRepositoryImpl(userService, sessionManager)
+    fun provideUserRepository(
+        userService: UserService,
+        sessionManager: SessionManager,
+        authDataStorage: AuthDataStorage
+    ): UserRepository {
+        return UserRepositoryImpl(userService, sessionManager, authDataStorage)
     }
 
     @Provides

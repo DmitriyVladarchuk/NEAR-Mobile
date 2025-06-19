@@ -67,28 +67,25 @@ fun MainNavGraph(
 
     // Авторизация
     LaunchedEffect(Unit) {
-        if (!isLoggedIn) {
-            val success = withContext(Dispatchers.IO) {
-                viewModel.loadUserUseCase()
-            }
+        val success = withContext(Dispatchers.IO) {
+            viewModel.loadUserUseCase()
+        }
 
-            if (success) {
-                val isCommunity = viewModel.authDataStorage.getCredentials()?.second ?: false
-                val fcmToken = viewModel.authDataStorage.getFcmToken()
-                if (fcmToken == null)
-                    viewModel.refreshToken()
-                Log.d("Test FCM TOKEN", fcmToken.toString())
-                Log.d("Test Push", viewModel.authDataStorage.getIsPush().toString())
-                val mainRoute = if (isCommunity) {
-                    fcmToken?.let { viewModel.communityRepository.sendFcmToken(it) }
-                    Routes.CommunityDashboard.route
-                } else {
-                    fcmToken?.let { viewModel.userRepository.sendFcmToken(it) }
-                    Routes.Dashboards.route
-                }
-                navController.navigate(mainRoute) {
-                    popUpTo(0) { inclusive = true }
-                }
+        if (success) {
+            val isCommunity = viewModel.authDataStorage.getCredentials()?.third ?: false
+            val fcmToken = viewModel.authDataStorage.getFcmToken()
+            if (fcmToken == null)
+                viewModel.refreshToken()
+
+            val mainRoute = if (isCommunity) {
+                fcmToken?.let { viewModel.communityRepository.sendFcmToken(it) }
+                Routes.CommunityDashboard.route
+            } else {
+                fcmToken?.let { viewModel.userRepository.sendFcmToken(it) }
+                Routes.Dashboards.route
+            }
+            navController.navigate(mainRoute) {
+                popUpTo(0) { inclusive = true }
             }
         }
     }
@@ -109,7 +106,7 @@ fun MainNavGraph(
             ) {
                 BottomBar(
                     navController = navController,
-                    isCommunity = viewModel.authDataStorage.getCredentials()?.second ?: false
+                    isCommunity = viewModel.authDataStorage.getCredentials()?.third ?: false
                 )
             }
         }

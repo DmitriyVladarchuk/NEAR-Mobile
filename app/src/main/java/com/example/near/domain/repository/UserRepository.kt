@@ -16,7 +16,7 @@ interface UserRepository {
 
     suspend fun getNotificationOptions(): Result<List<NotificationOption>>
 
-    suspend fun refreshToken(token: String): Result<AuthTokens>
+    suspend fun refreshToken(): Result<AuthTokens>
 
     suspend fun sendFcmToken(token: String): Result<Unit>
 

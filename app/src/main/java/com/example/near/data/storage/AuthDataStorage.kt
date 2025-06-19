@@ -1,9 +1,9 @@
 package com.example.near.data.storage
 
 import android.content.Context
+import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-import androidx.core.content.edit
 
 class AuthDataStorage @Inject constructor(
     @ApplicationContext private val context: Context
@@ -12,8 +12,9 @@ class AuthDataStorage @Inject constructor(
         context.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
     }
 
-    fun saveCredentials(refreshToken: String, isCommunity: Boolean) {
+    fun saveCredentials(accessToken: String, refreshToken: String, isCommunity: Boolean) {
         sharedPrefs.edit {
+            putString("access_token", accessToken)
             putString("refresh_token", refreshToken)
             putBoolean("is_community", isCommunity)
             putBoolean("is_push", false)
@@ -21,10 +22,11 @@ class AuthDataStorage @Inject constructor(
         }
     }
 
-    fun getCredentials(): Pair<String, Boolean>? {
+    fun getCredentials(): Triple<String, String, Boolean>? {
+        val accessToken = sharedPrefs.getString("access_token", null)
         val refreshToken = sharedPrefs.getString("refresh_token", null)
         val isCommunity = sharedPrefs.getBoolean("is_community", false)
-        return if (refreshToken != null) Pair(refreshToken, isCommunity) else null
+        return if (accessToken != null && refreshToken != null) Triple(accessToken, refreshToken, isCommunity) else null
     }
 
     fun clearCredentials() {
