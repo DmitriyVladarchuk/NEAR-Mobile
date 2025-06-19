@@ -94,6 +94,7 @@ fun DashboardScreen(
         ) {
             BodyTemplates(navController, viewModel.notificationTemplates, viewModel)
         }
+
     }
 }
 
@@ -156,7 +157,7 @@ private fun BodyButtons(navController: NavController) {
                     .aspectRatio(1f)
             ) {
                 CreateNewGroup(
-                    onClick = { /* обработка клика */ },
+                    onClick = { navController.navigate(Routes.CreateGroup.route) },
                     modifier = Modifier.fillMaxSize()
                 )
             }
@@ -273,17 +274,30 @@ private fun ItemTemplate(
 
             DropdownMenu(
                 expanded = expanded.value,
-                onDismissRequest = { expanded.value = false }
+                onDismissRequest = { expanded.value = false },
+                containerColor = CustomTheme.colors.container_2
             ) {
                 DropdownMenuItem(
-                    text = { Text("Edit") },
+                    text = {
+                        Text(
+                            text = stringResource(R.string.edit),
+                            style = AppTypography.bodyMedium,
+                            color = CustomTheme.colors.content
+                        )
+                    },
                     onClick = {
                         expanded.value = false
                         onEdit()
                     }
                 )
                 DropdownMenuItem(
-                    text = { Text("Delete") },
+                    text = {
+                        Text(
+                            text = stringResource(R.string.delete),
+                            style = AppTypography.bodyMedium,
+                            color = CustomTheme.colors.content
+                        )
+                    },
                     onClick = {
                         expanded.value = false
                         onDelete()
