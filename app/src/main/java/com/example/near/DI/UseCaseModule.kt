@@ -89,10 +89,9 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideLogOutUseCase(
-        sessionManager: SessionManager,
         authDataStorage: AuthDataStorage
     ): LogOutUseCase {
-        return LogOutUseCase(sessionManager, authDataStorage)
+        return LogOutUseCase(authDataStorage)
     }
 
     @Provides

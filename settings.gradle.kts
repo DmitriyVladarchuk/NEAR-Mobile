@@ -21,4 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "NEAR"
 include(":app")
- 
+include(":data")
+include(":domain")
