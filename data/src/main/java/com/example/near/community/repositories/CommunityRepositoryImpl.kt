@@ -17,10 +17,9 @@ import com.example.near.domain.community.models.Community
 import com.example.near.domain.user.models.UserTemplate
 import com.example.near.domain.shared.storage.AuthDataStorage
 import com.example.near.domain.community.repository.CommunityRepository
-import javax.inject.Inject
 
 
-class CommunityRepositoryImpl @Inject constructor(
+class CommunityRepositoryImpl(
     private val communityService: CommunityService,
     private val sessionManager: SessionManager,
     private val authDataStorage: AuthDataStorage

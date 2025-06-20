@@ -1,11 +1,8 @@
 package com.example.near.data.storage
 
 import com.example.near.domain.shared.models.AuthTokens
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class SessionManager @Inject constructor() {
+class SessionManager {
     private var _authToken: AuthTokens? = null
 
     val authToken: AuthTokens?

@@ -18,14 +18,13 @@ import com.example.near.domain.shared.models.AuthTokens
 import com.example.near.domain.shared.models.EmergencyType
 import com.example.near.domain.shared.models.LoginCredentials
 import com.example.near.domain.shared.models.NotificationOption
+import com.example.near.domain.shared.storage.AuthDataStorage
 import com.example.near.domain.user.models.AllFriendsInfo
 import com.example.near.domain.user.models.User
 import com.example.near.domain.user.models.UserSignUp
-import com.example.near.domain.shared.storage.AuthDataStorage
 import com.example.near.domain.user.repository.UserRepository
-import javax.inject.Inject
 
-class UserRepositoryImpl @Inject constructor(
+class UserRepositoryImpl(
     private val userService: UserService,
     private val sessionManager: SessionManager,
     private val authDataStorage: AuthDataStorage,

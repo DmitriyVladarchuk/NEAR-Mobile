@@ -5,11 +5,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import com.example.near.domain.shared.models.ThemeType
 import com.example.near.domain.shared.storage.SettingsDataStorage
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 
-class SettingsDataStorageImpl @Inject constructor(
-    @ApplicationContext private val context: Context
+class SettingsDataStorageImpl(
+    private val context: Context
 ) : SettingsDataStorage {
     private val sharedPrefs by lazy {
         context.getSharedPreferences("settings_prefs", Context.MODE_PRIVATE)

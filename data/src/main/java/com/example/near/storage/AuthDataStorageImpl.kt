@@ -4,11 +4,9 @@ import android.content.Context
 import androidx.core.content.edit
 import com.example.near.domain.shared.models.AuthCredentials
 import com.example.near.domain.shared.storage.AuthDataStorage
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 
-class AuthDataStorageImpl @Inject constructor(
-    @ApplicationContext private val context: Context
+class AuthDataStorageImpl(
+    private val context: Context
 ) : AuthDataStorage {
     private val sharedPrefs by lazy {
         context.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
