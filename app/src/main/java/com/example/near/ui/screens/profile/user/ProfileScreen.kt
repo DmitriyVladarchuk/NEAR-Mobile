@@ -520,12 +520,3 @@ private fun SettingAndLogOut(modifier: Modifier = Modifier, settingClick: () -> 
     }
 
 }
-
-
-@Preview(showBackground = true)
-@Composable
-private fun TestProfileScreen() {
-    NEARTheme {
-        //ProfileScreen()
-    }
-}

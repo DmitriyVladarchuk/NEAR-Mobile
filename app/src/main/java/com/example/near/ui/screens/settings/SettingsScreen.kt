@@ -13,8 +13,6 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -48,8 +46,6 @@ fun SettingsScreen(navController: NavController, modifier: Modifier = Modifier, 
 
 @Composable
 private fun OptionCard(viewModel: SettingsViewModel) {
-    val currentTheme by viewModel.currentTheme.collectAsState(ThemeType.SYSTEM)
-
     Column(
         modifier = Modifier
             .background(CustomTheme.colors.container_2, RoundedCornerShape(8.dp))
@@ -63,23 +59,24 @@ private fun OptionCard(viewModel: SettingsViewModel) {
 
         ThemeOption(
             text = stringResource(R.string.light),
-            isSelected = currentTheme == ThemeType.LIGHT,
+            isSelected = viewModel.currentTheme == ThemeType.LIGHT,
             onClick = { viewModel.setTheme(ThemeType.LIGHT) }
         )
 
         ThemeOption(
             text = stringResource(R.string.dark),
-            isSelected = currentTheme == ThemeType.DARK,
+            isSelected = viewModel.currentTheme == ThemeType.DARK,
             onClick = { viewModel.setTheme(ThemeType.DARK) }
         )
 
         ThemeOption(
             text = stringResource(R.string.system),
-            isSelected = currentTheme == ThemeType.SYSTEM,
+            isSelected = viewModel.currentTheme == ThemeType.SYSTEM,
             onClick = { viewModel.setTheme(ThemeType.SYSTEM) }
         )
     }
 }
+
 
 @Composable
 private fun ThemeOption(

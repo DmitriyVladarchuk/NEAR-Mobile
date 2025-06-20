@@ -3,7 +3,7 @@ package com.example.near.ui.screens.navigation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.data.storage.SessionManager
-import com.example.near.data.storage.SettingsDataStorage
+import com.example.near.data.storage.SettingsDataStorageImpl
 import com.example.near.domain.shared.models.UIState
 import com.example.near.domain.shared.storage.AuthDataStorage
 import com.example.near.domain.community.repository.CommunityRepository
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class NavigationViewModel @Inject constructor(
     val sessionManager: SessionManager,
     val authDataStorage: AuthDataStorage,
-    val settingsDataStorage: SettingsDataStorage,
+    val settingsDataStorage: SettingsDataStorageImpl,
     val userRepository: UserRepository,
     val communityRepository: CommunityRepository,
     val loadUserUseCase: LoadUserUseCase,

@@ -1,7 +1,7 @@
 package com.example.near.DI
 
 import com.example.near.data.storage.SessionManager
-import com.example.near.data.storage.SettingsDataStorage
+import com.example.near.data.storage.SettingsDataStorageImpl
 import com.example.near.domain.shared.storage.AuthDataStorage
 import com.example.near.domain.community.repository.CommunityRepository
 import com.example.near.domain.user.repository.UserRepository
@@ -156,13 +156,13 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideGetThemeUseCase(settingsDataStorage: SettingsDataStorage): GetThemeUseCase {
+    fun provideGetThemeUseCase(settingsDataStorage: SettingsDataStorageImpl): GetThemeUseCase {
         return GetThemeUseCase(settingsDataStorage)
     }
 
     @Provides
     @Singleton
-    fun provideSetThemeUseCase(settingsDataStorage: SettingsDataStorage): SetThemeUseCase {
+    fun provideSetThemeUseCase(settingsDataStorage: SettingsDataStorageImpl): SetThemeUseCase {
         return SetThemeUseCase(settingsDataStorage)
     }
 
