@@ -8,8 +8,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.R
-import com.example.near.domain.models.common.UIState
-import com.example.near.domain.usecase.user.auth.LoginUserUseCase
+import com.example.near.domain.shared.models.UIState
+import com.example.near.domain.user.usecase.auth.LoginUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch

@@ -11,12 +11,12 @@ import com.example.near.data.shared.models.TemplateCreateRequest
 import com.example.near.data.shared.models.TemplateSendRequest
 import com.example.near.data.storage.SessionManager
 import com.example.near.data.user.mappers.toDomain
-import com.example.near.domain.models.common.AuthTokens
-import com.example.near.domain.models.common.EmergencyType
-import com.example.near.domain.models.community.Community
-import com.example.near.domain.models.user.UserTemplate
-import com.example.near.domain.repository.AuthDataStorage
-import com.example.near.domain.repository.CommunityRepository
+import com.example.near.domain.shared.models.AuthTokens
+import com.example.near.domain.shared.models.EmergencyType
+import com.example.near.domain.community.models.Community
+import com.example.near.domain.user.models.UserTemplate
+import com.example.near.domain.shared.storage.AuthDataStorage
+import com.example.near.domain.community.repository.CommunityRepository
 import javax.inject.Inject
 
 class CommunityRepositoryImpl @Inject constructor(

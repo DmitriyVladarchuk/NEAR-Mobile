@@ -1,6 +1,6 @@
 package com.example.near.data.shared.models
 
-import com.example.near.domain.models.common.EmergencyType
+import com.example.near.domain.shared.models.EmergencyType
 
 data class TemplateCreateRequest(
     val templateName: String,

@@ -1,6 +1,6 @@
 package com.example.near.data.storage
 
-import com.example.near.domain.models.common.AuthTokens
+import com.example.near.domain.shared.models.AuthTokens
 import javax.inject.Inject
 import javax.inject.Singleton
 

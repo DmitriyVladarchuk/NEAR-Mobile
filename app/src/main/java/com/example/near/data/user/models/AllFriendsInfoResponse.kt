@@ -1,6 +1,6 @@
 package com.example.near.data.user.models
 
-import com.example.near.domain.models.user.User
+import com.example.near.domain.user.models.User
 
 data class AllFriendsInfoResponse(
     val friends: List<User>,

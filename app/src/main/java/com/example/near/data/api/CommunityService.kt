@@ -8,8 +8,8 @@ import com.example.near.data.community.models.SignUpCommunityRequest
 import com.example.near.data.shared.models.LoginRequest
 import com.example.near.data.shared.models.LoginResponse
 import com.example.near.data.shared.models.TemplateSendRequest
-import com.example.near.domain.models.common.AuthTokens
-import com.example.near.domain.models.user.UserTemplate
+import com.example.near.domain.shared.models.AuthTokens
+import com.example.near.domain.user.models.UserTemplate
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

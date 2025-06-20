@@ -3,8 +3,6 @@ package com.example.near.ui.screens.navigation
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -34,7 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.near.R
-import com.example.near.domain.models.common.UIState
+import com.example.near.domain.shared.models.UIState
 import com.example.near.ui.screens.auth.login.account.LoginAccountScreen
 import com.example.near.ui.screens.auth.login.community.LoginCommunityScreen
 import com.example.near.ui.screens.auth.signup.account.SignupAccountScreen
@@ -49,16 +46,12 @@ import com.example.near.ui.screens.onboarding.OnboardingScreen
 import com.example.near.ui.screens.profile.community.ProfileCommunityScreen
 import com.example.near.ui.screens.profile.edit.EditUserProfileScreen
 import com.example.near.ui.screens.profile.user.ProfileScreen
-import com.example.near.ui.screens.profile.user.ProfileViewModel
 import com.example.near.ui.screens.settings.SettingsScreen
 import com.example.near.ui.screens.subscriptions.SubscribersScreen
 import com.example.near.ui.screens.subscriptions.SubscriptionsScreen
 import com.example.near.ui.screens.templates.CreateTemplate
 import com.example.near.ui.screens.templates.InfoTemplateScreen
-import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 
 @Composable

@@ -2,9 +2,9 @@ package com.example.near.service
 
 import android.util.Log
 import com.example.near.data.storage.SessionManager
-import com.example.near.domain.repository.AuthDataStorage
-import com.example.near.domain.repository.CommunityRepository
-import com.example.near.domain.repository.UserRepository
+import com.example.near.domain.shared.storage.AuthDataStorage
+import com.example.near.domain.community.repository.CommunityRepository
+import com.example.near.domain.user.repository.UserRepository
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

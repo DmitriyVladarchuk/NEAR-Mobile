@@ -2,9 +2,9 @@ package com.example.near.ui.screens.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.domain.models.common.ThemeType
-import com.example.near.domain.usecase.GetThemeUseCase
-import com.example.near.domain.usecase.SetThemeUseCase
+import com.example.near.domain.shared.models.ThemeType
+import com.example.near.domain.shared.usecase.GetThemeUseCase
+import com.example.near.domain.shared.usecase.SetThemeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted

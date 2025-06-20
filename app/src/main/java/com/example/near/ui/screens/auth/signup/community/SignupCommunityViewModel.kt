@@ -8,10 +8,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.R
-import com.example.near.domain.models.common.EmergencyType
-import com.example.near.domain.models.common.UIState
-import com.example.near.domain.models.common.emergencyTypes
-import com.example.near.domain.usecase.community.SignUpCommunityUseCase
+import com.example.near.domain.shared.models.EmergencyType
+import com.example.near.domain.shared.models.UIState
+import com.example.near.domain.community.usecase.SignUpCommunityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch

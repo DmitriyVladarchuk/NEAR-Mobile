@@ -1,6 +1,6 @@
 package com.example.near.data.shared.models
 
-import com.example.near.domain.models.common.EmergencyType
+import com.example.near.domain.shared.models.EmergencyType
 import com.google.gson.annotations.SerializedName
 
 data class TemplateActionRequest(

@@ -2,8 +2,8 @@ package com.example.near.data.storage
 
 import android.content.Context
 import androidx.core.content.edit
-import com.example.near.domain.models.common.AuthCredentials
-import com.example.near.domain.repository.AuthDataStorage
+import com.example.near.domain.shared.models.AuthCredentials
+import com.example.near.domain.shared.storage.AuthDataStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

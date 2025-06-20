@@ -2,8 +2,8 @@ package com.example.near.data.community.mappers
 
 import com.example.near.data.community.models.CommunityResponse
 import com.example.near.data.community.models.SignUpCommunityRequest
-import com.example.near.domain.models.community.Community
-import com.example.near.domain.models.community.CommunitySignup
+import com.example.near.domain.community.models.Community
+import com.example.near.domain.community.models.CommunitySignup
 
 fun CommunityResponse.toDomain(): Community = Community(
     id = id,

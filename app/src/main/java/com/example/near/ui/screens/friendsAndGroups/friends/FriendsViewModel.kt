@@ -6,11 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.domain.models.user.AllFriendsInfo
-import com.example.near.domain.models.user.User
-import com.example.near.domain.usecase.GetUserByIdUseCase
-import com.example.near.domain.usecase.GetUserUseCase
-import com.example.near.domain.usecase.user.friends.GetAllFriendsInfoUseCase
+import com.example.near.domain.user.models.AllFriendsInfo
+import com.example.near.domain.user.models.User
+import com.example.near.domain.shared.usecase.GetUserByIdUseCase
+import com.example.near.domain.shared.usecase.GetUserUseCase
+import com.example.near.domain.user.usecase.friends.GetAllFriendsInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

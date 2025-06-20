@@ -8,9 +8,9 @@ import com.example.near.data.storage.SessionManager
 import com.example.near.data.storage.SettingsDataStorage
 import com.example.near.data.community.repositories.CommunityRepositoryImpl
 import com.example.near.data.user.repositories.UserRepositoryImpl
-import com.example.near.domain.repository.AuthDataStorage
-import com.example.near.domain.repository.CommunityRepository
-import com.example.near.domain.repository.UserRepository
+import com.example.near.domain.shared.storage.AuthDataStorage
+import com.example.near.domain.community.repository.CommunityRepository
+import com.example.near.domain.user.repository.UserRepository
 import com.example.near.service.FcmTokenManager
 import dagger.Module
 import dagger.Provides

@@ -12,18 +12,18 @@ import com.example.near.data.user.models.UserResponse
 import com.example.near.data.user.models.UserSignUpRequest
 import com.example.near.data.user.models.UserSubscriptionResponse
 import com.example.near.data.user.models.UserTemplateResponse
-import com.example.near.domain.models.common.AuthTokens
-import com.example.near.domain.models.user.AllFriendsInfo
-import com.example.near.domain.models.common.EmergencyType
-import com.example.near.domain.models.common.LoginCredentials
-import com.example.near.domain.models.common.NotificationOption
-import com.example.near.domain.models.common.SignupNotificationOption
-import com.example.near.domain.models.user.User
-import com.example.near.domain.models.user.UserFriend
-import com.example.near.domain.models.user.UserGroup
-import com.example.near.domain.models.user.UserSignUp
-import com.example.near.domain.models.user.UserSubscription
-import com.example.near.domain.models.user.UserTemplate
+import com.example.near.domain.shared.models.AuthTokens
+import com.example.near.domain.user.models.AllFriendsInfo
+import com.example.near.domain.shared.models.EmergencyType
+import com.example.near.domain.shared.models.LoginCredentials
+import com.example.near.domain.shared.models.NotificationOption
+import com.example.near.domain.shared.models.SignupNotificationOption
+import com.example.near.domain.user.models.User
+import com.example.near.domain.user.models.UserFriend
+import com.example.near.domain.user.models.UserGroup
+import com.example.near.domain.user.models.UserSignUp
+import com.example.near.domain.user.models.UserSubscription
+import com.example.near.domain.user.models.UserTemplate
 
 fun UserSignUp.toRequest(): UserSignUpRequest = UserSignUpRequest(
     userName = userName,

@@ -1,7 +1,7 @@
 package com.example.near.data.community.models
 
-import com.example.near.domain.models.user.UserFriend
-import com.example.near.domain.models.user.UserTemplate
+import com.example.near.domain.user.models.UserFriend
+import com.example.near.domain.user.models.UserTemplate
 import com.google.gson.annotations.SerializedName
 
 data class CommunityResponse(

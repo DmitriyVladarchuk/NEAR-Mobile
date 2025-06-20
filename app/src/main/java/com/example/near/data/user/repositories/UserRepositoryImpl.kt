@@ -14,15 +14,15 @@ import com.example.near.data.user.models.FriendRequest
 import com.example.near.data.user.models.GroupActionRequest
 import com.example.near.data.user.models.GroupCreateRequest
 import com.example.near.data.user.models.UserUpdateRequest
-import com.example.near.domain.models.common.AuthTokens
-import com.example.near.domain.models.common.EmergencyType
-import com.example.near.domain.models.common.LoginCredentials
-import com.example.near.domain.models.common.NotificationOption
-import com.example.near.domain.models.user.AllFriendsInfo
-import com.example.near.domain.models.user.User
-import com.example.near.domain.models.user.UserSignUp
-import com.example.near.domain.repository.AuthDataStorage
-import com.example.near.domain.repository.UserRepository
+import com.example.near.domain.shared.models.AuthTokens
+import com.example.near.domain.shared.models.EmergencyType
+import com.example.near.domain.shared.models.LoginCredentials
+import com.example.near.domain.shared.models.NotificationOption
+import com.example.near.domain.user.models.AllFriendsInfo
+import com.example.near.domain.user.models.User
+import com.example.near.domain.user.models.UserSignUp
+import com.example.near.domain.shared.storage.AuthDataStorage
+import com.example.near.domain.user.repository.UserRepository
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
