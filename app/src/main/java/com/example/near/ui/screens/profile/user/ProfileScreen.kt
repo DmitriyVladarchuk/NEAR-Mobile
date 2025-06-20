@@ -1,7 +1,13 @@
 package com.example.near.ui.screens.profile.user
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,17 +33,21 @@ import androidx.compose.material.icons.filled.Redeem
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -65,9 +75,11 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    val scrollState = rememberScrollState()
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
+    var showLogout by remember { mutableStateOf(false) }
+    var scrollOffset by remember { mutableFloatStateOf(0f) }
+    var maxScrollOffset by remember { mutableFloatStateOf(0f) }
+    val scrollThreshold = 100.dp
+
 
     LaunchedEffect(Unit) {
         if (userId == null) {
@@ -89,99 +101,90 @@ fun ProfileScreen(
         modifier = modifier
             .fillMaxSize()
             .background(CustomTheme.colors.background)
+            .padding(horizontal = 16.dp)
+            .verticalScroll(rememberScrollState())
+            .pointerInput(Unit) {
+                detectVerticalDragGestures { change, dragAmount ->
+                    scrollOffset += dragAmount
+                    maxScrollOffset = maxOf(maxScrollOffset, scrollOffset)
+                    // Показываем кнопки при скролле вниз
+                    if (dragAmount < 0) {
+                        showLogout = true
+                    }
+                    // Прячем при скролле вверх
+                    else if (scrollOffset > maxScrollOffset - scrollThreshold.toPx()) {
+                        showLogout = false
+                    }
+                }
+            }
     ) {
         if (userId != null) {
             SecondaryHeaderTextInfo(
                 text = stringResource(R.string.profile),
-                modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
+                modifier = Modifier.padding(vertical = 16.dp)
             ) {
                 navController.popBackStack()
             }
         }
-        when {
-            viewModel.isLoading -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
-                }
+
+        Column(
+            modifier = Modifier
+                .weight(1f)
+        ) {
+            Box(modifier = Modifier.fillMaxWidth().weight(0.3f)) {
+                UserAvatarSection(
+                    avatarUrl = viewModel.avatarUrl,
+                    modifier = Modifier.fillMaxSize()
+                )
             }
-            viewModel.error != null -> {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text("Error: ${viewModel.error}", color = Color.Red)
-                    Button(onClick = { viewModel.loadUser() }) {
-                        Text("Retry")
-                    }
-                }
-            }
-            else -> {
-                Column(
-                    modifier = Modifier
-                        .verticalScroll(scrollState)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(screenHeight - 116.dp)
-                    ) {
-                        UserAvatarSection(
-                            avatarUrl = viewModel.avatarUrl,
+            Spacer(modifier.height(8.dp))
+            Box(modifier = Modifier.fillMaxWidth().weight(0.2f)) {
+                viewModel.user?.let { user ->
+                    if (userId != null)
+                        FriendsAndSubscription(
+                            user = user,
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .height((screenHeight - 56.dp) * 0.3f)
-                                .padding(8.dp)
+                                .fillMaxSize()
+                                .clickable { navController.navigate("profile_info/$userId") }
                         )
-
-                        viewModel.user?.let { user ->
-                            if (userId != null)
-                                FriendsAndSubscription(
-                                    user = user,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height((screenHeight - 56.dp) * 0.15f)
-                                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                                        .clickable { navController.navigate("profile_info/$userId") }
-                                )
-                            else
-                                FriendsAndSubscription(
-                                    user = user,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height((screenHeight - 56.dp) * 0.15f)
-                                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                                )
-                        }
-
-                        viewModel.user?.let { user ->
-                            UserProfileCard(
-                                userId = userId != null,
-                                navController = navController,
-                                user = user,
-                                friendshipStatus = viewModel.friendshipStatus,
-                                onAccept = { userId?.let { viewModel.addFriend(it) } },
-                                onReject = { userId?.let { viewModel.rejectFriend(it) } },
-                                onAction = { userId?.let { viewModel.handleFriendshipAction(it) } },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f)
-                                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                            )
-                        }
-                    }
-
-                    if (userId == null)
-                        SettingAndLogOut(
-                            settingClick = { navController.navigate(Routes.Settings.route) },
-                            logOutClick = { viewModel.logOut() },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 32.dp)
+                    else
+                        FriendsAndSubscription(
+                            user = user,
+                            modifier = Modifier.fillMaxSize()
                         )
                 }
             }
+            Spacer(modifier.height(8.dp))
+            Box(modifier = Modifier.fillMaxWidth().weight(0.5f)) {
+                viewModel.user?.let { user ->
+                    UserProfileCard(
+                        userId = userId != null,
+                        navController = navController,
+                        user = user,
+                        friendshipStatus = viewModel.friendshipStatus,
+                        onAccept = { userId?.let { viewModel.addFriend(it) } },
+                        onReject = { userId?.let { viewModel.rejectFriend(it) } },
+                        onAction = { userId?.let { viewModel.handleFriendshipAction(it) } },
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
+            Spacer(modifier.height(8.dp))
         }
+
+        AnimatedVisibility(
+            visible = showLogout,
+            enter = fadeIn() + slideInVertically { it },
+            exit = fadeOut() + slideOutVertically { it },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            SettingAndLogOut(
+                settingClick = { navController.navigate(Routes.Settings.route) },
+                logOutClick = { viewModel.logOut() },
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+
     }
 }
 
@@ -196,7 +199,7 @@ private fun UserAvatarSection(avatarUrl: String, modifier: Modifier = Modifier) 
             contentDescription = "user avatar",
             modifier = Modifier
                 .fillMaxHeight(0.8f)
-                .aspectRatio(1f), // Сохраняем квадратную форму
+                .aspectRatio(1f),
             contentScale = ContentScale.FillBounds,
             placeholder = painterResource(R.drawable.default_avatar),
             error = painterResource(R.drawable.default_avatar)
@@ -206,14 +209,14 @@ private fun UserAvatarSection(avatarUrl: String, modifier: Modifier = Modifier) 
 
 @Composable
 private fun UserProfileCard(
+    modifier: Modifier = Modifier,
     userId: Boolean = false,
     navController: NavController,
     user: User,
     friendshipStatus: FriendshipStatus,
     onAccept: () -> Unit,
     onReject: () -> Unit,
-    onAction: () -> Unit,
-    modifier: Modifier = Modifier
+    onAction: () -> Unit
 ) {
     Column(
         modifier = modifier

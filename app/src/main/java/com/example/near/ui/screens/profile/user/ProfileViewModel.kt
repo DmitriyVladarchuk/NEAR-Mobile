@@ -49,7 +49,7 @@ class ProfileViewModel @Inject constructor(
     var error by mutableStateOf<String?>(null)
         private set
 
-    var friendshipStatus by mutableStateOf<FriendshipStatus>(FriendshipStatus.NOT_FRIENDS)
+    var friendshipStatus by mutableStateOf(FriendshipStatus.NOT_FRIENDS)
         private set
 
     private val _logoutEvent = MutableSharedFlow<Unit>()
