@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -27,13 +26,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Redeem
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,14 +41,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -63,30 +56,23 @@ import com.example.near.domain.user.models.User
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.theme.NEARTheme
 import com.example.near.ui.theme.dark_content
 import com.example.near.ui.theme.light_container
 import com.example.near.ui.views.SecondaryHeaderTextInfo
 
 @Composable
-fun ProfileScreen(
+fun UserProfileScreen(
+    navController: NavController,
     modifier: Modifier = Modifier,
-    userId: String? = null,
-    viewModel: ProfileViewModel = hiltViewModel(),
-    navController: NavController
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
     var showLogout by remember { mutableStateOf(false) }
     var scrollOffset by remember { mutableFloatStateOf(0f) }
     var maxScrollOffset by remember { mutableFloatStateOf(0f) }
     val scrollThreshold = 100.dp
 
-
     LaunchedEffect(Unit) {
-        if (userId == null) {
-            viewModel.loadUser()
-        } else {
-            viewModel.loadUser(userId)
-        }
+        viewModel.loadUser()
     }
 
     LaunchedEffect(Unit) {
@@ -100,33 +86,21 @@ fun ProfileScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(CustomTheme.colors.background)
             .padding(horizontal = 16.dp)
             .verticalScroll(rememberScrollState())
             .pointerInput(Unit) {
                 detectVerticalDragGestures { change, dragAmount ->
                     scrollOffset += dragAmount
                     maxScrollOffset = maxOf(maxScrollOffset, scrollOffset)
-                    // Показываем кнопки при скролле вниз
                     if (dragAmount < 0) {
                         showLogout = true
                     }
-                    // Прячем при скролле вверх
                     else if (scrollOffset > maxScrollOffset - scrollThreshold.toPx()) {
                         showLogout = false
                     }
                 }
             }
     ) {
-        if (userId != null) {
-            SecondaryHeaderTextInfo(
-                text = stringResource(R.string.profile),
-                modifier = Modifier.padding(vertical = 16.dp)
-            ) {
-                navController.popBackStack()
-            }
-        }
-
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -139,35 +113,18 @@ fun ProfileScreen(
             }
             Spacer(modifier.height(8.dp))
             Box(modifier = Modifier.fillMaxWidth().weight(0.2f)) {
-                viewModel.user?.let { user ->
-                    if (userId != null)
-                        FriendsAndSubscription(
-                            user = user,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clickable { navController.navigate("profile_info/$userId") }
-                        )
-                    else
-                        FriendsAndSubscription(
-                            user = user,
-                            modifier = Modifier.fillMaxSize()
-                        )
-                }
+                FriendsAndSubscription(
+                    user = viewModel.user,
+                    modifier = Modifier.fillMaxSize()
+                )
             }
             Spacer(modifier.height(8.dp))
             Box(modifier = Modifier.fillMaxWidth().weight(0.5f)) {
-                viewModel.user?.let { user ->
-                    UserProfileCard(
-                        userId = userId != null,
-                        navController = navController,
-                        user = user,
-                        friendshipStatus = viewModel.friendshipStatus,
-                        onAccept = { userId?.let { viewModel.addFriend(it) } },
-                        onReject = { userId?.let { viewModel.rejectFriend(it) } },
-                        onAction = { userId?.let { viewModel.handleFriendshipAction(it) } },
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
+                UserProfileCard(
+                    user = viewModel.user,
+                    navController = navController,
+                    modifier = Modifier.fillMaxSize()
+                )
             }
             Spacer(modifier.height(8.dp))
         }
@@ -178,11 +135,68 @@ fun ProfileScreen(
             exit = fadeOut() + slideOutVertically { it },
             modifier = Modifier.fillMaxWidth()
         ) {
-            SettingAndLogOut(
-                settingClick = { navController.navigate(Routes.Settings.route) },
-                logOutClick = { viewModel.logOut() },
+            ProfileActionsMenu(
+                onSettingsClick = { navController.navigate(Routes.Settings.route) },
+                onLogoutClick = { viewModel.logOut() },
                 modifier = Modifier.padding(16.dp)
             )
+        }
+    }
+
+}
+
+@Composable
+fun UserProfileScreen(
+    userId: String,
+    navController: NavController,
+    modifier: Modifier = Modifier,
+    viewModel: ProfileViewModel = hiltViewModel()
+) {
+    LaunchedEffect(Unit) {
+        viewModel.loadUser(userId)
+    }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        SecondaryHeaderTextInfo(
+            text = stringResource(R.string.profile),
+            modifier = Modifier.padding(vertical = 16.dp)
+        ) {
+            navController.popBackStack()
+        }
+
+        Column(modifier = Modifier.weight(1f)) {
+            Box(modifier = Modifier.fillMaxWidth().weight(0.3f)) {
+                UserAvatarSection(
+                    avatarUrl = viewModel.avatarUrl,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+            Spacer(modifier.height(8.dp))
+            Box(modifier = Modifier.fillMaxWidth().weight(0.2f)) {
+                FriendsAndSubscription(
+                    user = viewModel.user,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable { navController.navigate("profile_info/$userId") }
+                )
+            }
+            Spacer(modifier.height(8.dp))
+            Box(modifier = Modifier.fillMaxWidth().weight(0.5f)) {
+                UserProfileCard(
+                    user = viewModel.user,
+                    friendshipStatus = viewModel.friendshipStatus,
+                    onAccept = { userId.let { viewModel.addFriend(it) } },
+                    onReject = { userId.let { viewModel.rejectFriend(it) } },
+                    onAction = { userId.let { viewModel.handleFriendshipAction(it) } },
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+            Spacer(modifier.height(8.dp))
         }
 
     }
@@ -210,67 +224,54 @@ private fun UserAvatarSection(avatarUrl: String, modifier: Modifier = Modifier) 
 @Composable
 private fun UserProfileCard(
     modifier: Modifier = Modifier,
-    userId: Boolean = false,
-    navController: NavController,
-    user: User,
+    user: User?,
     friendshipStatus: FriendshipStatus,
     onAccept: () -> Unit,
     onReject: () -> Unit,
     onAction: () -> Unit
 ) {
-    Column(
-        modifier = modifier
-            .background(color = CustomTheme.colors.container_2, shape = RoundedCornerShape(8.dp))
-            .fillMaxWidth()
+    BaseUserProfileCard(
+        modifier = modifier,
+        user = user
     ) {
-        Text(
-            text = "${user.firstName} ${user.lastName}",
-            style = AppTypography.titleMedium,
-            color = CustomTheme.colors.content,
-            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
-            textAlign = TextAlign.Center
+        FriendshipActionButton(
+            status = friendshipStatus,
+            onAccept = onAccept,
+            onReject = onReject,
+            onAction = onAction,
+            modifier = Modifier
+                .padding(horizontal = 8.dp, vertical = 8.dp)
         )
-        Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(2.dp).background(CustomTheme.colors.content))
+    }
+}
 
-        InfoRowForUser(Icons.Filled.Redeem, stringResource(R.string.birthday), user.birthday)
-        Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
-
-        InfoRowForUser(Icons.Filled.LocationOn, stringResource(R.string.location), user.country)
-        Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
-
-        //NotificationsOptions(user.notificationTemplates)
-        Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
-
-        Spacer(Modifier.weight(1f))
-
-        if (userId) {
-            FriendshipActionButton(
-                status = friendshipStatus,
-                onAccept = onAccept,
-                onReject = onReject,
-                onAction = onAction,
-                modifier = Modifier
-                    .padding(horizontal = 8.dp, vertical = 8.dp)
+@Composable
+private fun UserProfileCard(
+    modifier: Modifier = Modifier,
+    user: User?,
+    navController: NavController
+) {
+    BaseUserProfileCard(
+        modifier = modifier,
+        user = user
+    ) {
+        Button(
+            onClick = { navController.navigate(Routes.EditUserProfile.route) },
+            shape = RoundedCornerShape(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                contentColor = CustomTheme.colors.content,
+                containerColor = light_container
+            ),
+            modifier = Modifier
+                .align(Alignment.End)
+                .padding(horizontal = 8.dp, vertical = 8.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.edit_profile),
+                style = AppTypography.bodyMedium,
+                color = dark_content,
+                modifier = Modifier.padding(end = 8.dp),
             )
-        } else {
-            Button(
-                onClick = { navController.navigate(Routes.EditUserProfile.route) },
-                shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    contentColor = CustomTheme.colors.content,
-                    containerColor = light_container
-                ),
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(horizontal = 8.dp, vertical = 8.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.edit_profile),
-                    style = AppTypography.bodyMedium,
-                    color = dark_content,
-                    modifier = Modifier.padding(end = 8.dp),
-                )
-            }
         }
     }
 }
@@ -366,7 +367,7 @@ private fun NotificationsOptions(notificationTemplates: List<SignupNotificationO
     Column(
         modifier = modifier
     ) {
-        InfoRowForUser(Icons.Filled.Notifications, stringResource(R.string.options_for_receiving_notifications), "")
+        UserInfoRow(Icons.Filled.Notifications, stringResource(R.string.options_for_receiving_notifications), "")
         LazyRow(
             modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
@@ -387,33 +388,7 @@ private fun NotificationsOptions(notificationTemplates: List<SignupNotificationO
 }
 
 @Composable
-private fun InfoRowForUser(icon: ImageVector, firstText: String, secondText: String, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = "icons",
-            modifier = Modifier.size(24.dp).padding(end = 8.dp)
-        )
-        Text(
-            text = "$firstText:",
-            style = AppTypography.bodyMedium,
-            color = CustomTheme.colors.content,
-            modifier = Modifier.padding(end = 8.dp),
-        )
-        Text(
-            text = secondText,
-            style = AppTypography.bodyMedium,
-            color = CustomTheme.colors.content,
-            fontWeight = FontWeight.Bold
-        )
-    }
-}
-
-@Composable
-private fun FriendsAndSubscription(user: User, modifier: Modifier = Modifier) {
+private fun FriendsAndSubscription(user: User?, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth(),
@@ -421,12 +396,12 @@ private fun FriendsAndSubscription(user: User, modifier: Modifier = Modifier) {
     ) {
         ItemFriendsOrSubscription(
             title = stringResource(R.string.friends),
-            text = user.friends.size.toString(),
+            text = user?.friends?.size.toString(),
             modifier = Modifier.weight(1f)
         )
         ItemFriendsOrSubscription(
             title = stringResource(R.string.subscriptions),
-            text = user.subscriptions.size.toString(),
+            text = user?.subscriptions?.size.toString(),
             modifier = Modifier.weight(1f)
         )
     }
@@ -454,7 +429,7 @@ private fun ItemFriendsOrSubscription(
         ) {
             Text(
                 text = title,
-                style = AppTypography.titleMedium,
+                style = AppTypography.titleLarge,
                 color = CustomTheme.colors.content
             )
 
@@ -472,7 +447,7 @@ private fun ItemFriendsOrSubscription(
             ) {
                 Text(
                     text = text,
-                    style = AppTypography.titleMedium,
+                    style = AppTypography.titleLarge,
                     color = CustomTheme.colors.content,
                     textAlign = TextAlign.Center
                 )
@@ -482,41 +457,28 @@ private fun ItemFriendsOrSubscription(
 }
 
 @Composable
-private fun RowButton(image: ImageVector, text: String, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = image,
-            contentDescription = "icons",
-            modifier = Modifier.size(24.dp).padding(end = 8.dp)
-        )
-        Text(
-            text = text,
-            style = AppTypography.bodyMedium,
-            color = CustomTheme.colors.content,
-            modifier = Modifier.padding(end = 8.dp),
-        )
-    }
-}
-
-@Composable
-private fun SettingAndLogOut(modifier: Modifier = Modifier, settingClick: () -> Unit, logOutClick: () -> Unit) {
+private fun ProfileActionsMenu(
+    modifier: Modifier = Modifier,
+    onSettingsClick: () -> Unit,
+    onLogoutClick: () -> Unit
+) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        RowButton(
-            image = Icons.Filled.Settings,
-            text = stringResource(R.string.settings),
-            modifier = Modifier.clickable { settingClick() }
+        UserInfoRow(
+            icon = Icons.Filled.Settings,
+            label = stringResource(R.string.settings),
+            modifier = Modifier.clickable { onSettingsClick() }
         )
-        RowButton(
-            image = Icons.AutoMirrored.Filled.Logout,
-            text = stringResource(R.string.log_out),
-            modifier = Modifier.clickable { logOutClick() }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        UserInfoRow(
+            icon = Icons.AutoMirrored.Filled.Logout,
+            label = stringResource(R.string.log_out),
+            modifier = Modifier.clickable { onLogoutClick() }
         )
     }
-
 }

@@ -1,0 +1,114 @@
+package com.example.near.ui.screens.profile.user
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Redeem
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.near.R
+import com.example.near.domain.user.models.User
+import com.example.near.ui.theme.AppTypography
+import com.example.near.ui.theme.CustomTheme
+import com.example.near.ui.theme.NEARTheme
+
+@Composable
+fun BaseUserProfileCard(
+    modifier: Modifier = Modifier,
+    user: User?,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    user?.let {
+        Column(
+            modifier = modifier
+                .background(
+                    color = CustomTheme.colors.container_2,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = "${user.firstName} ${user.lastName}",
+                style = AppTypography.titleMedium,
+                color = CustomTheme.colors.content,
+                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+                textAlign = TextAlign.Center
+            )
+            Divider()
+
+            UserInfoRow(
+                icon = Icons.Filled.Redeem,
+                label = stringResource(R.string.birthday),
+                value = user.birthday,
+                modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
+            )
+            Divider()
+
+            UserInfoRow(
+                icon = Icons.Filled.LocationOn,
+                label = stringResource(R.string.location),
+                value = user.country,
+                modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
+            )
+            Divider()
+
+            //NotificationsOptions(user.notificationTemplates)
+            Divider()
+
+            Spacer(Modifier.weight(1f))
+
+            content()
+        }
+    }
+}
+
+@Composable
+private fun Divider() {
+    Spacer(
+        Modifier
+            .padding(horizontal = 8.dp)
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(CustomTheme.colors.content)
+    )
+}
+
+@Preview(showBackground = true)
+@Preview(showBackground = true, fontScale = 1.5f, name = "Large Font")
+@Composable
+fun BaseUserProfileCardPreview() {
+    val mockUser = User(
+        id = "user123",
+        firstName = "Иван",
+        lastName = "Иванов",
+        birthday = "15.05.1990",
+        age = 35,
+        country = "Россия",
+        city = "Москва",
+        district = "ЦАО",
+        registrationDate = "10.01.2020",
+        friends = emptyList(),
+        groups = emptyList(),
+        subscriptions = emptyList(),
+        notificationTemplates = emptyList()
+    )
+
+    NEARTheme {
+        BaseUserProfileCard(
+            user = mockUser,
+            content = {}
+        )
+    }
+}

@@ -45,7 +45,7 @@ import com.example.near.ui.screens.friendsAndGroups.groups.CreateGroupsScreen
 import com.example.near.ui.screens.onboarding.OnboardingScreen
 import com.example.near.ui.screens.profile.community.ProfileCommunityScreen
 import com.example.near.ui.screens.profile.edit.EditUserProfileScreen
-import com.example.near.ui.screens.profile.user.ProfileScreen
+import com.example.near.ui.screens.profile.user.UserProfileScreen
 import com.example.near.ui.screens.settings.SettingsScreen
 import com.example.near.ui.screens.subscriptions.SubscribersScreen
 import com.example.near.ui.screens.subscriptions.SubscriptionsScreen
@@ -193,7 +193,7 @@ fun MainNavGraph(
                 }
 
                 composable(Routes.Profile.route) {
-                    ProfileScreen(navController = navController)
+                    UserProfileScreen(navController = navController)
                 }
 
                 composable(Routes.EditUserProfile.route) {
@@ -205,7 +205,7 @@ fun MainNavGraph(
                     arguments = listOf(navArgument("userId") { type = NavType.StringType })
                 ) { backStackEntry ->
                     val userId = backStackEntry.arguments?.getString("userId")
-                    ProfileScreen(userId = userId, navController = navController)
+                    UserProfileScreen(userId = userId!!, navController = navController)
                 }
 
                 composable(
