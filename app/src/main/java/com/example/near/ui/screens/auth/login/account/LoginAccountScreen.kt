@@ -2,6 +2,7 @@ package com.example.near.ui.screens.auth.login.account
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,14 +42,15 @@ fun LoginAccountScreen(
 
     Column(modifier = defaultModifier.then(modifier)) {
         HeaderTextInfo(
-            stringResource(R.string.welcome_back).uppercase(),
-            stringResource(R.string.login_to_your_account)
+            firstText = stringResource(R.string.welcome_back).uppercase(),
+            secondText = stringResource(R.string.login_to_your_account),
+            modifier = Modifier.padding(vertical = 40.dp)
         )
         TextFieldAccount(viewModel, (uiState as? UIState.Error)?.message)
 
         if (uiState is UIState.Error) ErrorText((uiState as UIState.Error).message)
 
-        ForgotPassword { }
+        ForgotPassword(modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) { }
         AuthScreenButtons(
             enabled = uiState != UIState.Loading,
             primaryButtonText = stringResource(R.string.continue_text).uppercase(),

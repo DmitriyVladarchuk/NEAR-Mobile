@@ -16,9 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
+import com.example.near.ui.theme.NEARTheme
 
 @Composable
 fun AuthScreenButtons(
@@ -71,5 +73,19 @@ fun AuthScreenButtons(
                 fontWeight = FontWeight.SemiBold
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun AuthScreenButtonsPreview() {
+    NEARTheme {
+        AuthScreenButtons(
+            primaryButtonText = "Click",
+            secondaryText = "Other",
+            secondaryActionText = "click",
+            onPrimaryButtonClick = { },
+            onSecondaryActionClick = {  }
+        )
     }
 }

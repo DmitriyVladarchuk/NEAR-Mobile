@@ -1,4 +1,4 @@
-package com.example.near.ui.screens.profile.user
+package com.example.near.ui.views
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

@@ -60,8 +60,9 @@ fun SignupCommunityScreen(
     ) {
         Column(modifier = Modifier.verticalScroll(scrollState).padding(bottom = 24.dp)) {
             HeaderTextInfo(
-                stringResource(R.string.lets_get_you_started),
-                stringResource(R.string.create_a_community)
+                firstText = stringResource(R.string.lets_get_you_started),
+                secondText = stringResource(R.string.create_a_community),
+                modifier = Modifier.padding(vertical = 40.dp)
             )
             AnimatedVisibility(
                 uiState is UIState.Error

@@ -59,8 +59,9 @@ fun SignupAccountScreen(
     ) {
         Column(modifier = Modifier.verticalScroll(scrollState).padding(bottom = 24.dp)) {
             HeaderTextInfo(
-                stringResource(R.string.lets_get_you_started),
-                stringResource(R.string.create_an_account)
+                firstText = stringResource(R.string.lets_get_you_started),
+                secondText = stringResource(R.string.create_an_account),
+                modifier = Modifier.padding(vertical = 40.dp)
             )
             AnimatedVisibility(
                 uiState is UIState.Error

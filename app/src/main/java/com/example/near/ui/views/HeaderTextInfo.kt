@@ -6,14 +6,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
+import com.example.near.ui.theme.NEARTheme
 
 @Composable
-fun HeaderTextInfo(firstText: String, secondText: String) {
+fun HeaderTextInfo(firstText: String, secondText: String, modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier.padding(vertical = 40.dp),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
@@ -26,6 +28,18 @@ fun HeaderTextInfo(firstText: String, secondText: String) {
             text = secondText,
             style = AppTypography.titleLarge,
             color = CustomTheme.colors.content
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun HeaderTextInfoPreview() {
+    NEARTheme {
+        HeaderTextInfo(
+            firstText = "First",
+            secondText = "Second",
+            modifier = Modifier.padding(vertical = 40.dp)
         )
     }
 }
