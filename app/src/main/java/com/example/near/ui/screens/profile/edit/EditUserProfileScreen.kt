@@ -32,7 +32,7 @@ import androidx.navigation.NavController
 import com.example.near.R
 import com.example.near.domain.shared.models.UIState
 import com.example.near.ui.components.common.AppTextField
-import com.example.near.ui.components.common.UiStateNotifier
+import com.example.near.ui.components.dialogs.UiStateNotifier
 import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
 import com.example.near.ui.components.transformations.DateTransformation
 import com.example.near.ui.theme.AppTypography

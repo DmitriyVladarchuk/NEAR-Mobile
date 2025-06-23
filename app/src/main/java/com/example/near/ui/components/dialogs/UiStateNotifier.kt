@@ -1,4 +1,4 @@
-package com.example.near.ui.components.common
+package com.example.near.ui.components.dialogs
 
 import android.content.Context
 import android.widget.Toast

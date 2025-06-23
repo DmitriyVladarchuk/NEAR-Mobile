@@ -19,8 +19,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.near.R
 import com.example.near.domain.shared.models.emergencyTypes
 import com.example.near.domain.user.models.UserTemplate
 import com.example.near.ui.theme.AppTypography
@@ -69,26 +71,56 @@ fun ItemTemplate(
                 tint = CustomTheme.colors.content
             )
 
-            DropdownMenu(
+            TemplateOptionsMenu(
                 expanded = expanded.value,
-                onDismissRequest = { expanded.value = false }
-            ) {
-                DropdownMenuItem(
-                    text = { Text("Edit") },
-                    onClick = {
-                        expanded.value = false
-                        onEdit()
-                    }
-                )
-                DropdownMenuItem(
-                    text = { Text("Delete") },
-                    onClick = {
-                        expanded.value = false
-                        onDelete()
-                    }
-                )
-            }
+                onDismiss = { expanded.value = false },
+                onEdit = onEdit,
+                onDelete = onDelete
+            )
         }
+    }
+}
+
+@Composable
+private fun TemplateOptionsMenu(
+    expanded: Boolean,
+    onDismiss: () -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismiss,
+        modifier = modifier,
+        containerColor = CustomTheme.colors.background
+    ) {
+        DropdownMenuItem(
+            text = {
+                Text(
+                    text = stringResource(R.string.edit),
+                    style = AppTypography.bodyMedium,
+                    color = CustomTheme.colors.content
+                )
+            },
+            onClick = {
+                onDismiss()
+                onEdit()
+            }
+        )
+        DropdownMenuItem(
+            text = {
+                Text(
+                    text = stringResource(R.string.delete),
+                    style = AppTypography.bodyMedium,
+                    color = CustomTheme.colors.content
+                )
+            },
+            onClick = {
+                onDismiss()
+                onDelete()
+            }
+        )
     }
 }
 
@@ -109,6 +141,20 @@ private fun ItemTemplatePreview() {
             onClick = { TODO() },
             onEdit = { TODO() },
             onDelete = { TODO() }
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TemplateOptionsMenuPreview() {
+    NEARTheme {
+
+        TemplateOptionsMenu(
+            expanded = true,
+            onDismiss = {  },
+            onEdit = {  },
+            onDelete = {  }
         )
     }
 }

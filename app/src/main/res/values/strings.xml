@@ -67,6 +67,11 @@
     <string name="sos_button_description">Click on me if you need emergency help!</string>
     <string name="my_templates">My templates</string>
 
+    <string name="send_template_title">Send Template</string>
+    <string name="send_template_message">Do you want to send this template: %s?</string>
+    <string name="send">Send</string>
+
+    <string name="more_options">More options</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
 

@@ -31,11 +31,12 @@ class DashboardCommunityViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = UIState.Loading
             try {
-                notificationTemplates = getCommunityUseCase()?.notificationTemplates ?: listOf()
+                notificationTemplates = getCommunityUseCase().notificationTemplates
                 _uiState.value = UIState.Success
             } catch (e: Exception) {
                 _uiState.value = UIState.Error("Failed to load user data: ${e.message}")
-            } finally {
+            }
+            finally {
                 _uiState.value = UIState.Idle
             }
         }
@@ -51,8 +52,6 @@ class DashboardCommunityViewModel @Inject constructor(
                     .onFailure { _uiState.value = UIState.Error("Failed to send notification") }
             } catch (e: Exception) {
                 _uiState.value = UIState.Error("Error: ${e.localizedMessage}")
-            } finally {
-                _uiState.value = UIState.Idle
             }
         }
     }

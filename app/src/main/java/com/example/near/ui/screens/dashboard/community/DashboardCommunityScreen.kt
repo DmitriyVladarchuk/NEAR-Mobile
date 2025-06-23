@@ -19,9 +19,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,8 +38,9 @@ import com.example.near.R
 import com.example.near.domain.user.models.UserTemplate
 import com.example.near.ui.components.common.ItemTemplate
 import com.example.near.ui.components.common.SubmittedTemplateButton
-import com.example.near.ui.components.common.UiStateNotifier
 import com.example.near.ui.components.decorations.dashedBorder
+import com.example.near.ui.components.dialogs.SendTemplateDialog
+import com.example.near.ui.components.dialogs.UiStateNotifier
 import com.example.near.ui.components.headers.MainHeaderTextInfo
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
@@ -176,45 +174,13 @@ private fun BodyTemplates(
         }
     }
 
-    if (showDialog) {
-        AlertDialog(
-            onDismissRequest = { showDialog = false },
-            title = {
-                Text(
-                    text = "Send Template",
-                    style = AppTypography.titleMedium
-                )
-            },
-            text = {
-                Text(
-                    text = "Do you want to send this template: ${selectedTemplate?.templateName}?",
-                    style = AppTypography.bodyMedium
-                )
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        selectedTemplate?.let { template ->
-                            viewModel.send(template.id)
-                            showDialog = false
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = CustomTheme.colors.container_2
-                    )
-                ) {
-                    Text("Send")
-                }
-            },
-            dismissButton = {
-                Button(
-                    onClick = { showDialog = false },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = CustomTheme.colors.container_2
-                    )
-                ) {
-                    Text("Cancel")
-                }
+    if (showDialog && selectedTemplate != null) {
+        SendTemplateDialog(
+            template = selectedTemplate,
+            onDismiss = { showDialog = false },
+            onConfirm = {
+                viewModel.send(selectedTemplate!!.id)
+                showDialog = false
             }
         )
     }
