@@ -1,7 +1,5 @@
 package com.example.near.ui.screens.profile.edit
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,7 +20,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,11 +31,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
 import com.example.near.domain.shared.models.UIState
-import com.example.near.ui.theme.AppTypography
-import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.components.common.AppTextField
+import com.example.near.ui.components.common.UiStateNotifier
 import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
 import com.example.near.ui.components.transformations.DateTransformation
+import com.example.near.ui.theme.AppTypography
+import com.example.near.ui.theme.CustomTheme
 
 @Composable
 fun EditUserProfileScreen(
@@ -50,9 +48,16 @@ fun EditUserProfileScreen(
     val uiState by viewModel.uiState
     val context = LocalContext.current
 
-    HandleUiState(uiState, navController, context)
+    UiStateNotifier(
+        state = uiState,
+        context = context,
+        successMessage = "Profile updated successfully",
+        onSuccess = { navController.popBackStack() },
+    )
 
-    Box(modifier.fillMaxSize().padding(16.dp)) {
+    Box(modifier
+        .fillMaxSize()
+        .padding(16.dp)) {
         LoadingIndicator(uiState)
         ScrollableForms(viewModel, navController)
         SaveButton(
@@ -60,34 +65,6 @@ fun EditUserProfileScreen(
                 .align(Alignment.BottomCenter),
             onClick = viewModel::submitChanges
         )
-    }
-}
-
-@Composable
-private fun HandleUiState(
-    state: UIState,
-    navController: NavController,
-    context: Context
-) {
-    LaunchedEffect(state) {
-        when (state) {
-            is UIState.Success -> {
-                navController.popBackStack()
-                Toast.makeText(
-                    context,
-                    "Profile updated successfully",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            is UIState.Error -> {
-                Toast.makeText(
-                    context,
-                    state.message,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            else -> {}
-        }
     }
 }
 

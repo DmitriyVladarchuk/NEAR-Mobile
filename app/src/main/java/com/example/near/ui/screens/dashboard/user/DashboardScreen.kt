@@ -19,39 +19,31 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Groups
-import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
-import com.example.near.domain.shared.models.EmergencyType
 import com.example.near.domain.user.models.UserTemplate
+import com.example.near.ui.components.common.ItemTemplate
+import com.example.near.ui.components.common.SubmittedTemplateButton
+import com.example.near.ui.components.decorations.dashedBorder
+import com.example.near.ui.components.headers.MainHeaderTextInfo
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.dark_content
-import com.example.near.ui.components.headers.MainHeaderTextInfo
-import com.example.near.ui.components.decorations.dashedBorder
 
 @Composable
 fun DashboardScreen(
@@ -196,104 +188,6 @@ private fun BodyTemplates(
 }
 
 @Composable
-private fun ItemTemplate(
-    template: UserTemplate,
-    onClick: () -> Unit,
-    onEdit: () -> Unit,
-    onDelete: () -> Unit
-) {
-    val expanded = remember { mutableStateOf(false) }
-
-    Row(
-        modifier = Modifier
-            .clickable { onClick() }
-            .fillMaxWidth()
-            .background(
-                color = CustomTheme.colors.container_2,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .padding(horizontal = 8.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .padding(vertical = 8.dp)
-        ) {
-            Text(
-                text = template.templateName,
-                style = AppTypography.titleMedium,
-                color = CustomTheme.colors.content
-            )
-            ItemEmergencyType(template.emergencyType)
-        }
-
-        Box {
-            Icon(
-                imageVector = Icons.Default.MoreHoriz,
-                contentDescription = "More options",
-                modifier = Modifier
-                    .size(32.dp)
-                    .clickable { expanded.value = true },
-                tint = CustomTheme.colors.content
-            )
-
-            DropdownMenu(
-                expanded = expanded.value,
-                onDismissRequest = { expanded.value = false },
-                containerColor = CustomTheme.colors.container_2
-            ) {
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            text = stringResource(R.string.edit),
-                            style = AppTypography.bodyMedium,
-                            color = CustomTheme.colors.content
-                        )
-                    },
-                    onClick = {
-                        expanded.value = false
-                        onEdit()
-                    }
-                )
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            text = stringResource(R.string.delete),
-                            style = AppTypography.bodyMedium,
-                            color = CustomTheme.colors.content
-                        )
-                    },
-                    onClick = {
-                        expanded.value = false
-                        onDelete()
-                    }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun ItemEmergencyType(emergencyType: EmergencyType, modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .padding(vertical = 8.dp)
-            .background(
-                color = Color(emergencyType.color.toColorInt()),
-                shape = RoundedCornerShape(12.dp)
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = emergencyType.title,
-            style = AppTypography.bodySmall,
-            color = dark_content,
-            modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)
-        )
-    }
-}
-
-@Composable
 private fun CreateNewNotifications(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -367,41 +261,6 @@ private fun CreateNewGroup(
                 imageVector = Icons.Default.Groups,
                 contentDescription = null,
                 modifier = Modifier.size(32.dp),
-                tint = CustomTheme.colors.content
-            )
-        }
-    }
-}
-
-@Composable
-private fun SubmittedTemplateButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .background(
-                color = CustomTheme.colors.container_2,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .clickable { onClick() }
-            .padding(16.dp)
-    ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(
-                text = stringResource(R.string.submitted_templates),
-                style = AppTypography.titleMedium,
-                color = CustomTheme.colors.content,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
-
-            Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.list),
-                contentDescription = null,
-                modifier = Modifier.weight(1f),
                 tint = CustomTheme.colors.content
             )
         }
