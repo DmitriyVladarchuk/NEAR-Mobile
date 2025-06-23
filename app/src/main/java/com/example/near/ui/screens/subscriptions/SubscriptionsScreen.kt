@@ -40,7 +40,7 @@ import com.example.near.domain.user.models.UserSubscription
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.views.MainHeaderTextInfo
+import com.example.near.ui.components.headers.MainHeaderTextInfo
 
 @Composable
 fun SubscriptionsScreen(

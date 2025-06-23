@@ -1,4 +1,4 @@
-package com.example.near.ui.views.transformations
+package com.example.near.ui.components.transformations
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TransformedText

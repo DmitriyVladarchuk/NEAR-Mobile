@@ -36,9 +36,9 @@ import com.example.near.R
 import com.example.near.domain.shared.models.UIState
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.views.AppTextField
-import com.example.near.ui.views.SecondaryHeaderTextInfo
-import com.example.near.ui.views.transformations.DateTransformation
+import com.example.near.ui.components.common.AppTextField
+import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
+import com.example.near.ui.components.transformations.DateTransformation
 
 @Composable
 fun EditUserProfileScreen(

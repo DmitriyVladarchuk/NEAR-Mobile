@@ -40,10 +40,10 @@ import com.example.near.domain.shared.models.emergencyTypes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.dark_content
-import com.example.near.ui.views.SecondaryHeaderTextInfo
-import com.example.near.ui.views.TextFieldLabel
-import com.example.near.ui.views.TextFieldPlaceholder
-import com.example.near.ui.views.textFieldColors
+import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
+import com.example.near.ui.components.common.TextFieldLabel
+import com.example.near.ui.components.common.TextFieldPlaceholder
+import com.example.near.ui.components.common.textFieldColors
 
 @Composable
 fun CreateTemplate(

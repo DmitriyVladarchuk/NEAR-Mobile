@@ -1,4 +1,4 @@
-package com.example.near.ui.views
+package com.example.near.ui.components.headers
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

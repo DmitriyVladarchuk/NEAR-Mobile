@@ -38,8 +38,8 @@ import com.example.near.domain.user.models.UserSubscription
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.views.DynamicItemContainer
-import com.example.near.ui.views.SecondaryHeaderTextInfo
+import com.example.near.ui.components.decorations.DynamicItemContainer
+import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
 
 @Composable
 fun FriendsAndSubscriptions(

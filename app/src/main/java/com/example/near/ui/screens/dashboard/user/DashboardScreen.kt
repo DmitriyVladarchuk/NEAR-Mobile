@@ -1,6 +1,5 @@
 package com.example.near.ui.screens.dashboard.user
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,18 +31,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
@@ -56,7 +50,8 @@ import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.dark_content
-import com.example.near.ui.views.MainHeaderTextInfo
+import com.example.near.ui.components.headers.MainHeaderTextInfo
+import com.example.near.ui.components.decorations.dashedBorder
 
 @Composable
 fun DashboardScreen(
@@ -97,36 +92,6 @@ fun DashboardScreen(
 
     }
 }
-
-@SuppressLint("SuspiciousModifierThen")
-fun Modifier.dashedBorder(
-    color: Color,
-    cornerRadius: Dp = 8.dp,
-    strokeWidth: Dp = 1.dp,
-    dashWidth: Dp = 5.dp,
-    gapWidth: Dp = 3.dp
-) = this.then(
-    drawWithCache {
-        val strokeWidthPx = strokeWidth.toPx()
-        val dashWidthPx = dashWidth.toPx()
-        val gapWidthPx = gapWidth.toPx()
-
-        onDrawWithContent {
-            drawContent()
-            drawRoundRect(
-                color = color,
-                style = Stroke(
-                    width = strokeWidthPx,
-                    pathEffect = PathEffect.dashPathEffect(
-                        intervals = floatArrayOf(dashWidthPx, gapWidthPx),
-                        phase = 0f
-                    )
-                ),
-                cornerRadius = CornerRadius(cornerRadius.toPx())
-            )
-        }
-    }
-)
 
 @Composable
 private fun BodyButtons(navController: NavController) {

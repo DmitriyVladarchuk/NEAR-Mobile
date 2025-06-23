@@ -1,4 +1,4 @@
-package com.example.near.ui.views
+package com.example.near.ui.components.common
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

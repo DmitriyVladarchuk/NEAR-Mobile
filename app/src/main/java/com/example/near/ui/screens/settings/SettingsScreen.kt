@@ -24,7 +24,7 @@ import com.example.near.domain.shared.models.ThemeType
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.content_inscription
-import com.example.near.ui.views.SecondaryHeaderTextInfo
+import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
 
 @Composable
 fun SettingsScreen(navController: NavController, modifier: Modifier = Modifier, viewModel: SettingsViewModel = hiltViewModel()) {

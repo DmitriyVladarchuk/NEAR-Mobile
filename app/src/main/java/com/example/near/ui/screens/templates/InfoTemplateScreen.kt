@@ -49,8 +49,8 @@ import com.example.near.domain.user.models.UserTemplate
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.dark_content
-import com.example.near.ui.views.DynamicItemContainer
-import com.example.near.ui.views.SecondaryHeaderTextInfo
+import com.example.near.ui.components.decorations.DynamicItemContainer
+import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
 
 @Composable
 fun InfoTemplateScreen(

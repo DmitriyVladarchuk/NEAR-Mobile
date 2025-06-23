@@ -1,4 +1,4 @@
-package com.example.near.ui.views
+package com.example.near.ui.components.user
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

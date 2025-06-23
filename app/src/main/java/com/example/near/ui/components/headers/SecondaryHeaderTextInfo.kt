@@ -1,4 +1,4 @@
-package com.example.near.ui.views
+package com.example.near.ui.components.headers
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row

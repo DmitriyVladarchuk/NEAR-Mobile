@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -29,7 +28,7 @@ import androidx.navigation.NavController
 import com.example.near.R
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.views.DynamicItemContainer
+import com.example.near.ui.components.decorations.DynamicItemContainer
 
 @Composable
 fun BottomBar(navController: NavController, isCommunity: Boolean) {

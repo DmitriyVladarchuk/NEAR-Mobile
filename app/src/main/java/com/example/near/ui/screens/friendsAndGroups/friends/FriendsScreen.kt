@@ -45,7 +45,7 @@ import com.example.near.domain.user.models.AllFriendsInfo
 import com.example.near.domain.user.models.User
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.views.textFieldColors
+import com.example.near.ui.components.common.textFieldColors
 
 @Composable
 fun FriendsScreen(

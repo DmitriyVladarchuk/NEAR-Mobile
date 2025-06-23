@@ -21,12 +21,12 @@ import androidx.navigation.NavController
 import com.example.near.R
 import com.example.near.domain.shared.models.UIState
 import com.example.near.ui.screens.navigation.Routes
-import com.example.near.ui.views.AppTextField
-import com.example.near.ui.views.AuthScreenButtons
-import com.example.near.ui.views.ErrorText
-import com.example.near.ui.views.ForgotPassword
-import com.example.near.ui.views.HeaderTextInfo
-import com.example.near.ui.views.PasswordVisibilityToggle
+import com.example.near.ui.components.common.AppTextField
+import com.example.near.ui.components.auth.AuthScreenButtons
+import com.example.near.ui.components.common.ErrorText
+import com.example.near.ui.components.auth.ForgotPassword
+import com.example.near.ui.components.headers.HeaderTextInfo
+import com.example.near.ui.components.auth.PasswordVisibilityToggle
 
 @Composable
 fun LoginAccountScreen(

@@ -24,8 +24,8 @@ import com.example.near.ui.screens.friendsAndGroups.friends.FriendsScreen
 import com.example.near.ui.screens.friendsAndGroups.groups.GroupsScreen
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.views.DynamicItemContainer
-import com.example.near.ui.views.MainHeaderTextInfo
+import com.example.near.ui.components.decorations.DynamicItemContainer
+import com.example.near.ui.components.headers.MainHeaderTextInfo
 
 @Composable
 fun FriendsAndGroupsScreen(

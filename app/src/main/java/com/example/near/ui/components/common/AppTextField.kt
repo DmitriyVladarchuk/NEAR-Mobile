@@ -1,4 +1,4 @@
-package com.example.near.ui.views
+package com.example.near.ui.components.common
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions

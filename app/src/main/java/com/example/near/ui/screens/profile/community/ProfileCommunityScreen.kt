@@ -53,7 +53,7 @@ import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.current_container
 import com.example.near.ui.theme.dark_content
 import com.example.near.ui.theme.light_container
-import com.example.near.ui.views.SecondaryHeaderTextInfo
+import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
 
 @Composable
 fun ProfileCommunityScreen(

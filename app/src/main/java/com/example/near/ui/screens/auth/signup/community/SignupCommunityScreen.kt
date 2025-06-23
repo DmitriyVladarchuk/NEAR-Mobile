@@ -38,11 +38,11 @@ import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.dark_content
-import com.example.near.ui.views.AppTextField
-import com.example.near.ui.views.AuthScreenButtons
-import com.example.near.ui.views.ErrorText
-import com.example.near.ui.views.HeaderTextInfo
-import com.example.near.ui.views.PasswordVisibilityToggle
+import com.example.near.ui.components.common.AppTextField
+import com.example.near.ui.components.auth.AuthScreenButtons
+import com.example.near.ui.components.common.ErrorText
+import com.example.near.ui.components.headers.HeaderTextInfo
+import com.example.near.ui.components.auth.PasswordVisibilityToggle
 
 @Composable
 fun SignupCommunityScreen(
@@ -140,6 +140,7 @@ private fun TextFieldCommunity(viewModel: SignupCommunityViewModel) {
         Text(
             text = stringResource(R.string.select_emergency_types),
             style = AppTypography.bodyMedium,
+            color = CustomTheme.colors.content,
             modifier = Modifier.padding(top = 8.dp)
         )
 

@@ -28,7 +28,7 @@ import com.example.near.R
 import com.example.near.domain.user.models.UserFriend
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.views.MainHeaderTextInfo
+import com.example.near.ui.components.headers.MainHeaderTextInfo
 
 @Composable
 fun SubscribersScreen(

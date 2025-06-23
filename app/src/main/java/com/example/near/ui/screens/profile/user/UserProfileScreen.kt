@@ -58,9 +58,9 @@ import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.dark_content
 import com.example.near.ui.theme.light_container
-import com.example.near.ui.views.BaseUserProfileCard
-import com.example.near.ui.views.SecondaryHeaderTextInfo
-import com.example.near.ui.views.UserInfoRow
+import com.example.near.ui.components.user.BaseUserProfileCard
+import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
+import com.example.near.ui.components.user.UserInfoRow
 
 @Composable
 fun UserProfileScreen(
