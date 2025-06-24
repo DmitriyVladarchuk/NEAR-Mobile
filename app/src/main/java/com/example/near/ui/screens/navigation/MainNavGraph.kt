@@ -37,6 +37,7 @@ import com.example.near.ui.screens.auth.login.community.LoginCommunityScreen
 import com.example.near.ui.screens.auth.signup.account.SignupAccountScreen
 import com.example.near.ui.screens.auth.signup.community.SignupCommunityScreen
 import com.example.near.ui.screens.bottomBar.BottomBar
+import com.example.near.ui.screens.community.profile.EditCommunityProfileScreen
 import com.example.near.ui.screens.dashboard.community.DashboardCommunityScreen
 import com.example.near.ui.screens.dashboard.user.DashboardScreen
 import com.example.near.ui.screens.friendsAndGroups.FriendsAndGroupsScreen
@@ -262,31 +263,25 @@ fun MainNavGraph(
                 composable(Routes.CommunityDashboard.route) {
                     DashboardCommunityScreen(navController = navController)
                 }
+
                 composable(Routes.CommunitySubscribers.route) {
                     //TestScreen("Subscribers")
                     SubscribersScreen(navController = navController)
                 }
-                composable(Routes.CommunityProfile.route) { ProfileCommunityScreen(navController = navController) }
+
+                composable(Routes.CommunityProfile.route) {
+                    ProfileCommunityScreen(navController = navController)
+                }
+
+                composable(Routes.EditCommunityProfile.route) {
+                    EditCommunityProfileScreen(navController = navController)
+                }
 
                 // --- Template ---
                 composable(Routes.CreateTemplate.route) {
                     CreateTemplate(navController = navController, isCommunity = true)
                 }
-//                composable(
-//                    route = Routes.TemplateInfo.route + "/{templateId}",
-//                    arguments = listOf(navArgument("templateId") { type = NavType.StringType })
-//                ) { backStackEntry ->
-//                    val templateId = backStackEntry.arguments?.getString("templateId") ?: ""
-//                    InfoTemplateScreen(isCommunity = true, templateId = templateId!!, navController = navController)
-//                }
 
-                composable(
-                    route = Routes.TemplateCommunityInfo.route + "/{templateId}",
-                    arguments = listOf(navArgument("templateId") { type = NavType.StringType })
-                ) { backStackEntry ->
-                    val templateId = backStackEntry.arguments?.getString("templateId") ?: ""
-                    //InfoTemplateScreen(isCommunity = true, templateId = templateId!!, navController = navController)
-                }
             }
         }
     }

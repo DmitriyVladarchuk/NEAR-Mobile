@@ -133,6 +133,7 @@ fun ProfileCommunityScreen(
                                     .padding(vertical = 8.dp)
                             ) {
                                 viewModel.handleSubscribe(it.id)
+                                if (communityId == null) navController.navigate(Routes.EditCommunityProfile.route)
                             }
                         }
 

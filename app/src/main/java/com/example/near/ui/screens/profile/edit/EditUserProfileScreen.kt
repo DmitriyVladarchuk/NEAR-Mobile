@@ -32,6 +32,7 @@ import androidx.navigation.NavController
 import com.example.near.R
 import com.example.near.domain.shared.models.UIState
 import com.example.near.ui.components.common.AppTextField
+import com.example.near.ui.components.decorations.LoadingIndicator
 import com.example.near.ui.components.dialogs.UiStateNotifier
 import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
 import com.example.near.ui.components.transformations.DateTransformation
@@ -57,14 +58,15 @@ fun EditUserProfileScreen(
 
     Box(modifier
         .fillMaxSize()
-        .padding(16.dp)) {
-        LoadingIndicator(uiState)
+        .padding(16.dp)
+    ) {
         ScrollableForms(viewModel, navController)
         SaveButton(
             modifier = Modifier
                 .align(Alignment.BottomCenter),
             onClick = viewModel::submitChanges
         )
+        LoadingIndicator(uiState)
     }
 }
 
@@ -247,18 +249,5 @@ private fun SaveButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
             text = stringResource(R.string.save_changes),
             style = AppTypography.bodyMedium
         )
-    }
-}
-
-@Composable
-private fun LoadingIndicator(state: UIState) {
-    if (state is UIState.Loading) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
     }
 }

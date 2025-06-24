@@ -43,6 +43,7 @@ import com.example.near.ui.components.auth.AuthScreenButtons
 import com.example.near.ui.components.common.ErrorText
 import com.example.near.ui.components.headers.HeaderTextInfo
 import com.example.near.ui.components.auth.PasswordVisibilityToggle
+import com.example.near.ui.components.common.EmergencyTypeChip
 
 @Composable
 fun SignupCommunityScreen(
@@ -183,33 +184,4 @@ private fun EmergencyTypeGrid(
             }
         }
     }
-}
-
-@Composable
-private fun EmergencyTypeChip(
-    type: EmergencyType,
-    isSelected: Boolean,
-    onSelected: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val textColor = Color(type.color.toColorInt())
-
-    FilterChip(
-        selected = isSelected,
-        onClick = onSelected,
-        label = {
-            Text(
-                text = type.title,
-                style = AppTypography.bodySmall,
-                color = if (isSelected) dark_content else textColor
-            )
-        },
-        colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = textColor,
-            containerColor = CustomTheme.colors.background,
-            selectedLabelColor = CustomTheme.colors.background,
-            labelColor = textColor
-        ),
-        modifier = modifier
-    )
 }

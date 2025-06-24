@@ -6,6 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.near.community.models.CommunityUpdateParams
+import com.example.near.community.usecase.UpdateCommunityUseCase
 import com.example.near.domain.community.models.Community
 import com.example.near.domain.community.usecase.GetCommunityUseCase
 import com.example.near.domain.shared.models.UIState
@@ -16,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EditCommunityProfileViewModel  @Inject constructor(
     private val getCommunityUseCase: GetCommunityUseCase,
+    private val updateCommunityUseCase: UpdateCommunityUseCase,
 ) : ViewModel() {
 
     private var community: Community? = null
@@ -75,6 +78,37 @@ class EditCommunityProfileViewModel  @Inject constructor(
                 _uiState.value = UIState.Idle
             } catch (e: Exception) {
                 _uiState.value = UIState.Error("Failed to load community data")
+            }
+        }
+    }
+
+    fun toggleEmergencyType(typeId: Int) {
+        _emergencyTypeIds.value = if (_emergencyTypeIds.value.contains(typeId)) {
+            _emergencyTypeIds.value - typeId
+        } else {
+            _emergencyTypeIds.value + typeId
+        }
+    }
+
+    fun submitChanges() {
+        viewModelScope.launch {
+            _uiState.value = UIState.Loading
+            try {
+                val params = CommunityUpdateParams(
+                    communityName = _communityName.takeIf { it.isNotBlank() },
+                    description = _description.takeIf { it.isNotBlank() },
+                    country = _country.takeIf { it.isNotBlank() },
+                    city = _city.takeIf { it.isNotBlank() },
+                    district = _district.takeIf { it.isNotBlank() },
+                )
+
+                val result = updateCommunityUseCase(params)
+
+                if (result.isSuccess) _uiState.value = UIState.Success
+                else _uiState.value = UIState.Error("Update failed")
+
+            } catch (e: Exception) {
+                _uiState.value = UIState.Error(e.message ?: "Network error")
             }
         }
     }
