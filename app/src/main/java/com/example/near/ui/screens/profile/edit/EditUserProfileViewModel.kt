@@ -68,19 +68,19 @@ class EditUserProfileViewModel @Inject constructor(
             try {
                 user = getUserUseCase()
                 user?.let {
-                    _firstName = user!!.firstName
-                    _lastName = user!!.lastName
-                    _birthday = user!!.birthday
-                    _country = user!!.country
-                    _city = user!!.city
-                    _district = user!!.district
+                    _firstName = it.firstName
+                    _lastName = it.lastName
+                    _birthday = it.birthday
+                    _country = it.country
+                    _city = it.city
+                    _district = it.district
                 }
 
                 val optionsResult = getNotificationOptionsUseCase()
                 if (optionsResult.isSuccess) {
                     _selectedOptions.value = optionsResult.getOrNull()?.map { it.id } ?: emptyList()
                 } else {
-                    UIState.Error("Failed to load notification options")
+                    UIState.Error("Failed to load user or notification options")
                 }
 
                 _uiState.value = UIState.Idle
