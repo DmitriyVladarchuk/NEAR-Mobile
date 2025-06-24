@@ -1,5 +1,6 @@
 package com.example.near.DI
 
+import com.example.near.community.usecase.UpdateCommunityUseCase
 import com.example.near.domain.shared.storage.AuthDataStorage
 import com.example.near.domain.community.repository.CommunityRepository
 import com.example.near.domain.user.repository.UserRepository
@@ -104,6 +105,11 @@ object UseCaseModule {
     @Provides
     fun provideUpdateUserUseCase(userRepository: UserRepository): UpdateUserUseCase {
         return UpdateUserUseCase(userRepository)
+    }
+
+    @Provides
+    fun provideUpdateCommunityUseCase(communityRepository: CommunityRepository): UpdateCommunityUseCase {
+        return UpdateCommunityUseCase(communityRepository)
     }
 
     @Provides

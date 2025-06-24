@@ -1,5 +1,6 @@
 package com.example.near.domain.community.repository
 
+import com.example.near.community.models.CommunityUpdateParams
 import com.example.near.domain.shared.models.AuthTokens
 import com.example.near.domain.shared.models.EmergencyType
 import com.example.near.domain.community.models.Community
@@ -19,6 +20,8 @@ interface CommunityRepository {
     ): Result<AuthTokens>
 
     suspend fun getCommunityInfo(): Result<Community>
+
+    suspend fun updateCommunity(communityUpdateParams: CommunityUpdateParams): Result<Unit>
 
     suspend fun refreshToken(): Result<Unit>
 

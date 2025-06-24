@@ -1,8 +1,10 @@
 package com.example.near.data.community.repositories
 
 import android.util.Log
+import com.example.near.community.models.CommunityUpdateParams
 import com.example.near.data.api.CommunityService
 import com.example.near.data.community.mappers.toDomain
+import com.example.near.data.community.mappers.toRequest
 import com.example.near.data.community.models.SignUpCommunityRequest
 import com.example.near.data.shared.models.FcmTokenRequest
 import com.example.near.data.shared.models.LoginRequest
@@ -11,12 +13,12 @@ import com.example.near.data.shared.models.TemplateCreateRequest
 import com.example.near.data.shared.models.TemplateSendRequest
 import com.example.near.data.storage.SessionManager
 import com.example.near.data.user.mappers.toDomain
+import com.example.near.domain.community.models.Community
+import com.example.near.domain.community.repository.CommunityRepository
 import com.example.near.domain.shared.models.AuthTokens
 import com.example.near.domain.shared.models.EmergencyType
-import com.example.near.domain.community.models.Community
-import com.example.near.domain.user.models.UserTemplate
 import com.example.near.domain.shared.storage.AuthDataStorage
-import com.example.near.domain.community.repository.CommunityRepository
+import com.example.near.domain.user.models.UserTemplate
 
 
 class CommunityRepositoryImpl(
@@ -79,6 +81,22 @@ class CommunityRepositoryImpl(
             } else {
                 val errorBody = response.errorBody()?.string() ?: ""
                 Result.failure(Exception("Error ${response.code()}: $errorBody"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun updateCommunity(communityUpdateParams: CommunityUpdateParams): Result<Unit> {
+        return try {
+            val response = communityService.updateCommunity(
+                token = "Bearer ${sessionManager.authToken!!.accessToken}",
+                request = communityUpdateParams.toRequest()
+            )
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Failed to update community profile request"))
             }
         } catch (e: Exception) {
             Result.failure(e)

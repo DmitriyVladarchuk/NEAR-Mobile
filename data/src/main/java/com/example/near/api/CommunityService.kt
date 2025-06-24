@@ -1,5 +1,6 @@
 package com.example.near.data.api
 
+import com.example.near.community.models.UpdateCommunityRequest
 import com.example.near.data.shared.models.FcmTokenRequest
 import com.example.near.data.shared.models.RefreshTokenRequest
 import com.example.near.data.shared.models.TemplateCreateRequest
@@ -15,6 +16,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
 
@@ -33,6 +35,12 @@ interface CommunityService {
     suspend fun getCommunityInfo(
         @Header("Authorization") token: String
     ): Response<CommunityResponse>
+
+    @PATCH("NEAR/community/update")
+    suspend fun updateCommunity(
+        @Header("Authorization") token: String,
+        @Body request: UpdateCommunityRequest
+    ): Response<Void>
 
     @POST("NEAR/token/community")
     suspend fun refreshToken(
