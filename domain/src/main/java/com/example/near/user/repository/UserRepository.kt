@@ -1,5 +1,6 @@
 package com.example.near.domain.user.repository
 
+import com.example.near.common.models.EmailVerificationStatus
 import com.example.near.domain.shared.models.EmergencyType
 import com.example.near.domain.user.models.User
 import com.example.near.domain.shared.models.AuthTokens
@@ -10,9 +11,9 @@ import com.example.near.domain.user.models.UserSignUp
 
 interface UserRepository {
 
-    suspend fun signUp(userSignUp: UserSignUp): Result<Unit>
+    suspend fun signUp(userSignUp: UserSignUp): Result<EmailVerificationStatus>
 
-    suspend fun login(credentials: LoginCredentials): Result<AuthTokens>
+    suspend fun login(credentials: LoginCredentials): Result<EmailVerificationStatus>
 
     suspend fun getNotificationOptions(): Result<List<NotificationOption>>
 

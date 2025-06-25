@@ -1,6 +1,7 @@
 package com.example.near.data.user.repositories
 
 import android.util.Log
+import com.example.near.common.models.EmailVerificationStatus
 import com.example.near.data.api.UserService
 import com.example.near.data.community.models.CommunityActionRequest
 import com.example.near.data.shared.models.FcmTokenRequest
@@ -32,13 +33,15 @@ class UserRepositoryImpl(
 
     override suspend fun signUp(
         userSignUp: UserSignUp
-    ): Result<Unit> {
+    ): Result<EmailVerificationStatus> {
         return try {
             val request = userSignUp.toRequest()
             val response = userService.signUp(request)
 
+            Log.d("UserRepo", request.toString())
+            Log.d("UserRepo", response.code().toString())
             if (response.isSuccessful) {
-                Result.success(Unit)
+                Result.success(EmailVerificationStatus.NotVerified)
             } else {
                 val errorBody = response.errorBody()?.string() ?: ""
                 Result.failure(Exception("SignUp error ${response.code()}: $errorBody"))
@@ -48,14 +51,16 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun login(credentials: LoginCredentials): Result<AuthTokens> {
+    override suspend fun login(credentials: LoginCredentials): Result<EmailVerificationStatus> {
         return try {
             val response = userService.login(credentials.toRequest())
             if (response.isSuccessful) {
                 response.body()?.toDomain()?.let {
                     sessionManager.saveAuthToken(it)
-                    Result.success(it)
+                    Result.success(EmailVerificationStatus.Verified(it))
                 } ?: Result.failure(Exception("Empty response body"))
+            } else if(response.code() == 403) {
+                Result.success(EmailVerificationStatus.NotVerified)
             } else {
                 Result.failure(Exception("Login failed: ${response.code()}"))
             }

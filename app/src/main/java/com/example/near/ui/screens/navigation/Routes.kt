@@ -8,6 +8,7 @@ sealed class Routes(val route: String) {
     object LoginCommunity : Routes("login/community")
     object SignupAccount : Routes("signup/account")
     object SignupCommunity : Routes("signup/community")
+    object EmailVerification : Routes("email_verification")
 
     // --- Маршруты для пользователя ---
     object Dashboards : Routes("dashboards")

@@ -1,5 +1,6 @@
 package com.example.near.DI
 
+import com.example.near.common.storage.EmailVerificationStorage
 import com.example.near.community.usecase.UpdateCommunityUseCase
 import com.example.near.domain.shared.storage.AuthDataStorage
 import com.example.near.domain.community.repository.CommunityRepository
@@ -43,6 +44,7 @@ object UseCaseModule {
     fun provideUserLoginUseCase(
         userRepository: UserRepository,
         authDataStorage: AuthDataStorage,
+        emailVerificationStorage: EmailVerificationStorage
     ): LoginUserUseCase {
         return LoginUserUseCase(userRepository, authDataStorage)
     }
@@ -60,16 +62,23 @@ object UseCaseModule {
         userRepository: UserRepository,
         communityRepository: CommunityRepository,
         authDataStorage: AuthDataStorage,
+        emailVerificationStorage: EmailVerificationStorage
     ): LoadUserUseCase {
-        return LoadUserUseCase(userRepository, communityRepository, authDataStorage)
+        return LoadUserUseCase(
+            userRepository = userRepository,
+            communityRepository = communityRepository,
+            authDataStorage = authDataStorage,
+            emailVerificationStorage = emailVerificationStorage
+        )
     }
 
     @Provides
     fun provideUserSignUpUseCase(
         userRepository: UserRepository,
-        loginUserUseCase: LoginUserUseCase
+        loginUserUseCase: LoginUserUseCase,
+        emailVerificationStorage: EmailVerificationStorage
     ): SignUpUserUseCase {
-        return SignUpUserUseCase(userRepository, loginUserUseCase)
+        return SignUpUserUseCase(userRepository, emailVerificationStorage, loginUserUseCase)
     }
 
     @Provides

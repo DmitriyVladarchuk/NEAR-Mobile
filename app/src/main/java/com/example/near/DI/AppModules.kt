@@ -1,6 +1,7 @@
 package com.example.near.DI
 
 import android.content.Context
+import com.example.near.common.storage.EmailVerificationStorage
 import com.example.near.data.api.CommunityService
 import com.example.near.data.api.UserService
 import com.example.near.data.storage.AuthDataStorageImpl
@@ -13,6 +14,7 @@ import com.example.near.domain.community.repository.CommunityRepository
 import com.example.near.domain.shared.storage.SettingsDataStorage
 import com.example.near.domain.user.repository.UserRepository
 import com.example.near.service.FcmTokenManager
+import com.example.near.storage.EmailVerificationStorageImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,6 +50,12 @@ object AppModules {
     fun provideAuthDataStorage(
         @ApplicationContext context: Context
     ): AuthDataStorage = AuthDataStorageImpl(context)
+
+    @Provides
+    @Singleton
+    fun provideEmailVerificationStorage(
+        @ApplicationContext context: Context
+    ): EmailVerificationStorage = EmailVerificationStorageImpl(context)
 
     @Provides
     @Singleton

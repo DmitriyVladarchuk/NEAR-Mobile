@@ -1,5 +1,7 @@
 package com.example.near.domain.user.usecase.auth
 
+import com.example.near.common.models.EmailVerificationStatus
+import com.example.near.common.storage.EmailVerificationStorage
 import com.example.near.domain.shared.models.AuthCredentials
 import com.example.near.domain.shared.models.AuthTokens
 import com.example.near.domain.shared.models.LoginCredentials
@@ -10,25 +12,28 @@ class LoginUserUseCase(
     private val userRepository: UserRepository,
     private val authDataStorage: AuthDataStorage,
 ) {
-    suspend operator fun invoke(email: String, password: String): Result<AuthTokens> {
-        return userRepository.login(LoginCredentials(email, password)).also { result ->
-            if (result.isSuccess) {
-                val tokens = result.getOrThrow()
-                authDataStorage.saveCredentials(
-                    AuthCredentials(
-                        tokens.accessToken,
-                        tokens.refreshToken!!,
-                        false
-                    )
-                )
+    suspend operator fun invoke(email: String, password: String): Result<EmailVerificationStatus> {
 
-                // Отправка токена
-                authDataStorage.getFcmToken()?.let { token ->
-                    userRepository.sendFcmToken(token).onSuccess {
-                        authDataStorage.clearFcmToken()
-                    }
+        val response = userRepository.login(LoginCredentials(email, password, false))
+        return response
+            .onSuccess { status ->
+                if (status is EmailVerificationStatus.Verified) {
+                    val tokens = status.authTokens
+                    authDataStorage.saveCredentials(
+                        AuthCredentials(
+                            accessToken = tokens.accessToken,
+                            refreshToken = tokens.refreshToken!!,
+                            isCommunity = false
+                        )
+                    )
+
+//                    // Отправка токена
+//                    authDataStorage.getFcmToken()?.let { token ->
+//                        userRepository.sendFcmToken(token).onSuccess {
+//                            authDataStorage.clearFcmToken()
+//                        }
+//                    }
                 }
             }
-        }
     }
 }

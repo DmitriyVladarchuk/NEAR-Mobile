@@ -1,6 +1,7 @@
 package com.example.near.ui.screens.auth.signup.account
 
 import android.content.Context
+import android.util.Patterns
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.near.R
 import com.example.near.domain.shared.models.SignupNotificationOption
 import com.example.near.domain.shared.models.UIState
+import com.example.near.domain.user.models.UserSignUp
 import com.example.near.domain.user.usecase.auth.SignUpUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -44,32 +46,38 @@ class SignupAccountViewModel @Inject constructor(
         }
     }
 
-    fun onSignUpClick(navigateToDashboards: () -> Unit) {
+    fun onSignUpClick(navigate: () -> Unit) {
         if (!validateInput()) return
 
         _uiState.value = UIState.Loading
 
+        val userSignUp = UserSignUp(
+            userName = nameUser,
+            email = email,
+            password = password,
+            phoneNumber = phone,
+            telegramShortName = telegramShortName,
+            location = country,
+            birthday = birthday,
+            selectedOptions = selectedNotifications.value.toList()
+        )
+
         viewModelScope.launch {
-            signUpUserUseCase(
-                nameUser,
-                email,
-                password,
-                country,
-                birthday,
-                phone,
-                telegramShortName,
-                selectedNotifications.value.toList()
-            ).onSuccess {
-                _uiState.value = UIState.Success
-                navigateToDashboards()
-            }.onFailure { handleError(it) }
+            signUpUserUseCase(userSignUp)
+                .fold(
+                    onSuccess = {
+                        _uiState.value = UIState.Success
+                        navigate()
+                    },
+                    onFailure = { handleError(it) }
+                )
         }
     }
 
     private fun validateInput(): Boolean {
         return when {
             nameUser.isBlank() -> showError(R.string.error_name)
-            email.isBlank() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() ->
+            email.isBlank() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() ->
                 showError(R.string.error_invalid_email)
             password.isBlank() || password.length < 7 ->
                 showError(R.string.error_password_weak)
