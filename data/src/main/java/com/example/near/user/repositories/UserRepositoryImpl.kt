@@ -38,8 +38,6 @@ class UserRepositoryImpl(
             val request = userSignUp.toRequest()
             val response = userService.signUp(request)
 
-            Log.d("UserRepo", request.toString())
-            Log.d("UserRepo", response.code().toString())
             if (response.isSuccessful) {
                 Result.success(EmailVerificationStatus.NotVerified)
             } else {

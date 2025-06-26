@@ -47,12 +47,7 @@ fun SubscribersScreen(
             modifier = Modifier
                 .background(
                     color = CustomTheme.colors.container_2,
-                    shape = RoundedCornerShape(
-                        topStart = 0.dp,
-                        topEnd = 0.dp,
-                        bottomStart = 8.dp,
-                        bottomEnd = 8.dp
-                    )
+                    shape = RoundedCornerShape(8.dp)
                 )
         ) {
             LazyColumn() {

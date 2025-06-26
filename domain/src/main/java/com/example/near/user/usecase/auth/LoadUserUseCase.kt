@@ -7,13 +7,6 @@ import com.example.near.domain.shared.models.LoginCredentials
 import com.example.near.domain.shared.storage.AuthDataStorage
 import com.example.near.domain.user.repository.UserRepository
 
-//sealed class AuthCheckResult {
-//    object NotAuthenticated : AuthCheckResult()
-//    object EmailNotVerified : AuthCheckResult()
-//    data class Authenticated(val isCommunity: Boolean) : AuthCheckResult()
-//    data class Error(val exception: String) : AuthCheckResult()
-//}
-
 
 class LoadUserUseCase(
     private val userRepository: UserRepository,
@@ -34,7 +27,10 @@ class LoadUserUseCase(
                         email = pendingEmail.email,
                         password = pendingEmail.password
                     ).fold(
-                        onSuccess = { AuthCheckResult.Authenticated(true) },
+                        onSuccess = {
+                            emailVerificationStorage.clearPendingEmail()
+                            AuthCheckResult.Authenticated(true)
+                        },
                         onFailure = { AuthCheckResult.EmailNotVerified }
                     )
                 } else {
@@ -43,7 +39,10 @@ class LoadUserUseCase(
                         password = pendingEmail.password,
                         isCommunity = false
                     )).fold(
-                        onSuccess = { AuthCheckResult.Authenticated(false) },
+                        onSuccess = {
+                            emailVerificationStorage.clearPendingEmail()
+                            AuthCheckResult.Authenticated(false)
+                        },
                         onFailure = { AuthCheckResult.EmailNotVerified }
                     )
                 }

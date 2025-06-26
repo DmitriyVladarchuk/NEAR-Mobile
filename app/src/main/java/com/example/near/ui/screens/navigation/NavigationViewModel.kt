@@ -43,17 +43,6 @@ class NavigationViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = UIState.Loading
             try {
-//                loadUserUseCase().fold(
-//                    onSuccess = {
-//                        handleSuccessfulAuth()
-//                        _uiState.value = UIState.Success
-//                    },
-//                    onFailure = { e ->
-//                        _uiState.value = UIState.Error(e.message ?: "Auth error")
-//                        _navigationRoute.value = Routes.Onboarding.route
-//                    }
-//                )
-
                 when (val result = loadUserUseCase()) {
                     is AuthCheckResult.Authenticated -> {
                         handleSuccessfulAuth(result.isCommunity)

@@ -14,7 +14,6 @@ class SignUpUserUseCase(
     suspend operator fun invoke(userSignUp: UserSignUp): Result<EmailVerificationStatus> {
         val result = userRepository.signUp(userSignUp)
         if (result.isSuccess) {
-            //loginUserUseCase(email, password)
             if (result.getOrThrow() is EmailVerificationStatus.NotVerified) {
                 emailVerificationStorage.savePendingEmail(
                     email = userSignUp.email,

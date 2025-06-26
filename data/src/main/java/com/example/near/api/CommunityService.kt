@@ -44,6 +44,7 @@ interface CommunityService {
 
     @POST("NEAR/token/community")
     suspend fun refreshToken(
+        @Header("Authorization") token: String,
         @Body request: RefreshTokenRequest
     ): Response<LoginResponse>
 

@@ -106,7 +106,10 @@ class CommunityRepositoryImpl(
     override suspend fun refreshToken(): Result<Unit> {
         return try {
             val tokens = authDataStorage.getCredentials()
-            val response = communityService.refreshToken(RefreshTokenRequest(tokens?.refreshToken ?: ""))
+            val response = communityService.refreshToken(
+                token = "Bearer ${tokens?.accessToken}",
+                request = RefreshTokenRequest(tokens?.refreshToken ?: "")
+            )
             if (response.isSuccessful) {
                 response.body()?.toDomain()?.let {
                     sessionManager.saveAuthToken(it)

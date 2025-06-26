@@ -26,13 +26,6 @@ class LoginUserUseCase(
                             isCommunity = false
                         )
                     )
-
-//                    // Отправка токена
-//                    authDataStorage.getFcmToken()?.let { token ->
-//                        userRepository.sendFcmToken(token).onSuccess {
-//                            authDataStorage.clearFcmToken()
-//                        }
-//                    }
                 }
             }
     }
