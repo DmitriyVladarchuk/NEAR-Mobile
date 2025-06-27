@@ -29,7 +29,7 @@ interface CommunityService {
     @POST("NEAR/login/community")
     suspend fun login(
         @Body request: LoginRequest
-    ): Response<AuthTokens>
+    ): Response<LoginResponse>
 
     @GET("NEAR/community/me")
     suspend fun getCommunityInfo(

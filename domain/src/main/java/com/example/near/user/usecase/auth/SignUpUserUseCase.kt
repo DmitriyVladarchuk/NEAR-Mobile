@@ -9,7 +9,6 @@ import com.example.near.domain.user.repository.UserRepository
 class SignUpUserUseCase(
     private val userRepository: UserRepository,
     private val emailVerificationStorage: EmailVerificationStorage,
-    private val loginUserUseCase: LoginUserUseCase
 ) {
     suspend operator fun invoke(userSignUp: UserSignUp): Result<EmailVerificationStatus> {
         val result = userRepository.signUp(userSignUp)

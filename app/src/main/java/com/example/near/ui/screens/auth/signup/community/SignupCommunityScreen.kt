@@ -80,9 +80,10 @@ fun SignupCommunityScreen(
             secondaryActionText = stringResource(R.string.login_here).uppercase(),
             onPrimaryButtonClick = {
                 viewModel.onSignUpClick {
-                    navController.navigate(Routes.Dashboards.route) {
-                        popUpTo(0) { inclusive = true }
-                    }
+//                    navController.navigate(Routes.Dashboards.route) {
+//                        popUpTo(0) { inclusive = true }
+//                    }
+                    navController.navigate(Routes.EmailVerification.route)
                 }
             },
             onSecondaryActionClick = { onLoginClick() }

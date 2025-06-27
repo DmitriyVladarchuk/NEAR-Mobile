@@ -44,7 +44,6 @@ object UseCaseModule {
     fun provideUserLoginUseCase(
         userRepository: UserRepository,
         authDataStorage: AuthDataStorage,
-        emailVerificationStorage: EmailVerificationStorage
     ): LoginUserUseCase {
         return LoginUserUseCase(userRepository, authDataStorage)
     }
@@ -62,31 +61,34 @@ object UseCaseModule {
         userRepository: UserRepository,
         communityRepository: CommunityRepository,
         authDataStorage: AuthDataStorage,
-        emailVerificationStorage: EmailVerificationStorage
+        emailVerificationStorage: EmailVerificationStorage,
+        loginUserUseCase: LoginUserUseCase,
+        loginCommunityUseCase: LoginCommunityUseCase
     ): LoadUserUseCase {
         return LoadUserUseCase(
             userRepository = userRepository,
             communityRepository = communityRepository,
             authDataStorage = authDataStorage,
-            emailVerificationStorage = emailVerificationStorage
+            emailVerificationStorage = emailVerificationStorage,
+            loginUserUseCase = loginUserUseCase,
+            loginCommunityUseCase = loginCommunityUseCase
         )
     }
 
     @Provides
     fun provideUserSignUpUseCase(
         userRepository: UserRepository,
-        loginUserUseCase: LoginUserUseCase,
         emailVerificationStorage: EmailVerificationStorage
     ): SignUpUserUseCase {
-        return SignUpUserUseCase(userRepository, emailVerificationStorage, loginUserUseCase)
+        return SignUpUserUseCase(userRepository, emailVerificationStorage)
     }
 
     @Provides
     fun provideCommunitySignUpUseCase(
         communityRepository: CommunityRepository,
-        loginCommunityUseCase: LoginCommunityUseCase
+        emailVerificationStorage: EmailVerificationStorage
     ): SignUpCommunityUseCase {
-        return SignUpCommunityUseCase(communityRepository, loginCommunityUseCase)
+        return SignUpCommunityUseCase(communityRepository, emailVerificationStorage)
     }
 
     @Provides

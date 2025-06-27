@@ -3,6 +3,7 @@ package com.example.near.domain.user.usecase.auth
 import com.example.near.common.models.AuthCheckResult
 import com.example.near.common.storage.EmailVerificationStorage
 import com.example.near.domain.community.repository.CommunityRepository
+import com.example.near.domain.community.usecase.LoginCommunityUseCase
 import com.example.near.domain.shared.models.LoginCredentials
 import com.example.near.domain.shared.storage.AuthDataStorage
 import com.example.near.domain.user.repository.UserRepository
@@ -12,7 +13,9 @@ class LoadUserUseCase(
     private val userRepository: UserRepository,
     private val communityRepository: CommunityRepository,
     private val authDataStorage: AuthDataStorage,
-    private val emailVerificationStorage: EmailVerificationStorage
+    private val emailVerificationStorage: EmailVerificationStorage,
+    private val loginUserUseCase: LoginUserUseCase,
+    private val loginCommunityUseCase: LoginCommunityUseCase
 ) {
     suspend operator fun invoke(): AuthCheckResult {
         return try {
@@ -23,30 +26,28 @@ class LoadUserUseCase(
                     ?: return AuthCheckResult.NotAuthenticated
 
                 if (pendingEmail.isCommunity) {
-                    communityRepository.login(
+                    loginCommunityUseCase(
                         email = pendingEmail.email,
                         password = pendingEmail.password
                     ).fold(
                         onSuccess = {
-                            emailVerificationStorage.clearPendingEmail()
                             AuthCheckResult.Authenticated(true)
                         },
                         onFailure = { AuthCheckResult.EmailNotVerified }
                     )
                 } else {
-                    userRepository.login(LoginCredentials(
+                    loginUserUseCase(
                         email = pendingEmail.email,
-                        password = pendingEmail.password,
-                        isCommunity = false
-                    )).fold(
+                        password = pendingEmail.password
+                    ).fold(
                         onSuccess = {
-                            emailVerificationStorage.clearPendingEmail()
                             AuthCheckResult.Authenticated(false)
                         },
                         onFailure = { AuthCheckResult.EmailNotVerified }
                     )
                 }
             } else {
+                emailVerificationStorage.clearPendingEmail()
                 val result = if (credentials.isCommunity) {
                     communityRepository.refreshToken()
                 } else {

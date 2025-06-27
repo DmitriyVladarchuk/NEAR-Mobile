@@ -1,9 +1,11 @@
 package com.example.near.domain.community.repository
 
+import com.example.near.common.models.EmailVerificationStatus
 import com.example.near.community.models.CommunityUpdateParams
 import com.example.near.domain.shared.models.AuthTokens
 import com.example.near.domain.shared.models.EmergencyType
 import com.example.near.domain.community.models.Community
+import com.example.near.domain.shared.models.LoginCredentials
 
 interface CommunityRepository {
     suspend fun signUp(
@@ -12,12 +14,9 @@ interface CommunityRepository {
         password: String,
         location: String,
         monitoredEmergencyTypes: List<EmergencyType>
-    ): Result<Unit>
+    ): Result<EmailVerificationStatus>
 
-    suspend fun login(
-        email: String,
-        password: String,
-    ): Result<AuthTokens>
+    suspend fun login(credentials: LoginCredentials): Result<EmailVerificationStatus>
 
     suspend fun getCommunityInfo(): Result<Community>
 
