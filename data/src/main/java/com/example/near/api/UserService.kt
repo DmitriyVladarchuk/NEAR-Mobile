@@ -15,6 +15,7 @@ import com.example.near.data.user.models.GroupCreateRequest
 import com.example.near.data.user.models.UserResponse
 import com.example.near.data.user.models.UserSignUpRequest
 import com.example.near.data.user.models.UserUpdateRequest
+import com.example.near.user.models.CommunitiesListResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -96,7 +97,6 @@ interface UserService {
         @Body request: FriendRequest
     ): Response<Void>
 
-    //@DELETE("NEAR/user/delete/friend")
     @HTTP(method = "DELETE", path = "NEAR/user/delete/friend", hasBody = true)
     suspend fun removeFriend(
         @Header("Authorization") token: String,
@@ -144,6 +144,11 @@ interface UserService {
     ): Response<Void>
 
     // --- Action Subscribes
+
+    @GET("NEAR/community/all")
+    suspend fun getAllCommunities(
+        @Header("Authorization") token: String,
+    ): Response<CommunitiesListResponse>
 
     @POST("NEAR/user/subscribe")
     suspend fun userSubscribe(

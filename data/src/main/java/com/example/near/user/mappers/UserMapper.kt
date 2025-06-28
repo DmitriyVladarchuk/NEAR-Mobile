@@ -24,6 +24,8 @@ import com.example.near.domain.user.models.UserGroup
 import com.example.near.domain.user.models.UserSignUp
 import com.example.near.domain.user.models.UserSubscription
 import com.example.near.domain.user.models.UserTemplate
+import com.example.near.user.models.CommunitiesList
+import com.example.near.user.models.CommunitiesListResponse
 
 fun UserSignUp.toRequest(): UserSignUpRequest = UserSignUpRequest(
     userName = userName,
@@ -128,4 +130,11 @@ fun NotificationOptionResponse.toDomain() = NotificationOption(
     bgColor = bgColor,
     colorDark = colorDark,
     bgColorDark = bgColorDark
+)
+
+fun CommunitiesListResponse.toDomain(): CommunitiesList = CommunitiesList(
+    content = content.map { it.toDomain() },
+    size = size,
+    totalPages = totalPages,
+    totalElements = totalElements
 )

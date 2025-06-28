@@ -8,6 +8,7 @@ import com.example.near.domain.user.models.AllFriendsInfo
 import com.example.near.domain.shared.models.LoginCredentials
 import com.example.near.domain.shared.models.NotificationOption
 import com.example.near.domain.user.models.UserSignUp
+import com.example.near.user.models.CommunitiesList
 
 interface UserRepository {
 
@@ -76,6 +77,8 @@ interface UserRepository {
         message: String,
         emergencyType: EmergencyType
     ): Result<Unit>
+
+    suspend fun getAllCommunities(): Result<CommunitiesList>
 
     suspend fun userSubscribe(
         communityId: String

@@ -32,6 +32,7 @@ import com.example.near.domain.user.usecase.group.UpdateGroupUseCase
 import com.example.near.domain.shared.usecase.template.CreateTemplateUseCase
 import com.example.near.domain.shared.usecase.template.DeleteTemplateUseCase
 import com.example.near.domain.shared.usecase.template.UpdateTemplateUseCase
+import com.example.near.user.usecase.GetAllCommunitiesUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -193,6 +194,11 @@ object UseCaseModule {
     @Provides
     fun provideDeleteTemplateUseCase(userRepository: UserRepository): DeleteTemplateUseCase {
         return DeleteTemplateUseCase(userRepository)
+    }
+
+    @Provides
+    fun provideGetAllCommunitiesUseCase(userRepository: UserRepository): GetAllCommunitiesUseCase {
+        return GetAllCommunitiesUseCase(userRepository)
     }
 
     @Provides

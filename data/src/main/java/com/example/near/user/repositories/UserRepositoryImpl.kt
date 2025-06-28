@@ -24,6 +24,7 @@ import com.example.near.domain.user.models.AllFriendsInfo
 import com.example.near.domain.user.models.User
 import com.example.near.domain.user.models.UserSignUp
 import com.example.near.domain.user.repository.UserRepository
+import com.example.near.user.models.CommunitiesList
 
 class UserRepositoryImpl(
     private val userService: UserService,
@@ -378,6 +379,22 @@ class UserRepositoryImpl(
                 Result.success(Unit)
             } else {
                 Result.failure(Exception("Failed to send friend request"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getAllCommunities(): Result<CommunitiesList> {
+        return try {
+            val response = userService.getAllCommunities("Bearer ${sessionManager.authToken!!.accessToken}")
+            if (response.isSuccessful) {
+                response.body()?.toDomain()?.let {
+                    Result.success(it)
+                } ?: Result.failure(Exception("Empty response body"))
+            } else {
+                val errorBody = response.errorBody()?.string() ?: ""
+                Result.failure(Exception("Error ${response.code()}: $errorBody"))
             }
         } catch (e: Exception) {
             Result.failure(e)

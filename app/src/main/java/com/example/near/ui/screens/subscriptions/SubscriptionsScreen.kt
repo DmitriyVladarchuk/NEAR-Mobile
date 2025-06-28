@@ -2,6 +2,8 @@ package com.example.near.ui.screens.subscriptions
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,11 +23,14 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
+import com.example.near.domain.shared.models.UIState
 import com.example.near.domain.user.models.UserSubscription
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
@@ -48,6 +54,11 @@ fun SubscriptionsScreen(
     navController: NavController,
     viewModel: SubscriptionViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+    val selectedTab by viewModel.selectedTab.collectAsState()
+    val communities by viewModel.communities.collectAsState()
+    val searchQuery by viewModel.searchQuery.collectAsState()
+
     Column(
         modifier = modifier.fillMaxSize().padding(horizontal = 16.dp),
     ) {
@@ -56,36 +67,45 @@ fun SubscriptionsScreen(
             modifier = Modifier.padding(vertical = 16.dp)
         )
 
-        Column(
-            modifier = modifier.fillMaxSize(),
-        ) {
-            when {
-                viewModel.isLoading -> {
+        CommunitiesTabs(
+            selectedTab = selectedTab,
+            onTabSelected = { viewModel.selectTab(it) }
+        )
+
+        when (uiState) {
+            is UIState.Idle -> Unit
+            is UIState.Loading -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
-                viewModel.error != null -> {
-                    Text("Error: ${viewModel.error}", color = Color.Red)
-                    Button(onClick = { viewModel.loadFriends() }) {
+            }
+            is UIState.Error -> {
+                val error = (uiState as UIState.Error).message
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text("Error: $error", color = Color.Red)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = { viewModel.loadInitialData() }) {
                         Text("Retry")
                     }
                 }
-                else -> {
-                    SubscriptionsHeader(
-                        selectedTab = viewModel.selectedTab,
-                        onTabSelected = { tab -> viewModel.selectTab(tab) }
-                    )
-                    CommunityBody(
-                        community = viewModel.subscriptions,
-                        navController = navController
-                    )
-                }
+            }
+            is UIState.Success -> {
+                CommunitiesList(
+                    communities = communities,
+                    navController = navController,
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
     }
 }
 
 @Composable
-private fun SubscriptionsHeader(
+private fun CommunitiesTabs(
     selectedTab: CommunityTab,
     onTabSelected: (CommunityTab) -> Unit
 ) {
@@ -94,50 +114,45 @@ private fun SubscriptionsHeader(
             .fillMaxWidth()
             .background(
                 color = CustomTheme.colors.container_2,
-                shape = RoundedCornerShape(
-                    topStart = 8.dp,
-                    topEnd = 8.dp,
-                    bottomStart = 0.dp,
-                    bottomEnd = 0.dp
-                )
+                shape = RoundedCornerShape(8.dp)
             )
-            .padding(top = 16.dp)
-            .padding(horizontal = 8.dp),
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        SubscriptionsTabButton(
+        TabButton(
             text = stringResource(R.string.subscriptions),
             isSelected = selectedTab == CommunityTab.SUBSCRIPTION,
             onClick = { onTabSelected(CommunityTab.SUBSCRIPTION) }
         )
-        Spacer(Modifier.width(8.dp))
-        SubscriptionsTabButton(
+
+        TabButton(
             text = stringResource(R.string.all_community),
             isSelected = selectedTab == CommunityTab.ALL,
             onClick = { onTabSelected(CommunityTab.ALL) }
         )
-
-        Spacer(Modifier.weight(1f))
 
         IconButton(
             onClick = { onTabSelected(CommunityTab.SEARCH) },
             modifier = Modifier
                 .size(48.dp)
                 .background(
-                    color = if (selectedTab == CommunityTab.SEARCH) CustomTheme.colors.currentContainer else Color.Transparent,
+                    color = if (selectedTab == CommunityTab.SEARCH) CustomTheme.colors.currentContainer
+                    else Color.Transparent,
                     shape = CircleShape
                 )
         ) {
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = "Search",
-                tint = if (selectedTab == CommunityTab.SEARCH) Color.White else CustomTheme.colors.content
+                tint = if (selectedTab == CommunityTab.SEARCH) Color.White
+                else CustomTheme.colors.content
             )
         }
     }
 }
 
 @Composable
-private fun SubscriptionsTabButton(
+private fun TabButton(
     text: String,
     isSelected: Boolean,
     onClick: () -> Unit
@@ -159,47 +174,23 @@ private fun SubscriptionsTabButton(
 }
 
 @Composable
-private fun CommunityBody(
-    community: List<UserSubscription>,
-    navController: NavController
+private fun CommunitiesList(
+    communities: List<UserSubscription>,
+    navController: NavController,
+    modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = Modifier
-            .background(
-                color = CustomTheme.colors.container_2,
-                shape = RoundedCornerShape(
-                    topStart = 0.dp,
-                    topEnd = 0.dp,
-                    bottomStart = 8.dp,
-                    bottomEnd = 8.dp
-                )
+    LazyColumn(modifier = modifier) {
+        items(communities) { community ->
+            CommunityItem(
+                community = community,
+                onItemClick = { navController.navigate(Routes.CommunityProfile.route + "/${community.id}") }
             )
-    ) {
-        Spacer(
-            Modifier
-                .padding(horizontal = 8.dp)
-                .padding(top = 8.dp, bottom = 16.dp)
-                .fillMaxWidth()
-                .height(2.dp)
-                .background(CustomTheme.colors.content)
-        )
-        LazyColumn() {
-            items(community) { com ->
-                CommunityItem(
-                    community = com,
-                    onItemClick = { communityId ->
-                        navController.navigate(Routes.CommunityProfile.route + "/$communityId")
-                    }
+            if (community != communities.last()) {
+                Divider(
+                    color = CustomTheme.colors.content,
+                    thickness = 1.dp,
+                    modifier = Modifier.padding(horizontal = 8.dp)
                 )
-                if (com != community.last()) {
-                    Spacer(
-                        Modifier
-                            .padding(horizontal = 8.dp)
-                            .fillMaxWidth()
-                            .height(1.dp)
-                            .background(CustomTheme.colors.content)
-                    )
-                }
             }
         }
     }
