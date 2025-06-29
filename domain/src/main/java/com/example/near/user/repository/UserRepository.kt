@@ -80,6 +80,8 @@ interface UserRepository {
 
     suspend fun getAllCommunities(): Result<CommunitiesList>
 
+    suspend fun searchCommunityByValue(value: String): Result<CommunitiesList>
+
     suspend fun userSubscribe(
         communityId: String
     ): Result<Unit>

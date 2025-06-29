@@ -150,6 +150,12 @@ interface UserService {
         @Header("Authorization") token: String,
     ): Response<CommunitiesListResponse>
 
+    @GET("NEAR/community/all")
+    suspend fun searchCommunities(
+        @Header("Authorization") token: String,
+        @Query("search") searchQuery: String
+    ): Response<CommunitiesListResponse>
+
     @POST("NEAR/user/subscribe")
     suspend fun userSubscribe(
         @Header("Authorization") token: String,

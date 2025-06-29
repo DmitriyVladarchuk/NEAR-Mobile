@@ -401,6 +401,25 @@ class UserRepositoryImpl(
         }
     }
 
+    override suspend fun searchCommunityByValue(value: String): Result<CommunitiesList> {
+        return try {
+            val response = userService.searchCommunities(
+                "Bearer ${sessionManager.authToken!!.accessToken}",
+                value
+            )
+            if (response.isSuccessful) {
+                response.body()?.toDomain()?.let {
+                    Result.success(it)
+                } ?: Result.failure(Exception("Empty response body"))
+            } else {
+                val errorBody = response.errorBody()?.string() ?: ""
+                Result.failure(Exception("Error ${response.code()}: $errorBody"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     override suspend fun userSubscribe(communityId: String): Result<Unit> {
         return try {
             val response = userService.userSubscribe(

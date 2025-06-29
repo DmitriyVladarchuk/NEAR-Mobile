@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -43,6 +44,7 @@ import coil.compose.AsyncImage
 import com.example.near.R
 import com.example.near.domain.shared.models.UIState
 import com.example.near.domain.user.models.UserSubscription
+import com.example.near.ui.components.common.AppTextField
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
@@ -54,13 +56,15 @@ fun SubscriptionsScreen(
     navController: NavController,
     viewModel: SubscriptionViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-    val selectedTab by viewModel.selectedTab.collectAsState()
-    val communities by viewModel.communities.collectAsState()
-    val searchQuery by viewModel.searchQuery.collectAsState()
+    val uiState by viewModel.uiState
+    val selectedTab by viewModel.selectedTab
+    val communities by viewModel.communities
+    val searchQuery by viewModel.searchQuery
 
     Column(
-        modifier = modifier.fillMaxSize().padding(horizontal = 16.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
     ) {
         MainHeaderTextInfo(
             text = stringResource(R.string.subscriptions),
@@ -69,7 +73,9 @@ fun SubscriptionsScreen(
 
         CommunitiesTabs(
             selectedTab = selectedTab,
-            onTabSelected = { viewModel.selectTab(it) }
+            searchQuery = searchQuery,
+            onTabSelected = { viewModel.selectTab(it) },
+            onSearchQueryChanged = { viewModel.updateSearchQuery(it) }
         )
 
         when (uiState) {
@@ -79,6 +85,7 @@ fun SubscriptionsScreen(
                     CircularProgressIndicator()
                 }
             }
+
             is UIState.Error -> {
                 val error = (uiState as UIState.Error).message
                 Column(
@@ -93,6 +100,7 @@ fun SubscriptionsScreen(
                     }
                 }
             }
+
             is UIState.Success -> {
                 CommunitiesList(
                     communities = communities,
@@ -107,7 +115,9 @@ fun SubscriptionsScreen(
 @Composable
 private fun CommunitiesTabs(
     selectedTab: CommunityTab,
-    onTabSelected: (CommunityTab) -> Unit
+    searchQuery: String,
+    onTabSelected: (CommunityTab) -> Unit,
+    onSearchQueryChanged: (String) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -119,33 +129,59 @@ private fun CommunitiesTabs(
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        TabButton(
-            text = stringResource(R.string.subscriptions),
-            isSelected = selectedTab == CommunityTab.SUBSCRIPTION,
-            onClick = { onTabSelected(CommunityTab.SUBSCRIPTION) }
-        )
+        if (selectedTab != CommunityTab.SEARCH) {
+            // Показываем обычные табы, если не выбран поиск
+            TabButton(
+                text = stringResource(R.string.subscriptions),
+                isSelected = selectedTab == CommunityTab.SUBSCRIPTION,
+                onClick = { onTabSelected(CommunityTab.SUBSCRIPTION) }
+            )
 
-        TabButton(
-            text = stringResource(R.string.all_community),
-            isSelected = selectedTab == CommunityTab.ALL,
-            onClick = { onTabSelected(CommunityTab.ALL) }
-        )
+            TabButton(
+                text = stringResource(R.string.all_community),
+                isSelected = selectedTab == CommunityTab.ALL,
+                onClick = { onTabSelected(CommunityTab.ALL) }
+            )
 
-        IconButton(
-            onClick = { onTabSelected(CommunityTab.SEARCH) },
-            modifier = Modifier
-                .size(48.dp)
-                .background(
-                    color = if (selectedTab == CommunityTab.SEARCH) CustomTheme.colors.currentContainer
-                    else Color.Transparent,
-                    shape = CircleShape
+            IconButton(
+                onClick = { onTabSelected(CommunityTab.SEARCH) },
+                modifier = Modifier
+                    .size(48.dp)
+                    .background(
+                        color = if (selectedTab == CommunityTab.SEARCH) CustomTheme.colors.currentContainer
+                        else Color.Transparent,
+                        shape = CircleShape
+                    )
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Search",
+                    tint = if (selectedTab == CommunityTab.SEARCH) Color.White
+                    else CustomTheme.colors.content
                 )
-        ) {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = "Search",
-                tint = if (selectedTab == CommunityTab.SEARCH) Color.White
-                else CustomTheme.colors.content
+            }
+        } else {
+            // Показываем поле поиска, когда выбран SEARCH
+            AppTextField(
+                value = searchQuery,
+                onValueChange = onSearchQueryChanged,
+                labelRes = R.string.search_communities,
+                placeholderRes = R.string.search_communities_placeholder,
+                modifier = Modifier.weight(1f),
+                trailingIcon = {
+                    IconButton(
+                        onClick = {
+                            onSearchQueryChanged("")
+                            onTabSelected(CommunityTab.SUBSCRIPTION)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Close search",
+                            tint = CustomTheme.colors.content
+                        )
+                    }
+                }
             )
         }
     }
@@ -200,7 +236,8 @@ private fun CommunitiesList(
 private fun CommunityItem(community: UserSubscription, onItemClick: (String) -> Unit) {
     Row(
         modifier = Modifier
-            .fillMaxWidth().padding(vertical = 8.dp, horizontal = 8.dp)
+            .fillMaxWidth()
+            .padding(vertical = 8.dp, horizontal = 8.dp)
             .clickable { onItemClick(community.id) },
         verticalAlignment = Alignment.CenterVertically
     ) {

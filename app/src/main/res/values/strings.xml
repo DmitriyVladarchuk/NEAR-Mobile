@@ -107,6 +107,8 @@
 
     <!-- Subscription -->
     <string name="all_community">All community</string>
+    <string name="search_communities">Search communities</string>
+    <string name="search_communities_placeholder">Enter community name…</string>
     
     <!-- Settings -->
     <string name="option">Option</string>
