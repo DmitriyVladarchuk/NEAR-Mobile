@@ -161,7 +161,6 @@ private fun CommunitiesTabs(
                 )
             }
         } else {
-            // Показываем поле поиска, когда выбран SEARCH
             AppTextField(
                 value = searchQuery,
                 onValueChange = onSearchQueryChanged,

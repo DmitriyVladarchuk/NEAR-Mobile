@@ -1,16 +1,19 @@
 package com.example.near.ui.screens.friendsAndGroups.friends
 
 import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.near.domain.shared.models.UIState
 import com.example.near.domain.user.models.AllFriendsInfo
 import com.example.near.domain.user.models.User
 import com.example.near.domain.shared.usecase.GetUserByIdUseCase
 import com.example.near.domain.shared.usecase.GetUserUseCase
 import com.example.near.domain.user.usecase.friends.GetAllFriendsInfoUseCase
+import com.example.near.user.usecase.SearchUsersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,70 +24,96 @@ enum class FriendsTab { ALL, REQUESTS, SEARCH }
 class FriendsViewModel @Inject constructor(
     private val getUser: GetUserUseCase,
     private val getAllFriendsInfo: GetAllFriendsInfoUseCase,
-    private val getUserById: GetUserByIdUseCase
+    private val getUserById: GetUserByIdUseCase,
+    private val searchUsersUseCase: SearchUsersUseCase
 ): ViewModel() {
 
-    var isLoading by mutableStateOf(false)
-        private set
+    private val _uiState = mutableStateOf<UIState>(UIState.Idle)
+    val uiState: State<UIState> = _uiState
 
-    var error by mutableStateOf<String?>(null)
-        private set
+    private val _selectedTab = mutableStateOf(FriendsTab.ALL)
+    val selectedTab: State<FriendsTab> = _selectedTab
 
-    var friendsData by mutableStateOf<AllFriendsInfo?>(null)
-        private set
+    private val _friendsData = mutableStateOf<AllFriendsInfo?>(null)
+    val friendsData: State<AllFriendsInfo?> = _friendsData
 
-    var selectedTab by mutableStateOf(FriendsTab.ALL)
-    var searchQuery by mutableStateOf("")
-    var searchResults by mutableStateOf<List<User>>(emptyList())
+    private val _searchQuery = mutableStateOf("")
+    val searchQuery: State<String> = _searchQuery
 
+    private val _searchResults = mutableStateOf<List<User>>(emptyList())
+    val searchResults: State<List<User>> = _searchResults
 
     init {
-        loadFriends()
+        loadInitialData()
     }
 
-    fun loadFriends() {
-        viewModelScope.launch {
-            isLoading = true
-            error = null
-            try {
-                friendsData = getAllFriendsInfo().getOrThrow()
-            } catch (e: Exception) {
-                error = e.message ?: "Failed to load friends data"
-            } finally {
-                isLoading = false
+    fun loadInitialData() {
+        when (selectedTab.value) {
+            FriendsTab.ALL -> loadAllFriends()
+            FriendsTab.REQUESTS -> loadRequests()
+            FriendsTab.SEARCH -> if (_searchQuery.value.isNotEmpty()) {
+                searchFriends(_searchQuery.value)
             }
         }
     }
 
     fun selectTab(tab: FriendsTab) {
-        selectedTab = tab
+        _selectedTab.value = tab
+        if (tab == FriendsTab.SEARCH && _searchQuery.value.isNotEmpty()) {
+            searchFriends(_searchQuery.value)
+        } else {
+            loadInitialData()
+        }
     }
 
-    fun search(query: String) {
-        searchQuery = query
-        if (query.isEmpty()) {
-            searchResults = emptyList()
-            return
+    fun updateSearchQuery(query: String) {
+        _searchQuery.value = query
+        if (query.isNotEmpty()) {
+            searchFriends(query)
+        } else {
+            loadInitialData()
         }
+    }
 
+    private fun searchFriends(query: String) {
         viewModelScope.launch {
-            try {
-                val user = getUserById(query)
-                Log.d("Test", user.toString())
-                user?.let {
-                    searchResults = listOf(it)
-                } ?: run {
-                    searchResults = emptyList()
+            _uiState.value = UIState.Loading
+            searchUsersUseCase(query)
+                .onSuccess { usersList ->
+                    _searchResults.value = usersList.content
+                    _uiState.value = UIState.Success
                 }
-            } catch (e: Exception) {
-                searchResults = emptyList()
-            }
+                .onFailure { e ->
+                    _uiState.value = UIState.Error(e.message ?: "Failed to search users")
+                }
         }
     }
 
-    fun clearSearch() {
-        searchQuery = ""
-        searchResults = emptyList()
-        selectedTab = FriendsTab.ALL
+    private fun loadAllFriends() {
+        viewModelScope.launch {
+            _uiState.value = UIState.Loading
+            getAllFriendsInfo()
+                .onSuccess {
+                    _friendsData.value = it
+                    _uiState.value = UIState.Success
+                }
+                .onFailure { e ->
+                    _uiState.value = UIState.Error(e.message ?: "Failed to load friends")
+                }
+        }
+    }
+
+    private fun loadRequests() {
+        viewModelScope.launch {
+            _uiState.value = UIState.Loading
+            getAllFriendsInfo()
+                .onSuccess {
+                    _friendsData.value = it
+                    _uiState.value = UIState.Success
+                }
+                .onFailure { e ->
+                    _uiState.value = UIState.Error(e.message ?: "Failed to load requests")
+                }
+        }
     }
 }

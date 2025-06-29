@@ -9,6 +9,7 @@ import com.example.near.domain.shared.models.LoginCredentials
 import com.example.near.domain.shared.models.NotificationOption
 import com.example.near.domain.user.models.UserSignUp
 import com.example.near.user.models.CommunitiesList
+import com.example.near.user.models.UserList
 
 interface UserRepository {
 
@@ -39,6 +40,8 @@ interface UserRepository {
     // --- Friends Actions ---
 
     suspend fun getAllFriendsInfo(): Result<AllFriendsInfo>
+
+    suspend fun searchUsersByValue(value: String): Result<UserList>
 
     suspend fun sendFriendRequest(friendId: String): Result<Unit>
 

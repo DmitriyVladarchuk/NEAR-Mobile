@@ -16,6 +16,7 @@ import com.example.near.data.user.models.UserResponse
 import com.example.near.data.user.models.UserSignUpRequest
 import com.example.near.data.user.models.UserUpdateRequest
 import com.example.near.user.models.CommunitiesListResponse
+import com.example.near.user.models.UserListResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -78,6 +79,12 @@ interface UserService {
     suspend fun getAllFriendsInfo(
         @Header("Authorization") token: String
     ): Response<AllFriendsInfoResponse>
+
+    @GET("NEAR/user/all")
+    suspend fun searchUsers(
+        @Header("Authorization") token: String,
+        @Query("search") searchQuery: String
+    ): Response<UserListResponse>
 
     @POST("NEAR/user/request/friend")
     suspend fun sendFriendRequest(

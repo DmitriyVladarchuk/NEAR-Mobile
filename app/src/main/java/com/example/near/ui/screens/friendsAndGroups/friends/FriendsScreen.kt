@@ -25,14 +25,16 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -41,11 +43,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
+import com.example.near.domain.shared.models.UIState
 import com.example.near.domain.user.models.AllFriendsInfo
 import com.example.near.domain.user.models.User
+import com.example.near.ui.components.common.AppTextField
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.components.common.textFieldColors
+
 
 @Composable
 fun FriendsScreen(
@@ -53,31 +57,54 @@ fun FriendsScreen(
     navController: NavController,
     viewModel: FriendsViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState
+    val selectedTab by viewModel.selectedTab
+    val friendsData by viewModel.friendsData
+    val searchQuery by viewModel.searchQuery
+    val searchResults by viewModel.searchResults
+
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
-        when {
-            viewModel.isLoading -> {
-                CircularProgressIndicator()
+        FriendsHeader(
+            selectedTab = selectedTab,
+            onTabSelected = { viewModel.selectTab(it) },
+            searchQuery = searchQuery,
+            onSearchQueryChange = { viewModel.updateSearchQuery(it) },
+            onClearSearch = {
+                viewModel.updateSearchQuery("")
+                viewModel.selectTab(FriendsTab.ALL)
             }
-            viewModel.error != null -> {
-                Text("Error: ${viewModel.error}", color = Color.Red)
-                Button(onClick = { viewModel.loadFriends() }) {
-                    Text("Retry")
+        )
+
+        when (uiState) {
+            is UIState.Idle -> Unit
+            is UIState.Loading -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
                 }
             }
-            else -> {
-                FriendsHeader(
-                    selectedTab = viewModel.selectedTab,
-                    onTabSelected = { tab -> viewModel.selectTab(tab) },
-                    searchQuery = viewModel.searchQuery,
-                    onSearchQueryChange = { query -> viewModel.search(query) },
-                    onClearSearch = { viewModel.clearSearch() }
-                )
+
+            is UIState.Error -> {
+                val error = (uiState as UIState.Error).message
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text("Error: $error", color = Color.Red)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = { viewModel.loadInitialData() }) {
+                        Text("Retry")
+                    }
+                }
+            }
+
+            is UIState.Success -> {
                 FriendsBody(
-                    friendsData = viewModel.friendsData!!,
-                    selectedTab = viewModel.selectedTab,
-                    searchResults = viewModel.searchResults,
+                    friendsData = friendsData,
+                    selectedTab = selectedTab,
+                    searchResults = searchResults,
                     navController = navController
                 )
             }
@@ -114,23 +141,21 @@ private fun FriendsHeader(
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                OutlinedTextField(
+                AppTextField(
                     value = searchQuery,
                     onValueChange = onSearchQueryChange,
+                    labelRes = R.string.search_users,
+                    placeholderRes = R.string.search_users_placeholder,
                     modifier = Modifier.weight(1f),
-                    placeholder = { Text("Search by name or ID") },
-                    singleLine = true,
                     trailingIcon = {
-                        if (searchQuery.isNotEmpty()) {
-                            IconButton(onClick = onClearSearch) {
-                                Icon(Icons.Default.Close, "Clear search")
-                            }
+                        IconButton(onClick = onClearSearch) {
+                            Icon(Icons.Default.Close, "Clear search")
                         }
-                    },
-                    colors = textFieldColors()
+                    }
                 )
             }
         } else {
+            // ... остальной код без изменений
             Row(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -171,7 +196,7 @@ private fun FriendsHeader(
 
 @Composable
 private fun FriendsBody(
-    friendsData: AllFriendsInfo,
+    friendsData: AllFriendsInfo?,
     selectedTab: FriendsTab,
     searchResults: List<User>,
     navController: NavController
@@ -200,13 +225,13 @@ private fun FriendsBody(
         when (selectedTab) {
             FriendsTab.ALL -> {
                 FriendsList(
-                    friends = friendsData.friends,
+                    friends = friendsData?.friends ?: emptyList(),
                     onItemClick = { userId -> navController.navigate("profile/$userId") }
                 )
             }
             FriendsTab.REQUESTS -> {
                 ReceivedRequestsList(
-                    requests = friendsData.receivedRequests,
+                    requests = friendsData?.receivedRequests ?: emptyList(),
                     onItemClick = { userId -> navController.navigate("profile/$userId") }
                 )
             }
@@ -228,19 +253,15 @@ private fun SearchResultsList(
     if (results.isNotEmpty()) {
         LazyColumn {
             items(results) { user ->
-                FriendItem(
-                    friend = user,
+                UserSearchItem(
+                    user = user,
                     onItemClick = { onItemClick(user.id) }
                 )
-                if (user != results.last()) {
-                    Spacer(
-                        Modifier
-                            .padding(horizontal = 8.dp)
-                            .fillMaxWidth()
-                            .height(1.dp)
-                            .background(CustomTheme.colors.content)
-                    )
-                }
+                Divider(
+                    color = CustomTheme.colors.content.copy(alpha = 0.2f),
+                    thickness = 1.dp,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
             }
         }
     } else {
@@ -251,8 +272,44 @@ private fun SearchResultsList(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "No results found",
+                text = "No users found",
                 style = AppTypography.bodyMedium,
+                color = CustomTheme.colors.content.copy(alpha = 0.7f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun UserSearchItem(
+    user: User,
+    onItemClick: (String) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onItemClick(user.id) }
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        AsyncImage(
+            model = "",
+            contentDescription = "user avatar",
+            modifier = Modifier
+                .size(48.dp)
+                .clip(CircleShape),
+            placeholder = painterResource(R.drawable.default_avatar),
+            error = painterResource(R.drawable.default_avatar)
+        )
+        Spacer(Modifier.width(16.dp))
+        Column {
+            Text(
+                text = "${user.firstName} ${user.lastName}",
+                style = AppTypography.bodyMedium
+            )
+            Text(
+                text = "@${user.firstName} ${user.lastName}",
+                style = AppTypography.bodySmall,
                 color = CustomTheme.colors.content.copy(alpha = 0.7f)
             )
         }
@@ -319,37 +376,6 @@ private fun ReceivedRequestsList(
         LazyColumn {
             items(requests) { request ->
                 FriendRequestItem(
-                    friend = request,
-                    onItemClick = { onItemClick(request.id) }
-                )
-                if (request != requests.last()) {
-                    Spacer(
-                        Modifier
-                            .padding(horizontal = 8.dp)
-                            .fillMaxWidth()
-                            .height(1.dp)
-                            .background(CustomTheme.colors.content)
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun SentRequestsList(
-    requests: List<User>,
-    onItemClick: (String) -> Unit
-) {
-    if (requests.isNotEmpty()) {
-        Text(
-            text = "Sent Requests",
-            modifier = Modifier.padding(16.dp),
-            style = AppTypography.bodyMedium
-        )
-        LazyColumn {
-            items(requests) { request ->
-                FriendItem(
                     friend = request,
                     onItemClick = { onItemClick(request.id) }
                 )

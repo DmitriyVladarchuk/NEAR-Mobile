@@ -25,6 +25,7 @@ import com.example.near.domain.user.models.User
 import com.example.near.domain.user.models.UserSignUp
 import com.example.near.domain.user.repository.UserRepository
 import com.example.near.user.models.CommunitiesList
+import com.example.near.user.models.UserList
 
 class UserRepositoryImpl(
     private val userService: UserService,
@@ -193,6 +194,25 @@ class UserRepositoryImpl(
         return try {
             val response = userService.getAllFriendsInfo(
                 "Bearer ${sessionManager.authToken!!.accessToken}"
+            )
+            if (response.isSuccessful) {
+                response.body()?.toDomain()?.let {
+                    Result.success(it)
+                } ?: Result.failure(Exception("Empty response body"))
+            } else {
+                val errorBody = response.errorBody()?.string() ?: ""
+                Result.failure(Exception("Error ${response.code()}: $errorBody"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun searchUsersByValue(value: String): Result<UserList> {
+        return try {
+            val response = userService.searchUsers(
+                "Bearer ${sessionManager.authToken!!.accessToken}",
+                value
             )
             if (response.isSuccessful) {
                 response.body()?.toDomain()?.let {
