@@ -79,8 +79,8 @@ class ProfileCommunityViewModel @Inject constructor(
     fun handleSubscribe(communityId: String) {
         viewModelScope.launch {
             when(subscriptionStatus) {
-                SubscriptionStatus.SUBSCRIBE -> subscribeUseCase(communityId)
-                SubscriptionStatus.NOT_SUBSCRIBE -> cancelSubscribeUseCase(communityId)
+                SubscriptionStatus.SUBSCRIBE -> cancelSubscribeUseCase(communityId)
+                SubscriptionStatus.NOT_SUBSCRIBE -> subscribeUseCase(communityId)
             }
         }
     }

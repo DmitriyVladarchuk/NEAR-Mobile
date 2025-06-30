@@ -176,7 +176,7 @@ interface UserService {
         @Body request: CommunityActionRequest
     ): Response<Void>
 
-    @POST("NEAR/user/cancel/subscribe")
+    @POST("NEAR/user/cancel/subscription")
     suspend fun userCancelSubscribe(
         @Header("Authorization") token: String,
         @Body request: CommunityActionRequest
