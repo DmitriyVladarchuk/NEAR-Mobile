@@ -1,6 +1,7 @@
 package com.example.near.domain.user.repository
 
 import com.example.near.common.models.EmailVerificationStatus
+import com.example.near.domain.community.models.Community
 import com.example.near.domain.shared.models.EmergencyType
 import com.example.near.domain.user.models.User
 import com.example.near.domain.shared.models.AuthTokens
@@ -26,6 +27,8 @@ interface UserRepository {
     suspend fun getUserInfo(): Result<User>
 
     suspend fun getUserById(id: String): Result<User>
+
+    suspend fun getCommunityById(id: String): Result<Community>
 
     suspend fun updateUser(
         firstName: String? = null,

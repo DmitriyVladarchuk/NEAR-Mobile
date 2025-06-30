@@ -138,6 +138,7 @@
     <string name="emergency_monitoring_region">Emergency monitoring region</string>
     <string name="type_of_monitored_emergency">Type of monitored emergency</string>
     <string name="subscribe">Subscribe</string>
+    <string name="unsubscribe">Unsubscribe</string>
 
     <!-- Template -->
     <string name="template_info">Template Info</string>

@@ -3,6 +3,7 @@ package com.example.near.data.user.repositories
 import android.util.Log
 import com.example.near.common.models.EmailVerificationStatus
 import com.example.near.data.api.UserService
+import com.example.near.data.community.mappers.toDomain
 import com.example.near.data.community.models.CommunityActionRequest
 import com.example.near.data.shared.models.FcmTokenRequest
 import com.example.near.data.shared.models.RefreshTokenRequest
@@ -15,6 +16,7 @@ import com.example.near.data.user.models.FriendRequest
 import com.example.near.data.user.models.GroupActionRequest
 import com.example.near.data.user.models.GroupCreateRequest
 import com.example.near.data.user.models.UserUpdateRequest
+import com.example.near.domain.community.models.Community
 import com.example.near.domain.shared.models.AuthTokens
 import com.example.near.domain.shared.models.EmergencyType
 import com.example.near.domain.shared.models.LoginCredentials
@@ -140,6 +142,25 @@ class UserRepositoryImpl(
     override suspend fun getUserById(id: String): Result<User> {
         return try {
             val response = userService.getUserById("Bearer ${sessionManager.authToken!!.accessToken}", id)
+            if (response.isSuccessful) {
+                response.body()?.toDomain()?.let {
+                    Result.success(it)
+                } ?: Result.failure(Exception("Empty response body"))
+            } else {
+                val errorBody = response.errorBody()?.string() ?: ""
+                Result.failure(Exception("Error ${response.code()}: $errorBody"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getCommunityById(id: String): Result<Community> {
+        return try {
+            Log.d("UserRep", id)
+            val response = userService.getCommunityById("Bearer ${sessionManager.authToken!!.accessToken}", id)
+            Log.d("UserRep", response.code().toString())
+            Log.d("UserRep", response.body().toString())
             if (response.isSuccessful) {
                 response.body()?.toDomain()?.let {
                     Result.success(it)

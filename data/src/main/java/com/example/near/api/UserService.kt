@@ -1,6 +1,7 @@
 package com.example.near.data.api
 
 import com.example.near.data.community.models.CommunityActionRequest
+import com.example.near.data.community.models.CommunityResponse
 import com.example.near.data.shared.models.FcmTokenRequest
 import com.example.near.data.shared.models.LoginRequest
 import com.example.near.data.shared.models.LoginResponse
@@ -151,6 +152,12 @@ interface UserService {
     ): Response<Void>
 
     // --- Action Subscribes
+
+    @GET("NEAR/community/get")
+    suspend fun getCommunityById(
+        @Header("Authorization") token: String,
+        @Query("id") communityId: String
+    ): Response<CommunityResponse>
 
     @GET("NEAR/community/all")
     suspend fun getAllCommunities(

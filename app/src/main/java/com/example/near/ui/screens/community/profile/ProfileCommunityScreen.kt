@@ -1,7 +1,13 @@
-package com.example.near.ui.screens.profile.community
+package com.example.near.ui.screens.community.profile
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,10 +37,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -55,113 +67,146 @@ import com.example.near.ui.theme.dark_content
 import com.example.near.ui.theme.light_container
 import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
 
+
 @Composable
 fun ProfileCommunityScreen(
-    communityId: String? = null,
     navController: NavController,
     modifier: Modifier = Modifier,
     viewModel: ProfileCommunityViewModel = hiltViewModel()
 ) {
-    val scrollState = rememberScrollState()
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
+    var showLogout by remember { mutableStateOf(false) }
+    var scrollOffset by remember { mutableFloatStateOf(0f) }
+    var maxScrollOffset by remember { mutableFloatStateOf(0f) }
+    val scrollThreshold = 100.dp
 
     LaunchedEffect(Unit) {
-        if (communityId == null) {
-            viewModel.loadCommunity()
-        } else {
-            viewModel.loadCommunity(communityId)
-        }
+        viewModel.loadCommunity()
     }
 
     Column(
-        modifier = modifier.fillMaxSize().padding(horizontal = 16.dp)
-    ) {
-        if (communityId != null) {
-            SecondaryHeaderTextInfo(
-                text = stringResource(R.string.community),
-                modifier = Modifier.padding(vertical = 16.dp)
-            ) {
-                navController.popBackStack()
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
+            .verticalScroll(rememberScrollState())
+            .pointerInput(Unit) {
+                detectVerticalDragGestures { change, dragAmount ->
+                    scrollOffset += dragAmount
+                    maxScrollOffset = maxOf(maxScrollOffset, scrollOffset)
+                    if (dragAmount < 0) {
+                        showLogout = true
+                    }
+                    else if (scrollOffset > maxScrollOffset - scrollThreshold.toPx()) {
+                        showLogout = false
+                    }
+                }
             }
+    ) {
+        Column(
+            modifier = Modifier
+                .weight(1f)
+        ) {
+            Box(modifier = Modifier.fillMaxWidth().weight(0.3f)) {
+                AvatarSection(
+                    avatarUrl = viewModel.avatarUrl,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+            Spacer(modifier.height(8.dp))
+            Box(modifier = Modifier.fillMaxWidth().weight(0.2f)) {
+                SubscribersSection(
+                    text = viewModel.community?.subscribers?.size.toString(),
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+            Spacer(modifier.height(8.dp))
+            Box(modifier = Modifier.fillMaxWidth().weight(0.5f)) {
+                DescriptionCommunitySection(
+                    community = viewModel.community,
+                    subscriptionStatus = viewModel.subscriptionStatus,
+                    modifier = Modifier.fillMaxSize(),
+                    onSubscriptionClick = {  },
+                    onEditClick = { navController.navigate(Routes.EditCommunityProfile.route) }
+                )
+            }
+            Spacer(modifier.height(8.dp))
         }
 
-        when {
-            viewModel.isLoading -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
-                }
+        AnimatedVisibility(
+            visible = showLogout,
+            enter = fadeIn() + slideInVertically { it },
+            exit = fadeOut() + slideOutVertically { it },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            SettingAndLogOut(
+                settingClick = { navController.navigate(Routes.Settings.route) },
+                logOutClick = { viewModel.logOut {
+                    navController.navigate(Routes.Onboarding.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                } },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 32.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun ProfileCommunityScreen(
+    communityId: String,
+    navController: NavController,
+    modifier: Modifier = Modifier,
+    viewModel: ProfileCommunityViewModel = hiltViewModel()
+) {
+
+    LaunchedEffect(Unit) {
+        viewModel.loadCommunity(communityId)
+    }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        SecondaryHeaderTextInfo(
+            text = stringResource(R.string.community),
+            modifier = Modifier.padding(vertical = 16.dp)
+        ) {
+            navController.popBackStack()
+        }
+
+        Column(
+            modifier = Modifier
+                .weight(1f)
+        ) {
+
+            Box(modifier = Modifier.fillMaxWidth().weight(0.3f)) {
+                AvatarSection(
+                    avatarUrl = viewModel.avatarUrl,
+                    modifier = Modifier.fillMaxSize()
+                )
             }
-            viewModel.error != null -> {
-                Column(
+            Spacer(modifier.height(8.dp))
+            Box(modifier = Modifier.fillMaxWidth().weight(0.2f)) {
+                SubscribersSection(
+                    text = viewModel.community?.subscribers?.size.toString(),
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+            Spacer(modifier.height(8.dp))
+            Box(modifier = Modifier.fillMaxWidth().weight(0.5f)) {
+                DescriptionCommunitySection(
+                    community = viewModel.community,
+                    subscriptionStatus = viewModel.subscriptionStatus,
+                    communityId = true,
                     modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text("Error: ${viewModel.error}", color = Color.Red)
-                    Button(onClick = { viewModel.loadCommunity() }) {
-                        Text("Retry")
-                    }
-                }
+                    onSubscriptionClick = { viewModel.handleSubscribe(communityId) },
+                    onEditClick = { navController.navigate(Routes.EditCommunityProfile.route) }
+                )
             }
-            else -> {
-
-                Column(
-                    modifier = Modifier
-                        .verticalScroll(scrollState)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(screenHeight)
-                    ) {
-                        AvatarSection(
-                            avatarUrl = viewModel.avatarUrl,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height((screenHeight - 56.dp) * 0.3f)
-                                .padding(8.dp)
-                        )
-
-                        viewModel.community?.let { it ->
-                            DescriptionCommunitySection(
-                                community = it,
-                                communityId = communityId != null,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f)
-                                    .padding(vertical = 8.dp)
-                            ) {
-                                viewModel.handleSubscribe(it.id)
-                                if (communityId == null) navController.navigate(Routes.EditCommunityProfile.route)
-                            }
-                        }
-
-                        viewModel.community?.let { it ->
-                            SubscribersSection(
-                                text = it.subscribers.size.toString(),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height((screenHeight - 56.dp) * 0.15f)
-                            )
-                        }
-
-
-                        if (communityId == null)
-                            SettingAndLogOut(
-                                settingClick = { navController.navigate(Routes.Settings.route) },
-                                logOutClick = { viewModel.logOut {
-                                    navController.navigate(Routes.Onboarding.route) {
-                                        popUpTo(0) { inclusive = true }
-                                    }
-                                } },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 32.dp)
-                            )
-                    }
-                }
-            }
+            Spacer(modifier.height(8.dp))
         }
     }
 }
@@ -232,52 +277,62 @@ private fun SubscribersSection(text: String, modifier: Modifier = Modifier) {
 
 @Composable
 private fun DescriptionCommunitySection(
-    community: Community,
+    community: Community?,
+    subscriptionStatus: SubscriptionStatus,
     modifier: Modifier = Modifier,
     communityId: Boolean = false,
-    onClick: () -> Unit
+    onSubscriptionClick: () -> Unit,
+    onEditClick: () -> Unit
 ) {
     Column(
         modifier = modifier
             .background(color = CustomTheme.colors.container_2, shape = RoundedCornerShape(8.dp))
             .fillMaxWidth()
     ) {
-        Text(
-            text = community.communityName,
-            style = AppTypography.titleMedium,
-            color = CustomTheme.colors.content,
-            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
-            textAlign = TextAlign.Center
-        )
-        Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(2.dp).background(CustomTheme.colors.content))
+        community?.let {
+            Text(
+                text = community.communityName,
+                style = AppTypography.titleMedium,
+                color = CustomTheme.colors.content,
+                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+                textAlign = TextAlign.Center
+            )
+            Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(2.dp).background(CustomTheme.colors.content))
 
-        InfoRow(Icons.Default.Info, "Id", community.id)
-        Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
+            InfoRow(Icons.Default.Info, "Id", community.id)
+            Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
 
 //        InfoRow(Icons.Default.Description, stringResource(R.string.description), community.description.toString())
 //        Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
 
-        InfoRow(Icons.Default.LocationOn, stringResource(R.string.emergency_monitoring_region), community.country.toString())
-        Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
+            InfoRow(Icons.Default.LocationOn, stringResource(R.string.emergency_monitoring_region), community.country.toString())
+            Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
 
-        InfoRow(Icons.Default.Notifications, stringResource(R.string.type_of_monitored_emergency), "")
-        Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
+            InfoRow(Icons.Default.Notifications, stringResource(R.string.type_of_monitored_emergency), "")
+            Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
 
-        Spacer(Modifier.weight(1f))
-        Button(
-            onClick = { onClick() },
-            shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(contentColor = CustomTheme.colors.content, containerColor = light_container),
-            modifier = Modifier
-                .align(if (communityId) Alignment.CenterHorizontally else Alignment.End)
-                .padding(horizontal = 8.dp, vertical = 8.dp)
-        ) {
-            Text(
-                text = if (communityId) stringResource(R.string.subscribe) else stringResource(R.string.edit_profile),
-                style = AppTypography.bodyMedium,
-                color = dark_content,
-                modifier = Modifier.padding(end = 8.dp),
-            )
+            Spacer(Modifier.weight(1f))
+            Button(
+                onClick = {
+                    if (communityId) onSubscriptionClick()
+                    else onEditClick()
+                },
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(contentColor = CustomTheme.colors.content, containerColor = light_container),
+                modifier = Modifier
+                    .align(if (communityId) Alignment.CenterHorizontally else Alignment.End)
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
+            ) {
+                Text(
+                    text = if (communityId) {
+                        if (subscriptionStatus == SubscriptionStatus.NOT_SUBSCRIBE) stringResource(R.string.subscribe)
+                        else stringResource(R.string.unsubscribe)
+                    } else stringResource(R.string.edit_profile),
+                    style = AppTypography.bodyMedium,
+                    color = dark_content,
+                    modifier = Modifier.padding(end = 8.dp),
+                )
+            }
         }
     }
 }

@@ -130,7 +130,6 @@ private fun CommunitiesTabs(
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         if (selectedTab != CommunityTab.SEARCH) {
-            // Показываем обычные табы, если не выбран поиск
             TabButton(
                 text = stringResource(R.string.subscriptions),
                 isSelected = selectedTab == CommunityTab.SUBSCRIPTION,

@@ -61,7 +61,7 @@ class ProfileViewModel @Inject constructor(
             error = null
             try {
                 user = getUser()
-                Log.d("Test", user.toString())
+                Log.d("UserInfo", user.toString())
             } catch (e: Exception) {
                 error = e.message ?: "Failed to load user data"
             } finally {

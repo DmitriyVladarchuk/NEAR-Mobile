@@ -1,4 +1,4 @@
-package com.example.near.ui.screens.community.profile
+package com.example.near.ui.screens.community.edit
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue

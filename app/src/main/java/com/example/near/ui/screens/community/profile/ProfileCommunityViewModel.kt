@@ -1,4 +1,4 @@
-package com.example.near.ui.screens.profile.community
+package com.example.near.ui.screens.community.profile
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.near.common.usecase.GetCommunityByIdUseCase
 import com.example.near.domain.community.models.Community
 import com.example.near.domain.shared.usecase.GetUserUseCase
 import com.example.near.domain.community.usecase.GetCommunityUseCase
@@ -16,14 +17,21 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+enum class SubscriptionStatus {
+    SUBSCRIBE,
+    NOT_SUBSCRIBE
+}
+
 @HiltViewModel
 class ProfileCommunityViewModel @Inject constructor(
     private val getCommunityUseCase: GetCommunityUseCase,
+    private val getCommunityByIdUseCase: GetCommunityByIdUseCase,
     private val getUserUseCase: GetUserUseCase,
     private val logOutUseCase: LogOutUseCase,
     private val subscribeUseCase: UserSubscribeUseCase,
     private val cancelSubscribeUseCase: UserCancelSubscribeUseCase
 ) : ViewModel() {
+
     val avatarUrl: String = ""
     var community by mutableStateOf<Community?>(null)
         private set
@@ -34,7 +42,7 @@ class ProfileCommunityViewModel @Inject constructor(
     var error by mutableStateOf<String?>(null)
         private set
 
-    var isSubscribe by mutableStateOf<Boolean>(false)
+    var subscriptionStatus by mutableStateOf<SubscriptionStatus>(SubscriptionStatus.NOT_SUBSCRIBE)
         private set
 
 
@@ -44,6 +52,7 @@ class ProfileCommunityViewModel @Inject constructor(
             error = null
             try {
                 community = getCommunityUseCase()
+                Log.d("CommunityInfo", community.toString())
             } catch (e: Exception) {
                 error = e.message ?: "Failed to load community data"
             } finally {
@@ -57,20 +66,8 @@ class ProfileCommunityViewModel @Inject constructor(
             isLoading = true
             error = null
             try {
-                val user = getUserUseCase()
-                val sub = user!!.subscriptions.find { it.id == communityId  }
-                community = Community(
-                    id = sub!!.id,
-                    communityName = sub!!.communityName,
-                    description = sub?.description,
-                    country = sub.country,
-                    city = sub.city,
-                    district = null,
-                    registrationDate = "",
-                    subscribers = listOf(),
-                    notificationTemplates = listOf()
-                )
-                Log.d("Test", community.toString())
+                community = getCommunityByIdUseCase(communityId)
+                checkSubscriptionStatus(communityId)
             } catch (e: Exception) {
                 error = e.message ?: "Failed to load community data"
             } finally {
@@ -81,7 +78,10 @@ class ProfileCommunityViewModel @Inject constructor(
 
     fun handleSubscribe(communityId: String) {
         viewModelScope.launch {
-            subscribeUseCase(communityId)
+            when(subscriptionStatus) {
+                SubscriptionStatus.SUBSCRIBE -> subscribeUseCase(communityId)
+                SubscriptionStatus.NOT_SUBSCRIBE -> cancelSubscribeUseCase(communityId)
+            }
         }
     }
 
@@ -89,6 +89,14 @@ class ProfileCommunityViewModel @Inject constructor(
         viewModelScope.launch {
             logOutUseCase()
             logOutEvent()
+        }
+    }
+
+    private suspend fun checkSubscriptionStatus(communityId: String) {
+        val currentUser = getUserUseCase()
+        subscriptionStatus =  when {
+            currentUser!!.subscriptions.any { it.id == communityId } -> SubscriptionStatus.SUBSCRIBE
+            else -> SubscriptionStatus.NOT_SUBSCRIBE
         }
     }
 }

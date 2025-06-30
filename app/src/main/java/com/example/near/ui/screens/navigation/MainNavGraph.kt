@@ -38,14 +38,14 @@ import com.example.near.ui.screens.auth.login.community.LoginCommunityScreen
 import com.example.near.ui.screens.auth.signup.account.SignupAccountScreen
 import com.example.near.ui.screens.auth.signup.community.SignupCommunityScreen
 import com.example.near.ui.screens.bottomBar.BottomBar
-import com.example.near.ui.screens.community.profile.EditCommunityProfileScreen
+import com.example.near.ui.screens.community.edit.EditCommunityProfileScreen
 import com.example.near.ui.screens.dashboard.community.DashboardCommunityScreen
 import com.example.near.ui.screens.dashboard.user.DashboardScreen
 import com.example.near.ui.screens.friendsAndGroups.FriendsAndGroupsScreen
 import com.example.near.ui.screens.friendsAndGroups.FriendsAndSubscriptions
 import com.example.near.ui.screens.friendsAndGroups.groups.CreateGroupsScreen
 import com.example.near.ui.screens.onboarding.OnboardingScreen
-import com.example.near.ui.screens.profile.community.ProfileCommunityScreen
+import com.example.near.ui.screens.community.profile.ProfileCommunityScreen
 import com.example.near.ui.screens.profile.edit.EditUserProfileScreen
 import com.example.near.ui.screens.profile.user.UserProfileScreen
 import com.example.near.ui.screens.settings.SettingsScreen
@@ -195,7 +195,10 @@ fun MainNavGraph(
                     arguments = listOf(navArgument("communityId") { type = NavType.StringType })
                 ) { backStackEntry ->
                     val communityId = backStackEntry.arguments?.getString("communityId")
-                    ProfileCommunityScreen(communityId = communityId, navController = navController)
+                    ProfileCommunityScreen(
+                        communityId = communityId!!,
+                        navController = navController
+                    )
                 }
 
                 composable(Routes.Profile.route) {

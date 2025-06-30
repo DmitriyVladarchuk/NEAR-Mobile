@@ -431,7 +431,7 @@ private fun ItemFriendsOrSubscription(
         ) {
             Text(
                 text = title,
-                style = AppTypography.titleLarge,
+                style = AppTypography.bodyMedium,
                 color = CustomTheme.colors.content
             )
 
