@@ -51,6 +51,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
+import com.example.near.domain.shared.models.NotificationOption
 import com.example.near.domain.shared.models.SignupNotificationOption
 import com.example.near.domain.user.models.User
 import com.example.near.ui.screens.navigation.Routes
@@ -124,6 +125,7 @@ fun UserProfileScreen(
             Box(modifier = Modifier.fillMaxWidth().weight(0.5f)) {
                 UserProfileCard(
                     user = viewModel.user,
+                    notificationOption = viewModel.notificationOption,
                     navController = navController,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -251,10 +253,12 @@ private fun UserProfileCard(
 private fun UserProfileCard(
     modifier: Modifier = Modifier,
     user: User?,
+    notificationOption: List<NotificationOption> = emptyList(),
     navController: NavController
 ) {
     BaseUserProfileCard(
         modifier = modifier,
+        notificationOption = notificationOption,
         user = user
     ) {
         Button(

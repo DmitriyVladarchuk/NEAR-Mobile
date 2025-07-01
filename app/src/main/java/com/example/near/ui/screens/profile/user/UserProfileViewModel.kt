@@ -6,9 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.near.domain.shared.models.NotificationOption
 import com.example.near.domain.user.models.User
 import com.example.near.domain.shared.usecase.GetUserByIdUseCase
 import com.example.near.domain.shared.usecase.GetUserUseCase
+import com.example.near.domain.user.usecase.GetNotificationOptionsUseCase
 import com.example.near.domain.user.usecase.auth.LogOutUseCase
 import com.example.near.domain.user.usecase.friends.AddFriendRequestUseCase
 import com.example.near.domain.user.usecase.friends.GetAllFriendsInfoUseCase
@@ -38,6 +40,7 @@ class ProfileViewModel @Inject constructor(
     private val addFriendRequestUseCase: AddFriendRequestUseCase,
     private val rejectFriendRequestUseCase: RejectFriendRequestUseCase,
     private val removeFriendUseCase: RemoveFriendUseCase,
+    private val getNotificationOptionsUseCase: GetNotificationOptionsUseCase
 ): ViewModel() {
     val avatarUrl: String = ""
     var user by mutableStateOf<User?>(null)
@@ -52,6 +55,9 @@ class ProfileViewModel @Inject constructor(
     var friendshipStatus by mutableStateOf(FriendshipStatus.NOT_FRIENDS)
         private set
 
+    var notificationOption by mutableStateOf<List<NotificationOption>>(emptyList())
+        private set
+
     private val _logoutEvent = MutableSharedFlow<Unit>()
     val logoutEvent = _logoutEvent.asSharedFlow()
 
@@ -61,6 +67,9 @@ class ProfileViewModel @Inject constructor(
             error = null
             try {
                 user = getUser()
+                getNotificationOptionsUseCase().onSuccess {
+                    notificationOption = it
+                }
                 Log.d("UserInfo", user.toString())
             } catch (e: Exception) {
                 error = e.message ?: "Failed to load user data"
