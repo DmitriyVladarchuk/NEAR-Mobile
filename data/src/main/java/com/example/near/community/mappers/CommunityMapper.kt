@@ -4,8 +4,10 @@ import com.example.near.community.models.CommunityUpdateParams
 import com.example.near.community.models.UpdateCommunityRequest
 import com.example.near.data.community.models.CommunityResponse
 import com.example.near.data.community.models.SignUpCommunityRequest
+import com.example.near.data.shared.models.EmergencyTypeResponse
 import com.example.near.domain.community.models.Community
 import com.example.near.domain.community.models.CommunitySignup
+import com.example.near.domain.shared.models.EmergencyType
 
 fun CommunityResponse.toDomain(): Community = Community(
     id = id,

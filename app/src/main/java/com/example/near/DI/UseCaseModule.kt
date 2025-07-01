@@ -2,6 +2,7 @@ package com.example.near.DI
 
 import com.example.near.common.storage.EmailVerificationStorage
 import com.example.near.common.usecase.GetCommunityByIdUseCase
+import com.example.near.community.usecase.GetEmergencyTypeUseCase
 import com.example.near.community.usecase.UpdateCommunityUseCase
 import com.example.near.domain.shared.storage.AuthDataStorage
 import com.example.near.domain.community.repository.CommunityRepository
@@ -120,6 +121,11 @@ object UseCaseModule {
     @Provides
     fun provideGetCommunityByIdUseCase(userRepository: UserRepository): GetCommunityByIdUseCase {
         return GetCommunityByIdUseCase(userRepository)
+    }
+
+    @Provides
+    fun provideGetEmergencyTypeUseCase(communityRepository: CommunityRepository): GetEmergencyTypeUseCase {
+        return GetEmergencyTypeUseCase(communityRepository)
     }
 
     @Provides

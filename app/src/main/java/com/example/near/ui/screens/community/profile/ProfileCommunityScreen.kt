@@ -20,19 +20,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,11 +46,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -59,13 +59,15 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
 import com.example.near.domain.community.models.Community
+import com.example.near.domain.shared.models.EmergencyType
+import com.example.near.ui.components.common.ItemEmergencyType
+import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.current_container
 import com.example.near.ui.theme.dark_content
 import com.example.near.ui.theme.light_container
-import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
 
 
 @Composable
@@ -112,17 +114,18 @@ fun ProfileCommunityScreen(
                 )
             }
             Spacer(modifier.height(8.dp))
-            Box(modifier = Modifier.fillMaxWidth().weight(0.2f)) {
+            Box(modifier = Modifier.fillMaxWidth().weight(0.15f)) {
                 SubscribersSection(
                     text = viewModel.community?.subscribers?.size.toString(),
                     modifier = Modifier.fillMaxSize()
                 )
             }
             Spacer(modifier.height(8.dp))
-            Box(modifier = Modifier.fillMaxWidth().weight(0.5f)) {
+            Box(modifier = Modifier.fillMaxWidth().weight(0.55f)) {
                 DescriptionCommunitySection(
                     community = viewModel.community,
                     subscriptionStatus = viewModel.subscriptionStatus,
+                    emergencyTypes = viewModel.emergencyTypes,
                     modifier = Modifier.fillMaxSize(),
                     onSubscriptionClick = {  },
                     onEditClick = { navController.navigate(Routes.EditCommunityProfile.route) }
@@ -189,14 +192,14 @@ fun ProfileCommunityScreen(
                 )
             }
             Spacer(modifier.height(8.dp))
-            Box(modifier = Modifier.fillMaxWidth().weight(0.2f)) {
+            Box(modifier = Modifier.fillMaxWidth().weight(0.1f)) {
                 SubscribersSection(
                     text = viewModel.community?.subscribers?.size.toString(),
                     modifier = Modifier.fillMaxSize()
                 )
             }
             Spacer(modifier.height(8.dp))
-            Box(modifier = Modifier.fillMaxWidth().weight(0.5f)) {
+            Box(modifier = Modifier.fillMaxWidth().weight(0.6f)) {
                 DescriptionCommunitySection(
                     community = viewModel.community,
                     subscriptionStatus = viewModel.subscriptionStatus,
@@ -222,7 +225,7 @@ private fun AvatarSection(avatarUrl: String, modifier: Modifier = Modifier) {
             contentDescription = "community avatar",
             modifier = Modifier
                 .fillMaxHeight(0.8f)
-                .aspectRatio(1f), // Сохраняем квадратную форму
+                .aspectRatio(1f),
             contentScale = ContentScale.FillBounds,
             placeholder = painterResource(R.drawable.near_community_small),
             error = painterResource(R.drawable.near_community_small)
@@ -254,7 +257,7 @@ private fun SubscribersSection(text: String, modifier: Modifier = Modifier) {
 
             Spacer(
                 Modifier
-                    .padding(horizontal = 8.dp)
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
                     .fillMaxWidth()
                     .height(1.dp)
                     .background(CustomTheme.colors.content)
@@ -266,9 +269,9 @@ private fun SubscribersSection(text: String, modifier: Modifier = Modifier) {
             ) {
                 Text(
                     text = text,
-                    style = AppTypography.titleMedium,
+                    style = AppTypography.titleLarge,
                     color = CustomTheme.colors.content,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
             }
         }
@@ -279,6 +282,7 @@ private fun SubscribersSection(text: String, modifier: Modifier = Modifier) {
 private fun DescriptionCommunitySection(
     community: Community?,
     subscriptionStatus: SubscriptionStatus,
+    emergencyTypes: List<EmergencyType> = emptyList(),
     modifier: Modifier = Modifier,
     communityId: Boolean = false,
     onSubscriptionClick: () -> Unit,
@@ -302,13 +306,29 @@ private fun DescriptionCommunitySection(
             InfoRow(Icons.Default.Info, "Id", community.id)
             Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
 
-//        InfoRow(Icons.Default.Description, stringResource(R.string.description), community.description.toString())
-//        Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
+            community.description?.let {
+                InfoRow(Icons.Default.Description, stringResource(R.string.description), community.description.toString())
+                Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
+            }
 
             InfoRow(Icons.Default.LocationOn, stringResource(R.string.emergency_monitoring_region), community.country.toString())
             Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
 
             InfoRow(Icons.Default.Notifications, stringResource(R.string.type_of_monitored_emergency), "")
+
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(emergencyTypes) { type ->
+                    ItemEmergencyType(
+                        emergencyType = type,
+                        modifier = Modifier
+                    )
+                }
+            }
             Spacer(Modifier.padding(horizontal = 8.dp).fillMaxWidth().height(1.dp).background(CustomTheme.colors.content))
 
             Spacer(Modifier.weight(1f))

@@ -20,6 +20,7 @@ import com.example.near.domain.community.repository.CommunityRepository
 import com.example.near.domain.shared.models.AuthTokens
 import com.example.near.domain.shared.models.EmergencyType
 import com.example.near.domain.shared.models.LoginCredentials
+import com.example.near.domain.shared.models.emergencyTypes
 import com.example.near.domain.shared.storage.AuthDataStorage
 import com.example.near.domain.user.models.UserTemplate
 
@@ -131,6 +132,20 @@ class CommunityRepositoryImpl(
                 } ?: Result.failure(Exception("Empty response body"))
             } else {
                 Result.failure(Exception("Failed to send token request"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getEmergencyType(): Result<List<EmergencyType>> {
+        return try {
+            val response = communityService.getEmergencyType("Bearer ${sessionManager.authToken!!.accessToken}")
+            if (response.isSuccessful) {
+                val emergencyTypes = response.body()?.map { it.toDomain() }
+                Result.success(emergencyTypes ?: emptyList())
+            } else {
+                Result.failure(Exception("Failed getEmergencyType request"))
             }
         } catch (e: Exception) {
             Result.failure(e)

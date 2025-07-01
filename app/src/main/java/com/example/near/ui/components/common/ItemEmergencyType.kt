@@ -20,11 +20,12 @@ import com.example.near.ui.theme.dark_content
 
 @Composable
 fun ItemEmergencyType(emergencyType: EmergencyType, modifier: Modifier = Modifier) {
+    val type = emergencyTypes.find { it.id == emergencyType.id }
     Box(
         modifier = modifier
             .padding(vertical = 8.dp)
             .background(
-                color = Color(emergencyType.color.toColorInt()),
+                color = Color(type!!.color.toColorInt()),
                 shape = RoundedCornerShape(12.dp)
             ),
         contentAlignment = Alignment.Center

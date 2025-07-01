@@ -6,6 +6,7 @@ import com.example.near.data.shared.models.RefreshTokenRequest
 import com.example.near.data.shared.models.TemplateCreateRequest
 import com.example.near.data.community.models.CommunityResponse
 import com.example.near.data.community.models.SignUpCommunityRequest
+import com.example.near.data.shared.models.EmergencyTypeResponse
 import com.example.near.data.shared.models.LoginRequest
 import com.example.near.data.shared.models.LoginResponse
 import com.example.near.data.shared.models.TemplateSendRequest
@@ -47,6 +48,11 @@ interface CommunityService {
         @Header("Authorization") token: String,
         @Body request: RefreshTokenRequest
     ): Response<LoginResponse>
+
+    @GET("NEAR/community/get-emergency-type")
+    suspend fun getEmergencyType(
+        @Header("Authorization") token: String,
+    ): Response<List<EmergencyTypeResponse>>
 
     @POST("")
     suspend fun sendFcmToken(

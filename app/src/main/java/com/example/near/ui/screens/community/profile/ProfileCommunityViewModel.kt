@@ -7,9 +7,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.common.usecase.GetCommunityByIdUseCase
+import com.example.near.community.usecase.GetEmergencyTypeUseCase
 import com.example.near.domain.community.models.Community
 import com.example.near.domain.shared.usecase.GetUserUseCase
 import com.example.near.domain.community.usecase.GetCommunityUseCase
+import com.example.near.domain.shared.models.EmergencyType
 import com.example.near.domain.user.usecase.UserCancelSubscribeUseCase
 import com.example.near.domain.user.usecase.UserSubscribeUseCase
 import com.example.near.domain.user.usecase.auth.LogOutUseCase
@@ -29,7 +31,8 @@ class ProfileCommunityViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val logOutUseCase: LogOutUseCase,
     private val subscribeUseCase: UserSubscribeUseCase,
-    private val cancelSubscribeUseCase: UserCancelSubscribeUseCase
+    private val cancelSubscribeUseCase: UserCancelSubscribeUseCase,
+    private val getEmergencyTypeUseCase: GetEmergencyTypeUseCase,
 ) : ViewModel() {
 
     val avatarUrl: String = ""
@@ -45,6 +48,8 @@ class ProfileCommunityViewModel @Inject constructor(
     var subscriptionStatus by mutableStateOf<SubscriptionStatus>(SubscriptionStatus.NOT_SUBSCRIBE)
         private set
 
+    var emergencyTypes: List<EmergencyType> by mutableStateOf(emptyList())
+        private set
 
     fun loadCommunity() {
         viewModelScope.launch {
@@ -52,6 +57,9 @@ class ProfileCommunityViewModel @Inject constructor(
             error = null
             try {
                 community = getCommunityUseCase()
+                getEmergencyTypeUseCase().onSuccess {
+                    emergencyTypes = it
+                }
                 Log.d("CommunityInfo", community.toString())
             } catch (e: Exception) {
                 error = e.message ?: "Failed to load community data"

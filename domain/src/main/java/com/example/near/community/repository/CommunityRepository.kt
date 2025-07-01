@@ -24,6 +24,8 @@ interface CommunityRepository {
 
     suspend fun refreshToken(): Result<Unit>
 
+    suspend fun getEmergencyType(): Result<List<EmergencyType>>
+
     suspend fun sendFcmToken(token: String): Result<Unit>
 
     // --- Template actions ---
