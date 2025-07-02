@@ -30,9 +30,10 @@ object AppModules {
     fun provideUserRepository(
         userService: UserService,
         sessionManager: SessionManager,
-        authDataStorage: AuthDataStorage
+        authDataStorage: AuthDataStorage,
+        emailVerificationStorage: EmailVerificationStorage
     ): UserRepository {
-        return UserRepositoryImpl(userService, sessionManager, authDataStorage)
+        return UserRepositoryImpl(userService, sessionManager, authDataStorage, emailVerificationStorage)
     }
 
     @Provides
@@ -40,9 +41,10 @@ object AppModules {
     fun provideCommunityRepository(
         communityService: CommunityService,
         sessionManager: SessionManager,
-        authDataStorage: AuthDataStorage
+        authDataStorage: AuthDataStorage,
+        emailVerificationStorage: EmailVerificationStorage
     ): CommunityRepository {
-        return CommunityRepositoryImpl(communityService, sessionManager, authDataStorage)
+        return CommunityRepositoryImpl(communityService, sessionManager, authDataStorage, emailVerificationStorage)
     }
 
     @Provides

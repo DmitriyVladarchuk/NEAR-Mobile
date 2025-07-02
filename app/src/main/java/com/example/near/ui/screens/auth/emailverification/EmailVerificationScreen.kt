@@ -39,9 +39,9 @@ fun EmailVerificationScreen(
 ) {
     val uiState by viewModel.uiState
 
-    LaunchedEffect(Unit) {
-        viewModel.checkVerification()
-    }
+//    LaunchedEffect(Unit) {
+//        viewModel.checkVerification()
+//    }
 
     LaunchedEffect(viewModel.navigationRoute) {
         if (uiState is UIState.Success) {

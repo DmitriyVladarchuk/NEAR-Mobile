@@ -40,10 +40,10 @@ class EmailVerificationViewModel @Inject constructor(
                         handleSuccessfulAuth(result.isCommunity)
                         refreshFCMToken()
                     }
-                    AuthCheckResult.EmailNotVerified -> {
+                    is AuthCheckResult.EmailNotVerified -> {
                         _uiState.value = UIState.Idle
                     }
-                    AuthCheckResult.NotAuthenticated -> {
+                    is AuthCheckResult.NotAuthenticated -> {
                         emailVerificationStorage.clearPendingEmail()
                         _uiState.value = UIState.Error("Session expired")
                     }

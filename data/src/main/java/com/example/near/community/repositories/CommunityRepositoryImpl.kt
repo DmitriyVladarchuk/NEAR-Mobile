@@ -2,6 +2,7 @@ package com.example.near.data.community.repositories
 
 import android.util.Log
 import com.example.near.common.models.EmailVerificationStatus
+import com.example.near.common.storage.EmailVerificationStorage
 import com.example.near.community.models.CommunityUpdateParams
 import com.example.near.data.api.CommunityService
 import com.example.near.data.community.mappers.toDomain
@@ -28,7 +29,8 @@ import com.example.near.domain.user.models.UserTemplate
 class CommunityRepositoryImpl(
     private val communityService: CommunityService,
     private val sessionManager: SessionManager,
-    private val authDataStorage: AuthDataStorage
+    private val authDataStorage: AuthDataStorage,
+    private val emailVerificationStorage: EmailVerificationStorage
 ) : CommunityRepository {
 
     override suspend fun signUp(
@@ -77,6 +79,7 @@ class CommunityRepositoryImpl(
                     Result.success(EmailVerificationStatus.Verified(it))
                 } ?: Result.failure(Exception("Empty response body"))
             } else if(response.code() == 403) {
+                emailVerificationStorage.savePendingEmail(credentials.email, credentials.password, true)
                 Result.success(EmailVerificationStatus.NotVerified)
             } else {
                 Result.failure(Exception("Login failed: ${response.code()}"))

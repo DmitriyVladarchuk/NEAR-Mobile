@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NEAR</string>
+
+    <string name="lets_get_you_started">ДАВАЙТЕ НАЧНЁМ</string>
+    <string name="create_an_account">Создать аккаунт</string>
+    <string name="login_to_your_account">Войти в аккаунт</string>
+    <string name="create_a_community">Создать сообщество</string>
+    <string name="login_in_as_a_community">Войти как сообщество</string>
+
+    <string name="no_data_available">Нет данных</string>
+
+    <string name="your_name">Ваше имя</string>
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="country_city_district">Страна, город, район</string>
+    <string name="birthday">Дата рождения</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="telegram_short_name">Имя в Telegram</string>
+
+    <string name="community_name">Название сообщества</string>
+    <string name="monitoring_region">Регион мониторинга</string>
+    <string name="emergency_type">Тип чрезвычайной ситуации</string>
+
+    <string name="notification_options">Настройки уведомлений (опционально)</string>
+    <string name="telegram">Telegram</string>
+    <string name="mobile_app">Push</string>
+
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="get_started">Начать</string>
+    <string name="continue_text">продолжить</string>
+
+    <string name="already_have_an_account">Уже есть аккаунт?</string>
+    <string name="new_user">Новый пользователь?</string>
+
+    <string name="login_here">Войти</string>
+    <string name="sign_up_here">Зарегистрироваться</string>
+
+    <string name="welcome_back">С возвращением</string>
+
+    <string name="show_password">Показать пароль</string>
+    <string name="hide_password">Скрыть пароль</string>
+
+    <string name="invalid_date">Некорректная дата</string>
+
+    <!-- Onboarding -->
+    <string name="title_text_onboarding">Когда случаются ЧС, NEAR рядом</string>
+    <string name="text_onboarding1">С нашим приложением вы сможете получать информацию о важных происшествиях в реальном времени.</string>
+    <string name="text_onboarding2">Личный кабинет позволит создавать и отправлять шаблоны уведомлений друзьям и родным. Вы сможете подписаться на сообщества для получения важных оповещений.</string>
+
+    <string name="respond">Реагировать</string>
+    <string name="notify">Оповещать</string>
+    <string name="alarm">Тревога</string>
+
+    <string name="start_using">Начать использование</string>
+
+    <!-- Screens -->
+    <string name="dashboard">Главная</string>
+    <string name="friends">Друзья</string>
+    <string name="subscriptions">Подписки</string>
+    <string name="my_profile">Мой профиль</string>
+    <string name="profile">Профиль</string>
+
+    <!-- Dashboard -->
+    <string name="create_a_new_notification_template">Создать новый шаблон уведомления.</string>
+    <string name="create_new_group">Создать новую группу.</string>
+    <string name="submitted_templates">Отправленные шаблоны</string>
+    <string name="sos">SOS</string>
+    <string name="sos_button_description">Нажмите, если вам срочно нужна помощь!</string>
+    <string name="my_templates">Мои шаблоны</string>
+
+    <string name="send_template_title">Отправить шаблон</string>
+    <string name="send_template_message">Отправить этот шаблон: %s?</string>
+    <string name="send">Отправить</string>
+
+    <string name="more_options">Дополнительно</string>
+    <string name="edit">Редактировать</string>
+    <string name="delete">Удалить</string>
+
+    <!-- Profile -->
+    <string name="location">Местоположение</string>
+    <string name="options_for_receiving_notifications">Способы получения уведомлений</string>
+    <string name="edit_profile">Редактировать профиль</string>
+    <string name="friendship_request">Запрос в друзья</string>
+
+    <string name="add_friend">Добавить друга</string>
+    <string name="request_sent">Запрос отправлен</string>
+    <string name="accept_request">Принять запрос</string>
+    <string name="remove_friend">Удалить друга</string>
+    <string name="reject">отклонить</string>
+
+    <string name="settings">Настройки</string>
+    <string name="log_out">Выйти</string>
+
+    <!-- Friends -->
+    <string name="wants_to_be_your_friend">Хочет добавить вас в друзья</string>
+    <string name="all_friends">Все друзья</string>
+    <string name="requests">Запросы</string>
+    <string name="search_users">Поиск пользователей</string>
+    <string name="search_users_placeholder">Введите имя или username</string>
+
+    <!-- Group -->
+    <string name="groups">Группы</string>
+    <string name="create_new_groups">Создать новую группу</string>
+    <string name="group_name">Название группы</string>
+    <string name="select_friends">Выбрать друзей</string>
+    <string name="create_group">Создать группу</string>
+    <string name="edit_group">Редактировать группу</string>
+    <string name="cancel">Отмена</string>
+    <string name="save_changes">Сохранить изменения</string>
+
+    <!-- Subscription -->
+    <string name="all_community">Все сообщества</string>
+    <string name="search_communities">Поиск сообществ</string>
+    <string name="search_communities_placeholder">Введите название сообщества…</string>
+
+    <!-- Settings -->
+    <string name="option">Настройка</string>
+    <string name="theme_mode">Тема</string>
+    <string name="light">Светлая</string>
+    <string name="dark">Тёмная</string>
+    <string name="system">Как в системе</string>
+    <string name="notification">Уведомления</string>
+
+    <string name="feedback">Обратная связь</string>
+    <string name="report_an_issue">Сообщить о проблеме</string>
+    <string name="report_description">Возникла проблема? Сообщите нам</string>
+
+    <string name="common">Общее</string>
+    <string name="about_app">О приложении</string>
+    <string name="about_description">Информация о приложении</string>
+    <string name="github">GitHub</string>
+    <string name="github_description">Исходный код приложения</string>
+
+    <!-- Community -->
+    <string name="community">Сообщество</string>
+    <string name="subscribers">Подписчики</string>
+    <string name="description">Описание</string>
+    <string name="emergency_monitoring_region">Регион мониторинга ЧС</string>
+    <string name="type_of_monitored_emergency">Тип отслеживаемых ЧС</string>
+    <string name="subscribe">Подписаться</string>
+    <string name="unsubscribe">Отписаться</string>
+
+    <!-- Template -->
+    <string name="template_info">Информация о шаблоне</string>
+    <string name="create_template">Создать шаблон</string>
+    <string name="update_template">Обновить шаблон</string>
+    <string name="template_name">Название шаблона</string>
+    <string name="message">Сообщение</string>
+    <string name="select_emergency_type">Выберите тип ЧС</string>
+    <string name="save_template">Сохранить шаблон</string>
+    <string name="send_template">Отправить шаблон</string>
+    <string name="members">участники</string>
+
+    <!-- Edit Screen -->
+    <string name="first_name">Имя</string>
+    <string name="last_name">Фамилия</string>
+    <string name="country">Страна</string>
+    <string name="city">Город</string>
+    <string name="district">Район</string>
+
+    <!-- Validate data -->
+    <string name="error_email">Введите email</string>
+    <string name="error_password">Введите пароль</string>
+    <string name="error_network">Ошибка сети, попробуйте снова</string>
+    <string name="error_auth">Неверный email или пароль</string>
+    <string name="error_name">Введите ваше имя</string>
+    <string name="error_invalid_email">Введите корректный email</string>
+    <string name="error_password_weak">Пароль должен быть не менее 8 символов</string>
+    <string name="error_country">Введите страну</string>
+    <string name="error_signup_failed">Ошибка регистрации, попробуйте снова</string>
+    <string name="error_region">Введите регион мониторинга</string>
+    <string name="error_emergency_type">Выберите хотя бы один тип ЧС</string>
+    <string name="select_emergency_types">Выберите типы ЧС</string>
+
+    <string name="email_verification_title">Подтвердите ваш email</string>
+    <string name="email_verification_message">Мы отправили ссылку для подтверждения на ваш email. Пожалуйста, проверьте почту и перейдите по ссылке.</string>
+    <string name="i_confirmed_email">Я подтвердил email</string>
+    <string name="retry">Попробовать снова</string>
+</resources>

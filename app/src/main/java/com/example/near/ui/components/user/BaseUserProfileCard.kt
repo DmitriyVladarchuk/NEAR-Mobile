@@ -29,6 +29,7 @@ import com.example.near.domain.user.models.User
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.NEARTheme
+import com.example.near.ui.theme.dark_content
 import com.example.near.ui.theme.light_container
 
 @Composable
@@ -99,7 +100,7 @@ private fun NotificationsOptions(notificationOption: List<NotificationOption>, m
                 Text(
                     text = item.title,
                     style = AppTypography.bodySmall,
-                    color = CustomTheme.colors.content,
+                    color = dark_content,
                     modifier = Modifier
                         .padding(8.dp)
                         .background(light_container, RoundedCornerShape(8.dp))

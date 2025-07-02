@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.R
+import com.example.near.common.models.EmailVerificationStatus
 import com.example.near.domain.shared.models.UIState
 import com.example.near.domain.user.usecase.auth.LoginUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,15 +43,16 @@ class LoginAccountViewModel @Inject constructor(
         _uiState.value = UIState.Idle
     }
 
-    fun login(navigateToDashboards: () -> Unit) {
+    fun login(navigateToDashboards: () -> Unit, navigateToEmailVerification: () -> Unit) {
         if (!validateData()) return
 
         _uiState.value = UIState.Loading
         viewModelScope.launch {
             loginUserUseCase(email, password)
-                .onSuccess {
+                .onSuccess { status ->
                     _uiState.value = UIState.Success
-                    navigateToDashboards()
+                    if (status is EmailVerificationStatus.NotVerified) navigateToEmailVerification()
+                    else navigateToDashboards()
                 }
                 .onFailure { handleError(it) }
         }

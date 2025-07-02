@@ -66,9 +66,11 @@ fun SignupCommunityScreen(
                 modifier = Modifier.padding(vertical = 40.dp)
             )
             AnimatedVisibility(
-                uiState is UIState.Error
+                visible = uiState is UIState.Error
             ) {
-                ErrorText(message = (uiState as UIState.Error).message)
+                (uiState as? UIState.Error)?.let { errorState ->
+                    ErrorText(message = errorState.message)
+                }
             }
             TextFieldCommunity(viewModel)
         }

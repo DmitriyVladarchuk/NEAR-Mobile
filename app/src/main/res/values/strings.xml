@@ -87,6 +87,8 @@
     <string name="remove_friend">Remove friend</string>
     <string name="reject">reject</string>
 
+    <string name="no_data_available">No data available</string>
+
     <string name="settings">Settings</string>
     <string name="log_out">Log Out</string>
 

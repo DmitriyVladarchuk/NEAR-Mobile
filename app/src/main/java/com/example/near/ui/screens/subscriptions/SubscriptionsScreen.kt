@@ -82,7 +82,7 @@ fun SubscriptionsScreen(
             is UIState.Idle -> Unit
             is UIState.Loading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
+                    CircularProgressIndicator(color = CustomTheme.colors.orange)
                 }
             }
 
@@ -93,11 +93,15 @@ fun SubscriptionsScreen(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text("Error: $error", color = Color.Red)
+                    Text(
+                        text = stringResource(R.string.no_data_available),
+                        color = CustomTheme.colors.content,
+                        style = AppTypography.labelLarge
+                    )
                     Spacer(modifier = Modifier.height(16.dp))
-                    Button(onClick = { viewModel.loadInitialData() }) {
-                        Text("Retry")
-                    }
+//                    Button(onClick = { viewModel.loadInitialData() }) {
+//                        Text("Retry")
+//                    }
                 }
             }
 

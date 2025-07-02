@@ -13,6 +13,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -32,20 +33,21 @@ fun SettingsScreen(navController: NavController, modifier: Modifier = Modifier, 
         modifier = modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+        val themeType by viewModel.currentTheme
         SecondaryHeaderTextInfo(
             text = stringResource(R.string.settings),
             modifier = Modifier.padding(vertical = 16.dp)
         ) {
             navController.popBackStack()
         }
-        OptionCard(viewModel)
+        OptionCard(viewModel.currentTheme.value, viewModel)
         Feedback(clickable = {  })
         Common(clickableAbout = {  }, clickableGitHub = {  })
     }
 }
 
 @Composable
-private fun OptionCard(viewModel: SettingsViewModel) {
+private fun OptionCard(themeType: ThemeType, viewModel: SettingsViewModel) {
     Column(
         modifier = Modifier
             .background(CustomTheme.colors.container_2, RoundedCornerShape(8.dp))
@@ -59,19 +61,19 @@ private fun OptionCard(viewModel: SettingsViewModel) {
 
         ThemeOption(
             text = stringResource(R.string.light),
-            isSelected = viewModel.currentTheme == ThemeType.LIGHT,
+            isSelected = themeType == ThemeType.LIGHT,
             onClick = { viewModel.setTheme(ThemeType.LIGHT) }
         )
 
         ThemeOption(
             text = stringResource(R.string.dark),
-            isSelected = viewModel.currentTheme == ThemeType.DARK,
+            isSelected = themeType == ThemeType.DARK,
             onClick = { viewModel.setTheme(ThemeType.DARK) }
         )
 
         ThemeOption(
             text = stringResource(R.string.system),
-            isSelected = viewModel.currentTheme == ThemeType.SYSTEM,
+            isSelected = themeType == ThemeType.SYSTEM,
             onClick = { viewModel.setTheme(ThemeType.SYSTEM) }
         )
     }

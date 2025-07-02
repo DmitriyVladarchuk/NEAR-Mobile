@@ -45,6 +45,7 @@ class NavigationViewModel @Inject constructor(
             try {
                 when (val result = loadUserUseCase()) {
                     is AuthCheckResult.Authenticated -> {
+                        refreshFCMToken()
                         handleSuccessfulAuth(result.isCommunity)
                         _uiState.value = UIState.Success
                     }
@@ -78,7 +79,10 @@ class NavigationViewModel @Inject constructor(
     }
 
     fun refreshFCMToken() = viewModelScope.launch {
-        fcmTokenManager.forceGenerateNewToken()
+        val token = fcmTokenManager.forceGenerateNewToken()
+        token?.let {
+            fcmTokenManager.handleNewToken(token)
+        }
     }
 
 }

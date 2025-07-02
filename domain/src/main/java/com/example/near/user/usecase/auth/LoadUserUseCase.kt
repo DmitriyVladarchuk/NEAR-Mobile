@@ -18,86 +18,53 @@ class LoadUserUseCase(
     private val loginUserUseCase: LoginUserUseCase,
     private val loginCommunityUseCase: LoginCommunityUseCase
 ) {
-    //    suspend operator fun invoke(): AuthCheckResult {
-//        return try {
-//            val credentials = authDataStorage.getCredentials()
-//
-//            if (credentials == null) {
-//                val pendingEmail = emailVerificationStorage.getPendingEmail()
-//                    ?: return AuthCheckResult.NotAuthenticated
-//
-//                if (pendingEmail.isCommunity) {
-//                    loginCommunityUseCase(
-//                        email = pendingEmail.email,
-//                        password = pendingEmail.password
-//                    ).fold(
-//                        onSuccess = {
-//                            AuthCheckResult.Authenticated(true)
-//                        },
-//                        onFailure = { AuthCheckResult.EmailNotVerified }
-//                    )
-//                } else {
-//                    loginUserUseCase(
-//                        email = pendingEmail.email,
-//                        password = pendingEmail.password
-//                    ).fold(
-//                        onSuccess = {
-//                            AuthCheckResult.Authenticated(false)
-//                        },
-//                        onFailure = { AuthCheckResult.EmailNotVerified }
-//                    )
-//                }
-//            } else {
-//                emailVerificationStorage.clearPendingEmail()
-//                val result = if (credentials.isCommunity) {
-//                    communityRepository.refreshToken()
-//                } else {
-//                    userRepository.refreshToken()
-//                }
-//
-//                result.fold(
-//                    onSuccess = { AuthCheckResult.Authenticated(credentials.isCommunity) },
-//                    onFailure = { AuthCheckResult.Error(it.toString()) }
-//                )
-//            }
-//
-//        } catch (e: Exception) {
-//            AuthCheckResult.Error(e.toString())
-//        }
-//    }
     suspend operator fun invoke(): AuthCheckResult {
         return try {
-            val pendingEmail = emailVerificationStorage.getPendingEmail()
+            val credentials = authDataStorage.getCredentials()
 
-            if (pendingEmail != null) {
-                // Пытаемся войти с сохраненными данными
-                val result = if (pendingEmail.isCommunity) {
+            if (credentials == null) {
+                val pendingEmail = emailVerificationStorage.getPendingEmail()
+                    ?: return AuthCheckResult.NotAuthenticated
+
+                if (pendingEmail.isCommunity) {
                     loginCommunityUseCase(
                         email = pendingEmail.email,
                         password = pendingEmail.password
+                    ).fold(
+                        onSuccess = { status ->
+                            if (status is EmailVerificationStatus.Verified) AuthCheckResult.Authenticated(true)
+                            else {
+                                AuthCheckResult.EmailNotVerified
+                            }
+                        },
+                        onFailure = { AuthCheckResult.NotAuthenticated }
                     )
                 } else {
                     loginUserUseCase(
                         email = pendingEmail.email,
                         password = pendingEmail.password
+                    ).fold(
+                        onSuccess = { status ->
+                            if (status is EmailVerificationStatus.Verified) AuthCheckResult.Authenticated(false)
+                            else AuthCheckResult.EmailNotVerified
+                        },
+                        onFailure = { AuthCheckResult.NotAuthenticated }
                     )
+                }
+            } else {
+                emailVerificationStorage.clearPendingEmail()
+                val result = if (credentials.isCommunity) {
+                    communityRepository.refreshToken()
+                } else {
+                    userRepository.refreshToken()
                 }
 
                 result.fold(
-                    onSuccess = {
-                        when (it) {
-                            is EmailVerificationStatus.Verified -> {
-                                AuthCheckResult.Authenticated(pendingEmail.isCommunity)
-                            }
-
-                            else -> AuthCheckResult.EmailNotVerified
-                        }
-                    },
-                    onFailure = { AuthCheckResult.Error(it.message ?: "Login failed") }
+                    onSuccess = { AuthCheckResult.Authenticated(credentials.isCommunity) },
+                    onFailure = { AuthCheckResult.Error(it.toString()) }
                 )
-            } else {
-                AuthCheckResult.NotAuthenticated
             }
+
         } catch (e: Exception) {
             AuthCheckResult.Error(e.toString())
         }

@@ -1,5 +1,6 @@
 package com.example.near.ui.screens.auth.signup.account
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -41,6 +42,7 @@ import com.example.near.ui.components.common.ErrorText
 import com.example.near.ui.components.headers.HeaderTextInfo
 import com.example.near.ui.components.auth.PasswordVisibilityToggle
 import com.example.near.ui.components.transformations.DateTransformation
+import com.example.near.ui.components.transformations.RussianPhoneOffsetMapping
 
 
 @Composable
@@ -64,9 +66,11 @@ fun SignupAccountScreen(
                 modifier = Modifier.padding(vertical = 40.dp)
             )
             AnimatedVisibility(
-                uiState is UIState.Error
+                visible = uiState is UIState.Error
             ) {
-                ErrorText(message = (uiState as UIState.Error).message)
+                (uiState as? UIState.Error)?.let { errorState ->
+                    ErrorText(message = errorState.message)
+                }
             }
             TextFieldAccount(viewModel)
             NotificationOptions(viewModel)
@@ -141,7 +145,8 @@ private fun TextFieldAccount(viewModel: SignupAccountViewModel) {
             value = viewModel.birthday,
             onValueChange = { newText ->
                 val filtered = newText.filter { it.isDigit() }.take(8)
-                viewModel.birthday = newText
+                Log.d("aaaaa", newText)
+                viewModel.birthday = filtered
             },
             labelRes = R.string.birthday,
             placeholderRes = R.string.birthday,

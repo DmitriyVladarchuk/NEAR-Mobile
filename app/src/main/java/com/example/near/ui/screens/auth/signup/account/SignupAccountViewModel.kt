@@ -58,7 +58,7 @@ class SignupAccountViewModel @Inject constructor(
             phoneNumber = phone,
             telegramShortName = telegramShortName,
             location = country,
-            birthday = birthday,
+            birthday = formatForServer(birthday),
             selectedOptions = selectedNotifications.value.toList()
         )
 
@@ -75,6 +75,7 @@ class SignupAccountViewModel @Inject constructor(
     }
 
     private fun validateInput(): Boolean {
+        _uiState.value = UIState.Idle
         return when {
             nameUser.isBlank() -> showError(R.string.error_name)
             email.isBlank() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() ->
@@ -82,6 +83,7 @@ class SignupAccountViewModel @Inject constructor(
             password.isBlank() || password.length < 7 ->
                 showError(R.string.error_password_weak)
             country.isBlank() -> showError(R.string.error_country)
+            //phone.length != 11 -> showError(R.string.error_invalid_phone)
             else -> true
         }
     }
@@ -98,5 +100,21 @@ class SignupAccountViewModel @Inject constructor(
                 else -> context.getString(R.string.error_signup_failed)
             }
         )
+    }
+
+    fun formatForServer(date: String): String {
+        return if (date.length == 8) {
+            "${date.substring(0, 4)}-${date.substring(4, 6)}-${date.substring(6, 8)}"
+        } else {
+            date
+        }
+    }
+
+    fun formatPhoneForServer(phone: String): String {
+        return if (phone.length == 11) {
+            "+7 (${phone.substring(1, 4)}) ${phone.substring(4, 7)}-${phone.substring(7, 9)}-${phone.substring(9, 11)}"
+        } else {
+            phone
+        }
     }
 }
