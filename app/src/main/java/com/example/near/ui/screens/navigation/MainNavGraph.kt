@@ -33,6 +33,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.near.R
 import com.example.near.domain.shared.models.UIState
+import com.example.near.ui.screens.auth.emailverification.EmailVerificationScreen
 import com.example.near.ui.screens.auth.login.account.LoginAccountScreen
 import com.example.near.ui.screens.auth.login.community.LoginCommunityScreen
 import com.example.near.ui.screens.auth.signup.account.SignupAccountScreen
@@ -137,7 +138,7 @@ fun MainNavGraph(
             }
 
             composable(Routes.EmailVerification.route) {
-                Text("почту подтверди")
+                EmailVerificationScreen(navController = navController)
             }
 
             composable(Routes.Onboarding.route) {

@@ -173,4 +173,10 @@
     <string name="select_emergency_types">Select emergency types</string>
 
 
+    <string name="email_verification_title">Confirm your email</string>
+    <string name="email_verification_message">We sent a confirmation link to your email. Please check your inbox and click the link to verify your email address.</string>
+    <string name="i_confirmed_email">I confirmed my email</string>
+    <string name="retry">Try again</string>
+
+
 </resources>
