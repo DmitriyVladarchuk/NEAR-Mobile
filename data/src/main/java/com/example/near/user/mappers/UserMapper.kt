@@ -1,17 +1,19 @@
 package com.example.near.data.user.mappers
 
-import com.example.near.data.user.models.AllFriendsInfoResponse
-import com.example.near.data.shared.models.EmergencyTypeResponse
-import com.example.near.data.shared.models.LoginRequest
-import com.example.near.data.shared.models.LoginResponse
-import com.example.near.data.shared.models.NotificationOptionResponse
-import com.example.near.data.shared.models.SignupNotificationOptionRequest
-import com.example.near.data.user.models.UserFriendResponse
-import com.example.near.data.user.models.UserGroupResponse
-import com.example.near.data.user.models.UserResponse
-import com.example.near.data.user.models.UserSignUpRequest
-import com.example.near.data.user.models.UserSubscriptionResponse
-import com.example.near.data.user.models.UserTemplateResponse
+import com.example.near.core.network.model.user.AllFriendsInfoResponse
+import com.example.near.core.network.model.EmergencyTypeResponse
+import com.example.near.core.network.model.LoginRequest
+import com.example.near.core.network.model.LoginResponse
+import com.example.near.core.network.model.NotificationOptionResponse
+import com.example.near.core.network.model.SignupNotificationOptionRequest
+import com.example.near.core.network.model.user.CommunitiesListResponse
+import com.example.near.core.network.model.user.UserFriendResponse
+import com.example.near.core.network.model.user.UserGroupResponse
+import com.example.near.core.network.model.user.UserListResponse
+import com.example.near.core.network.model.user.UserResponse
+import com.example.near.core.network.model.user.UserSignUpRequest
+import com.example.near.core.network.model.user.UserSubscriptionResponse
+import com.example.near.core.network.model.user.UserTemplateResponse
 import com.example.near.domain.shared.models.AuthTokens
 import com.example.near.domain.user.models.AllFriendsInfo
 import com.example.near.domain.shared.models.EmergencyType
@@ -25,9 +27,7 @@ import com.example.near.domain.user.models.UserSignUp
 import com.example.near.domain.user.models.UserSubscription
 import com.example.near.domain.user.models.UserTemplate
 import com.example.near.user.models.CommunitiesList
-import com.example.near.user.models.CommunitiesListResponse
 import com.example.near.user.models.UserList
-import com.example.near.user.models.UserListResponse
 
 fun UserSignUp.toRequest(): UserSignUpRequest = UserSignUpRequest(
     userName = userName,

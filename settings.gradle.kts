@@ -23,3 +23,4 @@ rootProject.name = "NEAR"
 include(":app")
 include(":data")
 include(":domain")
+include(":core:network")

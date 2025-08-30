@@ -2,8 +2,8 @@ package com.example.near.DI
 
 import android.content.Context
 import com.example.near.common.storage.EmailVerificationStorage
-import com.example.near.data.api.CommunityService
-import com.example.near.data.api.UserService
+import com.example.near.core.network.service.CommunityService
+import com.example.near.core.network.service.UserService
 import com.example.near.data.storage.AuthDataStorageImpl
 import com.example.near.data.storage.SessionManager
 import com.example.near.data.storage.SettingsDataStorageImpl
