@@ -1,4 +1,4 @@
-package com.example.near.domain.shared.models
+package com.example.near.feature.auth.domain.model
 
 data class SignupNotificationOption(
     val id: Int,

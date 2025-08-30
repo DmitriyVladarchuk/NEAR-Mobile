@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.near.domain.user.models.AllFriendsInfo
 import com.example.near.domain.user.models.UserFriend
 import com.example.near.domain.user.models.UserGroup
-import com.example.near.domain.user.models.UserTemplate
+import com.example.near.user.models.UserTemplate
 import com.example.near.domain.shared.usecase.GetUserUseCase
 import com.example.near.domain.user.usecase.friends.GetAllFriendsInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

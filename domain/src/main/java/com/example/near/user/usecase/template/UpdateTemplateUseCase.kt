@@ -1,6 +1,6 @@
 package com.example.near.domain.shared.usecase.template
 
-import com.example.near.domain.shared.models.EmergencyType
+import com.example.near.common.models.EmergencyType
 import com.example.near.domain.user.repository.UserRepository
 
 class UpdateTemplateUseCase(

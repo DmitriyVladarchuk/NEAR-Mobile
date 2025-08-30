@@ -1,18 +1,15 @@
-package com.example.near.domain.user.usecase.auth
+package com.example.near.feature.auth.domain.usecase
 
-import com.example.near.common.models.AuthCheckResult
-import com.example.near.common.models.EmailVerificationStatus
+import com.example.near.common.storage.AuthDataStorage
 import com.example.near.common.storage.EmailVerificationStorage
-import com.example.near.domain.community.repository.CommunityRepository
-import com.example.near.domain.community.usecase.LoginCommunityUseCase
-import com.example.near.domain.shared.models.LoginCredentials
-import com.example.near.domain.shared.storage.AuthDataStorage
-import com.example.near.domain.user.repository.UserRepository
-
+import com.example.near.feature.auth.domain.model.AuthCheckResult
+import com.example.near.feature.auth.domain.model.EmailVerificationStatus
+import com.example.near.feature.auth.domain.repository.CommunityAuthRepository
+import com.example.near.feature.auth.domain.repository.UserAuthRepository
 
 class LoadUserUseCase(
-    private val userRepository: UserRepository,
-    private val communityRepository: CommunityRepository,
+    private val userRepository: UserAuthRepository,
+    private val communityRepository: CommunityAuthRepository,
     private val authDataStorage: AuthDataStorage,
     private val emailVerificationStorage: EmailVerificationStorage,
     private val loginUserUseCase: LoginUserUseCase,

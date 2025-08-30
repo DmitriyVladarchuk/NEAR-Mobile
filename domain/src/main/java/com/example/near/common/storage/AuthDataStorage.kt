@@ -1,6 +1,7 @@
-package com.example.near.domain.shared.storage
+package com.example.near.common.storage
 
-import com.example.near.domain.shared.models.AuthCredentials
+import com.example.near.common.models.AuthCredentials
+
 
 interface AuthDataStorage {
     fun getCredentials(): AuthCredentials?

@@ -1,6 +1,4 @@
-package com.example.near.domain.user.models
-
-import com.example.near.domain.shared.models.SignupNotificationOption
+package com.example.near.feature.auth.domain.model
 
 data class UserSignUp(
     val userName: String,

@@ -36,6 +36,7 @@ dependencies {
 
     implementation(project(":domain"))
     implementation(project(":core:network"))
+    //implementation(project(":feature:auth"))
 
     implementation(libs.retrofit)
     implementation(libs.converter.gson)

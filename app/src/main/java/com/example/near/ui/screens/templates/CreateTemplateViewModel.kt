@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.domain.shared.models.EmergencyType
-import com.example.near.domain.user.models.UserTemplate
+import com.example.near.common.models.EmergencyType
+import com.example.near.user.models.UserTemplate
 import com.example.near.domain.community.repository.CommunityRepository
 import com.example.near.domain.shared.usecase.GetUserUseCase
 import com.example.near.domain.community.usecase.GetCommunityUseCase

@@ -1,13 +1,12 @@
-package com.example.near.domain.user.usecase.auth
+package com.example.near.feature.auth.domain.usecase
 
-import com.example.near.common.models.EmailVerificationStatus
 import com.example.near.common.storage.EmailVerificationStorage
-import com.example.near.domain.shared.models.SignupNotificationOption
-import com.example.near.domain.user.models.UserSignUp
-import com.example.near.domain.user.repository.UserRepository
+import com.example.near.feature.auth.domain.model.EmailVerificationStatus
+import com.example.near.feature.auth.domain.model.UserSignUp
+import com.example.near.feature.auth.domain.repository.UserAuthRepository
 
 class SignUpUserUseCase(
-    private val userRepository: UserRepository,
+    private val userRepository: UserAuthRepository,
     private val emailVerificationStorage: EmailVerificationStorage,
 ) {
     suspend operator fun invoke(userSignUp: UserSignUp): Result<EmailVerificationStatus> {

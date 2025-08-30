@@ -1,6 +1,6 @@
 package com.example.near.core.network.model.commmunity
 
-import com.example.near.domain.shared.models.EmergencyType
+import com.example.near.common.models.EmergencyType
 import com.google.gson.annotations.SerializedName
 
 data class SignUpCommunityRequest(

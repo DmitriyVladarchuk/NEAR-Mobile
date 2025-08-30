@@ -1,6 +1,6 @@
-package com.example.near.domain.user.models
+package com.example.near.user.models
 
-import com.example.near.domain.shared.models.EmergencyType
+import com.example.near.common.models.EmergencyType
 
 data class UserTemplate(
     val id: String,

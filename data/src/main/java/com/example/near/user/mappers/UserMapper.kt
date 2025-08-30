@@ -1,61 +1,25 @@
 package com.example.near.data.user.mappers
 
-import com.example.near.core.network.model.user.AllFriendsInfoResponse
+import com.example.near.common.models.EmergencyType
 import com.example.near.core.network.model.EmergencyTypeResponse
-import com.example.near.core.network.model.LoginRequest
-import com.example.near.core.network.model.LoginResponse
 import com.example.near.core.network.model.NotificationOptionResponse
-import com.example.near.core.network.model.SignupNotificationOptionRequest
+import com.example.near.core.network.model.user.AllFriendsInfoResponse
 import com.example.near.core.network.model.user.CommunitiesListResponse
 import com.example.near.core.network.model.user.UserFriendResponse
 import com.example.near.core.network.model.user.UserGroupResponse
 import com.example.near.core.network.model.user.UserListResponse
 import com.example.near.core.network.model.user.UserResponse
-import com.example.near.core.network.model.user.UserSignUpRequest
 import com.example.near.core.network.model.user.UserSubscriptionResponse
 import com.example.near.core.network.model.user.UserTemplateResponse
-import com.example.near.domain.shared.models.AuthTokens
-import com.example.near.domain.user.models.AllFriendsInfo
-import com.example.near.domain.shared.models.EmergencyType
-import com.example.near.domain.shared.models.LoginCredentials
 import com.example.near.domain.shared.models.NotificationOption
-import com.example.near.domain.shared.models.SignupNotificationOption
+import com.example.near.domain.user.models.AllFriendsInfo
 import com.example.near.domain.user.models.User
 import com.example.near.domain.user.models.UserFriend
 import com.example.near.domain.user.models.UserGroup
-import com.example.near.domain.user.models.UserSignUp
 import com.example.near.domain.user.models.UserSubscription
-import com.example.near.domain.user.models.UserTemplate
+import com.example.near.user.models.UserTemplate
 import com.example.near.user.models.CommunitiesList
 import com.example.near.user.models.UserList
-
-fun UserSignUp.toRequest(): UserSignUpRequest = UserSignUpRequest(
-    userName = userName,
-    email = email,
-    password = password,
-    phoneNumber = phoneNumber,
-    telegramShortName = telegramShortName,
-    location = location,
-    birthday = birthday,
-    selectedOptions = selectedOptions.map { it.toSignupRequest() }
-)
-
-fun SignupNotificationOption.toSignupRequest(): SignupNotificationOptionRequest =
-    SignupNotificationOptionRequest(
-        id = id,
-        notificationOption = notificationOption
-    )
-
-fun LoginCredentials.toRequest(): LoginRequest = LoginRequest(
-    email = email,
-    password = password
-)
-
-fun LoginResponse.toDomain(): AuthTokens = AuthTokens(
-    accessToken = accessToken,
-    refreshToken = refreshToken,
-    uuid = uuid
-)
 
 fun AllFriendsInfoResponse.toDomain(): AllFriendsInfo = AllFriendsInfo(
     friends = friends,

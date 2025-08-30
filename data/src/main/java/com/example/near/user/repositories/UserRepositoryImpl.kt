@@ -1,30 +1,23 @@
 package com.example.near.data.user.repositories
 
 import android.util.Log
-import com.example.near.common.models.EmailVerificationStatus
-import com.example.near.common.storage.EmailVerificationStorage
-import com.example.near.core.network.service.UserService
-import com.example.near.data.community.mappers.toDomain
-import com.example.near.core.network.model.commmunity.CommunityActionRequest
+import com.example.near.common.models.EmergencyType
 import com.example.near.core.network.model.FcmTokenRequest
-import com.example.near.core.network.model.RefreshTokenRequest
 import com.example.near.core.network.model.TemplateActionRequest
 import com.example.near.core.network.model.TemplateCreateRequest
-import com.example.near.data.storage.SessionManager
-import com.example.near.data.user.mappers.toDomain
-import com.example.near.data.user.mappers.toRequest
+import com.example.near.core.network.model.commmunity.CommunityActionRequest
 import com.example.near.core.network.model.user.FriendRequest
 import com.example.near.core.network.model.user.GroupActionRequest
 import com.example.near.core.network.model.user.GroupCreateRequest
 import com.example.near.core.network.model.user.UserUpdateRequest
+import com.example.near.core.network.service.UserService
+import com.example.near.data.community.mappers.toDomain
+import com.example.near.data.storage.SessionManager
+import com.example.near.data.user.mappers.toDomain
 import com.example.near.domain.community.models.Community
-import com.example.near.domain.shared.models.EmergencyType
-import com.example.near.domain.shared.models.LoginCredentials
 import com.example.near.domain.shared.models.NotificationOption
-import com.example.near.domain.shared.storage.AuthDataStorage
 import com.example.near.domain.user.models.AllFriendsInfo
 import com.example.near.domain.user.models.User
-import com.example.near.domain.user.models.UserSignUp
 import com.example.near.domain.user.repository.UserRepository
 import com.example.near.user.models.CommunitiesList
 import com.example.near.user.models.UserList
@@ -32,46 +25,7 @@ import com.example.near.user.models.UserList
 class UserRepositoryImpl(
     private val userService: UserService,
     private val sessionManager: SessionManager,
-    private val authDataStorage: AuthDataStorage,
-    private val emailVerificationStorage: EmailVerificationStorage
 ) : UserRepository {
-
-    override suspend fun signUp(
-        userSignUp: UserSignUp
-    ): Result<EmailVerificationStatus> {
-        return try {
-            val request = userSignUp.toRequest()
-            val response = userService.signUp(request)
-
-            if (response.isSuccessful) {
-                Result.success(EmailVerificationStatus.NotVerified)
-            } else {
-                val errorBody = response.errorBody()?.string() ?: ""
-                Result.failure(Exception("SignUp error ${response.code()}: $errorBody"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun login(credentials: LoginCredentials): Result<EmailVerificationStatus> {
-        return try {
-            val response = userService.login(credentials.toRequest())
-            if (response.isSuccessful) {
-                response.body()?.toDomain()?.let {
-                    sessionManager.saveAuthToken(it)
-                    Result.success(EmailVerificationStatus.Verified(it))
-                } ?: Result.failure(Exception("Empty response body"))
-            } else if(response.code() == 403) {
-                emailVerificationStorage.savePendingEmail(credentials.email, credentials.password, false)
-                Result.success(EmailVerificationStatus.NotVerified)
-            } else {
-                Result.failure(Exception("Login failed: ${response.code()}"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
 
     override suspend fun getNotificationOptions(): Result<List<NotificationOption>> {
         return try {
@@ -85,27 +39,6 @@ class UserRepositoryImpl(
             } else {
                 val errorBody = response.errorBody()?.string() ?: ""
                 Result.failure(Exception("Error ${response.code()}: $errorBody"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun refreshToken(): Result<Unit> {
-        return try {
-            val tokens = authDataStorage.getCredentials()
-            val response = userService.refreshToken(
-                token = "Bearer ${tokens?.accessToken}",
-                request = RefreshTokenRequest(tokens?.refreshToken ?: "")
-            )
-
-            if (response.isSuccessful) {
-                response.body()?.toDomain()?.let {
-                    sessionManager.saveAuthToken(it)
-                    Result.success(Unit)
-                } ?: Result.failure(Exception("Empty response body"))
-            } else {
-                Result.failure(Exception("Refresh failed: ${response.code()}"))
             }
         } catch (e: Exception) {
             Result.failure(e)

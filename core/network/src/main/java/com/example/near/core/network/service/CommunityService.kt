@@ -10,7 +10,7 @@ import com.example.near.core.network.model.EmergencyTypeResponse
 import com.example.near.core.network.model.LoginRequest
 import com.example.near.core.network.model.LoginResponse
 import com.example.near.core.network.model.TemplateSendRequest
-import com.example.near.domain.user.models.UserTemplate
+import com.example.near.user.models.UserTemplate
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

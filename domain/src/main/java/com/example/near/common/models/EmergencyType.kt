@@ -1,4 +1,4 @@
-package com.example.near.domain.shared.models
+package com.example.near.common.models
 
 data class EmergencyType(
     val id: Int,

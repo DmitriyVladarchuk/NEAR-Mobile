@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.graphics.toColorInt
-import com.example.near.domain.shared.models.EmergencyType
-import com.example.near.domain.shared.models.emergencyTypes
+import com.example.near.common.models.EmergencyType
+import com.example.near.common.models.emergencyTypes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.NEARTheme

@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
-import com.example.near.domain.user.models.UserTemplate
+import com.example.near.user.models.UserTemplate
 import com.example.near.ui.components.common.ItemTemplate
 import com.example.near.ui.components.common.SubmittedTemplateButton
 import com.example.near.ui.components.decorations.dashedBorder

@@ -9,10 +9,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.R
-import com.example.near.domain.shared.models.SignupNotificationOption
+import com.example.near.feature.auth.domain.model.SignupNotificationOption
 import com.example.near.domain.shared.models.UIState
-import com.example.near.domain.user.models.UserSignUp
-import com.example.near.domain.user.usecase.auth.SignUpUserUseCase
+import com.example.near.feature.auth.domain.model.UserSignUp
+import com.example.near.feature.auth.domain.usecase.SignUpUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch

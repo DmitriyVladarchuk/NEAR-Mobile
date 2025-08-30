@@ -4,10 +4,10 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.common.models.AuthCheckResult
+import com.example.near.feature.auth.domain.model.AuthCheckResult
 import com.example.near.common.storage.EmailVerificationStorage
 import com.example.near.domain.shared.models.UIState
-import com.example.near.domain.user.usecase.auth.LoadUserUseCase
+import com.example.near.feature.auth.domain.usecase.LoadUserUseCase
 import com.example.near.service.FcmTokenManager
 import com.example.near.ui.screens.navigation.Routes
 import dagger.hilt.android.lifecycle.HiltViewModel

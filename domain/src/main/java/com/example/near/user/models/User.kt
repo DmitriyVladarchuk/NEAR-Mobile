@@ -1,5 +1,7 @@
 package com.example.near.domain.user.models
 
+import com.example.near.user.models.UserTemplate
+
 data class User(
     val id: String,
     val firstName: String,

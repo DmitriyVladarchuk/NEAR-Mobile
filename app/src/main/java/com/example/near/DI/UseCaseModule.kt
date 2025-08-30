@@ -4,7 +4,7 @@ import com.example.near.common.storage.EmailVerificationStorage
 import com.example.near.common.usecase.GetCommunityByIdUseCase
 import com.example.near.community.usecase.GetEmergencyTypeUseCase
 import com.example.near.community.usecase.UpdateCommunityUseCase
-import com.example.near.domain.shared.storage.AuthDataStorage
+import com.example.near.common.storage.AuthDataStorage
 import com.example.near.domain.community.repository.CommunityRepository
 import com.example.near.domain.user.repository.UserRepository
 import com.example.near.domain.user.usecase.friends.AddFriendRequestUseCase
@@ -12,21 +12,21 @@ import com.example.near.domain.shared.usecase.GetThemeUseCase
 import com.example.near.domain.shared.usecase.GetUserByIdUseCase
 import com.example.near.domain.shared.usecase.GetUserUseCase
 import com.example.near.domain.user.usecase.auth.LogOutUseCase
-import com.example.near.domain.user.usecase.auth.LoginUserUseCase
+import com.example.near.feature.auth.domain.usecase.LoginUserUseCase
 import com.example.near.domain.user.usecase.friends.RejectFriendRequestUseCase
 import com.example.near.domain.user.usecase.friends.RemoveFriendUseCase
 import com.example.near.domain.user.usecase.friends.SendFriendRequestUseCase
 import com.example.near.domain.shared.usecase.SetThemeUseCase
 import com.example.near.domain.community.usecase.GetCommunityUseCase
-import com.example.near.domain.community.usecase.LoginCommunityUseCase
-import com.example.near.domain.community.usecase.SignUpCommunityUseCase
+import com.example.near.feature.auth.domain.usecase.LoginCommunityUseCase
+import com.example.near.feature.auth.domain.usecase.SignUpCommunityUseCase
 import com.example.near.domain.shared.storage.SettingsDataStorage
 import com.example.near.domain.user.usecase.GetNotificationOptionsUseCase
 import com.example.near.domain.user.usecase.UpdateUserUseCase
 import com.example.near.domain.user.usecase.UserCancelSubscribeUseCase
 import com.example.near.domain.user.usecase.UserSubscribeUseCase
-import com.example.near.domain.user.usecase.auth.LoadUserUseCase
-import com.example.near.domain.user.usecase.auth.SignUpUserUseCase
+import com.example.near.feature.auth.domain.usecase.LoadUserUseCase
+import com.example.near.feature.auth.domain.usecase.SignUpUserUseCase
 import com.example.near.domain.user.usecase.friends.GetAllFriendsInfoUseCase
 import com.example.near.domain.user.usecase.group.CreateGroupUseCase
 import com.example.near.domain.user.usecase.group.DeleteGroupUseCase
@@ -34,6 +34,8 @@ import com.example.near.domain.user.usecase.group.UpdateGroupUseCase
 import com.example.near.domain.shared.usecase.template.CreateTemplateUseCase
 import com.example.near.domain.shared.usecase.template.DeleteTemplateUseCase
 import com.example.near.domain.shared.usecase.template.UpdateTemplateUseCase
+import com.example.near.feature.auth.domain.repository.CommunityAuthRepository
+import com.example.near.feature.auth.domain.repository.UserAuthRepository
 import com.example.near.user.usecase.GetAllCommunitiesUseCase
 import com.example.near.user.usecase.SearchCommunityUseCase
 import com.example.near.user.usecase.SearchUsersUseCase
@@ -47,32 +49,32 @@ import dagger.hilt.components.SingletonComponent
 object UseCaseModule {
     @Provides
     fun provideUserLoginUseCase(
-        userRepository: UserRepository,
+        userAuthRepository: UserAuthRepository,
         authDataStorage: AuthDataStorage,
     ): LoginUserUseCase {
-        return LoginUserUseCase(userRepository, authDataStorage)
+        return LoginUserUseCase(userAuthRepository, authDataStorage)
     }
 
     @Provides
     fun provideCommunityLoginUseCase(
-        communityRepository: CommunityRepository,
+        communityAuthRepository: CommunityAuthRepository,
         authDataStorage: AuthDataStorage,
     ): LoginCommunityUseCase {
-        return LoginCommunityUseCase(communityRepository, authDataStorage)
+        return LoginCommunityUseCase(communityAuthRepository, authDataStorage)
     }
 
     @Provides
     fun provideLoadUserUseCase(
-        userRepository: UserRepository,
-        communityRepository: CommunityRepository,
+        userAuthRepository: UserAuthRepository,
+        communityAuthRepository: CommunityAuthRepository,
         authDataStorage: AuthDataStorage,
         emailVerificationStorage: EmailVerificationStorage,
         loginUserUseCase: LoginUserUseCase,
         loginCommunityUseCase: LoginCommunityUseCase
     ): LoadUserUseCase {
         return LoadUserUseCase(
-            userRepository = userRepository,
-            communityRepository = communityRepository,
+            userRepository = userAuthRepository,
+            communityRepository = communityAuthRepository,
             authDataStorage = authDataStorage,
             emailVerificationStorage = emailVerificationStorage,
             loginUserUseCase = loginUserUseCase,
@@ -82,18 +84,18 @@ object UseCaseModule {
 
     @Provides
     fun provideUserSignUpUseCase(
-        userRepository: UserRepository,
+        userAuthRepository: UserAuthRepository,
         emailVerificationStorage: EmailVerificationStorage
     ): SignUpUserUseCase {
-        return SignUpUserUseCase(userRepository, emailVerificationStorage)
+        return SignUpUserUseCase(userAuthRepository, emailVerificationStorage)
     }
 
     @Provides
     fun provideCommunitySignUpUseCase(
-        communityRepository: CommunityRepository,
+        communityAuthRepository: CommunityAuthRepository,
         emailVerificationStorage: EmailVerificationStorage
     ): SignUpCommunityUseCase {
-        return SignUpCommunityUseCase(communityRepository, emailVerificationStorage)
+        return SignUpCommunityUseCase(communityAuthRepository, emailVerificationStorage)
     }
 
     @Provides

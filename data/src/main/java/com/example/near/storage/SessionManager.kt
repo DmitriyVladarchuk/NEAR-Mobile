@@ -1,6 +1,6 @@
 package com.example.near.data.storage
 
-import com.example.near.domain.shared.models.AuthTokens
+import com.example.near.common.models.AuthTokens
 
 class SessionManager {
     private var _authToken: AuthTokens? = null

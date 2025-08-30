@@ -45,7 +45,7 @@ import coil.compose.AsyncImage
 import com.example.near.R
 import com.example.near.domain.user.models.User
 import com.example.near.domain.user.models.UserGroup
-import com.example.near.domain.user.models.UserTemplate
+import com.example.near.user.models.UserTemplate
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.dark_content
