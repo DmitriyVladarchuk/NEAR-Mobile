@@ -31,8 +31,8 @@ import com.example.near.core.network.model.EmergencyType
 import com.example.near.core.network.model.emergencyTypes
 import com.example.near.domain.shared.models.UIState
 import com.example.near.ui.screens.navigation.Routes
-import com.example.near.ui.theme.AppTypography
-import com.example.near.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.AppTypography
+import com.example.near.core.ui.theme.CustomTheme
 import com.example.near.ui.components.common.AppTextField
 import com.example.near.ui.components.auth.AuthScreenButtons
 import com.example.near.ui.components.common.ErrorText

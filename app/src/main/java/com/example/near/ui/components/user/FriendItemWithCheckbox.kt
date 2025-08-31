@@ -18,9 +18,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.near.R
 import com.example.near.feature.user.domain.models.UserFriend
-import com.example.near.ui.theme.AppTypography
-import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.theme.NEARTheme
+import com.example.near.core.ui.theme.AppTypography
+import com.example.near.core.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.NEARTheme
 
 @Composable
 fun FriendItemWithCheckbox(

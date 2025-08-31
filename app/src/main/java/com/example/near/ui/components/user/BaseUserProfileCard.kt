@@ -25,11 +25,11 @@ import androidx.compose.ui.unit.dp
 import com.example.near.R
 import com.example.near.domain.shared.models.NotificationOption
 import com.example.near.feature.user.domain.models.User
-import com.example.near.ui.theme.AppTypography
-import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.theme.NEARTheme
-import com.example.near.ui.theme.dark_content
-import com.example.near.ui.theme.light_container
+import com.example.near.core.ui.theme.AppTypography
+import com.example.near.core.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.NEARTheme
+import com.example.near.core.ui.theme.dark_content
+import com.example.near.core.ui.theme.light_container
 
 @Composable
 fun BaseUserProfileCard(

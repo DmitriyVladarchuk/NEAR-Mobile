@@ -11,10 +11,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.graphics.toColorInt
 import com.example.near.core.network.model.EmergencyType
 import com.example.near.core.network.model.emergencyTypes
-import com.example.near.ui.theme.AppTypography
-import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.theme.NEARTheme
-import com.example.near.ui.theme.dark_content
+import com.example.near.core.ui.theme.AppTypography
+import com.example.near.core.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.NEARTheme
+import com.example.near.core.ui.theme.dark_content
 
 @Composable
 fun EmergencyTypeChip(

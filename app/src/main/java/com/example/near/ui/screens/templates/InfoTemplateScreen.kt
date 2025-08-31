@@ -48,9 +48,9 @@ import com.example.near.feature.user.domain.models.UserGroup
 import com.example.near.feature.user.domain.models.UserTemplate
 import com.example.near.ui.components.decorations.DynamicItemContainer
 import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
-import com.example.near.ui.theme.AppTypography
-import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.theme.dark_content
+import com.example.near.core.ui.theme.AppTypography
+import com.example.near.core.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.dark_content
 
 @Composable
 fun InfoTemplateScreen(

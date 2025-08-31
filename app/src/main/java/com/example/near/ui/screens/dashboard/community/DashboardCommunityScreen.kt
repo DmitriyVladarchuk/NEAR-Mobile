@@ -43,8 +43,8 @@ import com.example.near.ui.components.dialogs.SendTemplateDialog
 import com.example.near.ui.components.dialogs.UiStateNotifier
 import com.example.near.ui.components.headers.MainHeaderTextInfo
 import com.example.near.ui.screens.navigation.Routes
-import com.example.near.ui.theme.AppTypography
-import com.example.near.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.AppTypography
+import com.example.near.core.ui.theme.CustomTheme
 
 @Composable
 fun DashboardCommunityScreen(

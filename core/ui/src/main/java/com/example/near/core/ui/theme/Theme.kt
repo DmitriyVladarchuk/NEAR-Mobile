@@ -1,4 +1,4 @@
-package com.example.near.ui.theme
+package com.example.near.core.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable

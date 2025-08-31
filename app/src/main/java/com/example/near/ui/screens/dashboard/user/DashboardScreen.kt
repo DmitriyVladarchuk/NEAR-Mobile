@@ -41,9 +41,9 @@ import com.example.near.ui.components.common.SubmittedTemplateButton
 import com.example.near.ui.components.decorations.dashedBorder
 import com.example.near.ui.components.headers.MainHeaderTextInfo
 import com.example.near.ui.screens.navigation.Routes
-import com.example.near.ui.theme.AppTypography
-import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.theme.dark_content
+import com.example.near.core.ui.theme.AppTypography
+import com.example.near.core.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.dark_content
 
 @Composable
 fun DashboardScreen(

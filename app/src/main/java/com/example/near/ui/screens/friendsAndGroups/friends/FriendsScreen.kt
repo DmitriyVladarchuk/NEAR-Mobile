@@ -47,8 +47,8 @@ import com.example.near.domain.shared.models.UIState
 import com.example.near.feature.user.domain.models.AllFriendsInfo
 import com.example.near.feature.user.domain.models.User
 import com.example.near.ui.components.common.AppTextField
-import com.example.near.ui.theme.AppTypography
-import com.example.near.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.AppTypography
+import com.example.near.core.ui.theme.CustomTheme
 
 
 @Composable

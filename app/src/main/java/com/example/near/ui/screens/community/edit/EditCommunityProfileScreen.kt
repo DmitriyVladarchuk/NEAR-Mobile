@@ -29,8 +29,8 @@ import com.example.near.ui.components.common.EmergencyTypeChip
 import com.example.near.ui.components.decorations.LoadingIndicator
 import com.example.near.ui.components.dialogs.UiStateNotifier
 import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
-import com.example.near.ui.theme.AppTypography
-import com.example.near.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.AppTypography
+import com.example.near.core.ui.theme.CustomTheme
 
 
 @Composable
