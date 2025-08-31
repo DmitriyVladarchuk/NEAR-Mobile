@@ -31,11 +31,12 @@ import com.example.near.domain.user.usecase.friends.GetAllFriendsInfoUseCase
 import com.example.near.domain.user.usecase.group.CreateGroupUseCase
 import com.example.near.domain.user.usecase.group.DeleteGroupUseCase
 import com.example.near.domain.user.usecase.group.UpdateGroupUseCase
-import com.example.near.domain.shared.usecase.template.CreateTemplateUseCase
-import com.example.near.domain.shared.usecase.template.DeleteTemplateUseCase
-import com.example.near.domain.shared.usecase.template.UpdateTemplateUseCase
+import com.example.near.feature.template.domain.usecase.CreateTemplateUseCase
+import com.example.near.feature.template.domain.usecase.DeleteTemplateUseCase
+import com.example.near.feature.template.domain.usecase.UpdateTemplateUseCase
 import com.example.near.feature.auth.domain.repository.CommunityAuthRepository
 import com.example.near.feature.auth.domain.repository.UserAuthRepository
+import com.example.near.feature.template.domain.repository.TemplateRepository
 import com.example.near.user.usecase.GetAllCommunitiesUseCase
 import com.example.near.user.usecase.SearchCommunityUseCase
 import com.example.near.user.usecase.SearchUsersUseCase
@@ -198,18 +199,18 @@ object UseCaseModule {
     // --- Template ---
 
     @Provides
-    fun provideCreateTemplateUseCase(userRepository: UserRepository): CreateTemplateUseCase {
-        return CreateTemplateUseCase(userRepository)
+    fun provideCreateTemplateUseCase(templateRepository: TemplateRepository): CreateTemplateUseCase {
+        return CreateTemplateUseCase(templateRepository)
     }
 
     @Provides
-    fun provideUpdateTemplateUseCase(userRepository: UserRepository): UpdateTemplateUseCase {
-        return UpdateTemplateUseCase(userRepository)
+    fun provideUpdateTemplateUseCase(templateRepository: TemplateRepository): UpdateTemplateUseCase {
+        return UpdateTemplateUseCase(templateRepository)
     }
 
     @Provides
-    fun provideDeleteTemplateUseCase(userRepository: UserRepository): DeleteTemplateUseCase {
-        return DeleteTemplateUseCase(userRepository)
+    fun provideDeleteTemplateUseCase(templateRepository: TemplateRepository): DeleteTemplateUseCase {
+        return DeleteTemplateUseCase(templateRepository)
     }
 
     @Provides

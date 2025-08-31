@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
-import com.example.near.common.models.emergencyTypes
+import com.example.near.core.network.model.emergencyTypes
 import com.example.near.ui.components.common.AppTextField
 import com.example.near.ui.components.common.EmergencyTypeChip
 import com.example.near.ui.components.decorations.LoadingIndicator

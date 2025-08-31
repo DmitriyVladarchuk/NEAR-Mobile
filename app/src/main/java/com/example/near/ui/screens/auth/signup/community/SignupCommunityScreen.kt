@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
-import com.example.near.common.models.EmergencyType
-import com.example.near.common.models.emergencyTypes
+import com.example.near.core.network.model.EmergencyType
+import com.example.near.core.network.model.emergencyTypes
 import com.example.near.domain.shared.models.UIState
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography

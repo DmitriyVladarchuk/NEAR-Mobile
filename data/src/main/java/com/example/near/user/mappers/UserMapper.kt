@@ -1,6 +1,6 @@
 package com.example.near.data.user.mappers
 
-import com.example.near.common.models.EmergencyType
+import com.example.near.core.network.model.EmergencyType
 import com.example.near.core.network.model.EmergencyTypeResponse
 import com.example.near.core.network.model.NotificationOptionResponse
 import com.example.near.core.network.model.user.AllFriendsInfoResponse

@@ -19,6 +19,9 @@ import com.example.near.storage.EmailVerificationStorageImpl
 import com.example.near.feature.auth.data.repository.UserAuthRepositoryImpl
 import com.example.near.feature.auth.domain.repository.CommunityAuthRepository
 import com.example.near.feature.auth.domain.repository.UserAuthRepository
+import com.example.near.feature.template.data.repository.TemplateRepositoryImpl
+import com.example.near.feature.template.domain.model.Template
+import com.example.near.feature.template.domain.repository.TemplateRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -78,6 +81,10 @@ object AppModules {
             emailVerificationStorage = emailVerificationStorage
         )
     }
+
+    @Provides
+    @Singleton
+    fun provideTemplateRepository(): TemplateRepository = TemplateRepositoryImpl()
 
     @Provides
     @Singleton

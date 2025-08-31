@@ -1,4 +1,4 @@
-package com.example.near.common.models
+package com.example.near.core.network.model
 
 data class EmergencyType(
     val id: Int,

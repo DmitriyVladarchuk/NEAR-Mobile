@@ -49,6 +49,7 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":core:network"))
     implementation(project(":feature:auth"))
+    implementation(project(":feature:template"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

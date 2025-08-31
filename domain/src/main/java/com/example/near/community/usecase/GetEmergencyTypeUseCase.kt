@@ -1,7 +1,5 @@
 package com.example.near.community.usecase
 
-import com.example.near.common.models.EmergencyType
-import com.example.near.common.models.emergencyTypes
 import com.example.near.domain.community.repository.CommunityRepository
 
 class GetEmergencyTypeUseCase(

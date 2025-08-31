@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.near.domain.shared.models.UIState
 import com.example.near.user.models.UserTemplate
 import com.example.near.domain.shared.usecase.GetUserUseCase
-import com.example.near.domain.shared.usecase.template.DeleteTemplateUseCase
+import com.example.near.feature.template.domain.usecase.DeleteTemplateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

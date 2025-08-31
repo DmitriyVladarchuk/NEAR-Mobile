@@ -35,8 +35,8 @@ import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
-import com.example.near.common.models.EmergencyType
-import com.example.near.common.models.emergencyTypes
+import com.example.near.core.network.model.EmergencyType
+import com.example.near.core.network.model.emergencyTypes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.dark_content

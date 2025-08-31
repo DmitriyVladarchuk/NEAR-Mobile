@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.common.models.EmergencyType
+import com.example.near.core.network.model.EmergencyType
 import com.example.near.common.usecase.GetCommunityByIdUseCase
 import com.example.near.community.usecase.GetEmergencyTypeUseCase
 import com.example.near.domain.community.models.Community

@@ -1,7 +1,5 @@
 package com.example.near.core.network.model
 
-import com.example.near.common.models.EmergencyType
-
 
 data class TemplateCreateRequest(
     val templateName: String,

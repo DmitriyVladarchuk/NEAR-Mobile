@@ -9,10 +9,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.R
-import com.example.near.common.models.EmergencyType
+import com.example.near.core.network.model.EmergencyType
 import com.example.near.domain.shared.models.UIState
 import com.example.near.feature.auth.domain.model.CommunitySignup
-import com.example.near.feature.auth.domain.model.UserSignUp
 import com.example.near.feature.auth.domain.usecase.SignUpCommunityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext

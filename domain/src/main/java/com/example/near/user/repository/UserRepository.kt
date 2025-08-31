@@ -1,6 +1,5 @@
 package com.example.near.domain.user.repository
 
-import com.example.near.common.models.EmergencyType
 import com.example.near.domain.community.models.Community
 import com.example.near.domain.shared.models.NotificationOption
 import com.example.near.domain.user.models.AllFriendsInfo
@@ -51,28 +50,6 @@ interface UserRepository {
     suspend fun updateGroup(id: String, groupName: String, members: List<String>): Result<Unit>
 
     suspend fun deleteGroup(id: String, groupName: String, members: List<String>): Result<Unit>
-
-    // --- Template ---
-
-    suspend fun createTemplate(
-        templateName: String,
-        message: String,
-        emergencyType: EmergencyType
-    ): Result<Unit>
-
-    suspend fun updateTemplate(
-        id: String,
-        templateName: String,
-        message: String,
-        emergencyType: EmergencyType
-    ): Result<Unit>
-
-    suspend fun deleteTemplate(
-        id: String,
-        templateName: String,
-        message: String,
-        emergencyType: EmergencyType
-    ): Result<Unit>
 
     suspend fun getAllCommunities(): Result<CommunitiesList>
 
