@@ -43,14 +43,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
-import com.example.near.domain.user.models.User
-import com.example.near.domain.user.models.UserGroup
-import com.example.near.user.models.UserTemplate
+import com.example.near.feature.user.domain.models.User
+import com.example.near.feature.user.domain.models.UserGroup
+import com.example.near.feature.user.domain.models.UserTemplate
+import com.example.near.ui.components.decorations.DynamicItemContainer
+import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.dark_content
-import com.example.near.ui.components.decorations.DynamicItemContainer
-import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
 
 @Composable
 fun InfoTemplateScreen(

@@ -6,12 +6,12 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.core.network.model.EmergencyType
-import com.example.near.user.models.UserTemplate
-import com.example.near.domain.community.repository.CommunityRepository
-import com.example.near.domain.shared.usecase.GetUserUseCase
-import com.example.near.domain.community.usecase.GetCommunityUseCase
+import com.example.near.feature.community.domain.repository.CommunityRepository
+import com.example.near.feature.community.domain.usecase.GetCommunityUseCase
 import com.example.near.feature.template.domain.usecase.CreateTemplateUseCase
 import com.example.near.feature.template.domain.usecase.UpdateTemplateUseCase
+import com.example.near.feature.user.domain.models.UserTemplate
+import com.example.near.feature.user.domain.usecase.GetUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -52,12 +52,12 @@ class CreateTemplateViewModel @Inject constructor(
                     getUserUseCase()?.notificationTemplates
                 }
 
-                template = templates?.find { it.id == templateId }
-                template?.let {
-                    templateName = it.templateName
-                    message = it.message
-                    selectedEmergencyType = it.emergencyType
-                }
+//                template = templates?.find { it.id == templateId }
+//                template?.let {
+//                    templateName = it.templateName
+//                    message = it.message
+//                    selectedEmergencyType = it.emergencyType
+//                }
             } catch (e: Exception) {
                 error = e.message ?: "Failed to load template"
             } finally {
@@ -90,16 +90,16 @@ class CreateTemplateViewModel @Inject constructor(
                 if (templateId != null) {
                     if (isCommunity) {
                         //updateCommunityTemplateUseCase(templateId, templateName, message, selectedEmergencyType!!)
-                        communityRepository.updateTemplate(templateId, templateName, message, selectedEmergencyType!!)
+//                        communityRepository.updateTemplate(templateId, templateName, message, selectedEmergencyType!!)
                     } else {
-                        updateTemplateUseCase(templateId, templateName, message, selectedEmergencyType!!)
+//                        updateTemplateUseCase(templateId, templateName, message, selectedEmergencyType!!)
                     }
                 } else {
                     if (isCommunity) {
                         //createCommunityTemplateUseCase(templateName, message, selectedEmergencyType!!)
-                        communityRepository.createTemplate(templateName, message, selectedEmergencyType!!)
+//                        communityRepository.createTemplate(templateName, message, selectedEmergencyType!!)
                     } else {
-                        createTemplateUseCase(templateName, message, selectedEmergencyType!!)
+//                        createTemplateUseCase(templateName, message, selectedEmergencyType!!)
                     }
                 }
                 onSuccess()

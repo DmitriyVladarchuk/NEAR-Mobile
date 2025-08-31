@@ -2,14 +2,14 @@ package com.example.near.ui.screens.navigation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.feature.auth.domain.model.AuthCheckResult
-import com.example.near.data.storage.SessionManager
-import com.example.near.domain.community.repository.CommunityRepository
-import com.example.near.domain.shared.models.UIState
 import com.example.near.common.storage.AuthDataStorage
+import com.example.near.data.storage.SessionManager
+import com.example.near.domain.shared.models.UIState
 import com.example.near.domain.shared.storage.SettingsDataStorage
-import com.example.near.domain.user.repository.UserRepository
+import com.example.near.feature.auth.domain.model.AuthCheckResult
 import com.example.near.feature.auth.domain.usecase.LoadUserUseCase
+import com.example.near.feature.community.domain.repository.CommunityRepository
+import com.example.near.feature.user.domain.repository.UserRepository
 import com.example.near.service.FcmTokenManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

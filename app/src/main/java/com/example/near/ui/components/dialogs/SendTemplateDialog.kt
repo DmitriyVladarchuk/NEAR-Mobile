@@ -10,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.near.R
 import com.example.near.core.network.model.emergencyTypes
-import com.example.near.user.models.UserTemplate
+import com.example.near.feature.user.domain.models.UserTemplate
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme
 import com.example.near.ui.theme.NEARTheme

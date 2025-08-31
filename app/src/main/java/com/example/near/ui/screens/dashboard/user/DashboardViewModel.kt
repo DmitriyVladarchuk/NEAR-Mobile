@@ -7,9 +7,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.domain.shared.models.UIState
-import com.example.near.user.models.UserTemplate
-import com.example.near.domain.shared.usecase.GetUserUseCase
+import com.example.near.feature.user.domain.usecase.GetUserUseCase
 import com.example.near.feature.template.domain.usecase.DeleteTemplateUseCase
+import com.example.near.feature.user.domain.models.UserTemplate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -45,17 +45,17 @@ class DashboardViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = UIState.Loading
             try {
-                deleteTemplateUseCase(
-                    template.id,
-                    template.templateName,
-                    template.message,
-                    template.emergencyType
-                ).onSuccess {
-                    _uiState.value = UIState.Success
-                    loadData()
-                }.onFailure {
-                    _uiState.value = UIState.Error("Failed to delete template: ${it.message}")
-                }
+//                deleteTemplateUseCase(
+//                    template.id,
+//                    template.templateName,
+//                    template.message,
+//                    template.emergencyType
+//                ).onSuccess {
+//                    _uiState.value = UIState.Success
+//                    loadData()
+//                }.onFailure {
+//                    _uiState.value = UIState.Error("Failed to delete template: ${it.message}")
+//                }
             } catch (e: Exception) {
                 _uiState.value = UIState.Error("Error: ${e.localizedMessage}")
             } finally {

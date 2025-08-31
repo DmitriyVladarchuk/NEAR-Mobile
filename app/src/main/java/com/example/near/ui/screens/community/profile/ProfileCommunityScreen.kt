@@ -59,7 +59,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
 import com.example.near.core.network.model.EmergencyType
-import com.example.near.domain.community.models.Community
+import com.example.near.feature.community.domain.model.Community
 import com.example.near.ui.components.common.ItemEmergencyType
 import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
 import com.example.near.ui.screens.navigation.Routes

@@ -10,7 +10,6 @@ import com.example.near.core.network.model.EmergencyTypeResponse
 import com.example.near.core.network.model.LoginRequest
 import com.example.near.core.network.model.LoginResponse
 import com.example.near.core.network.model.TemplateSendRequest
-import com.example.near.user.models.UserTemplate
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -61,28 +60,28 @@ interface CommunityService {
 
     // --- Template actions ---
 
-    @POST("NEAR/community/template/create")
-    suspend fun createTemplate(
-        @Header("Authorization") token: String,
-        @Body request: TemplateCreateRequest
-    ): Response<Void>
-
-    @PUT("NEAR/community/template/update")
-    suspend fun updateTemplate(
-        @Header("Authorization") token: String,
-        @Body request: UserTemplate
-    ): Response<Void>
-
-    @HTTP(method = "DELETE", path = "NEAR/community/template/delete", hasBody = true)
-    suspend fun deleteTemplate(
-        @Header("Authorization") token: String,
-        @Body request: UserTemplate
-    ): Response<Void>
-
-    @POST("NEAR/community/template/send")
-    suspend fun sendTemplate(
-        @Header("Authorization") token: String,
-        @Body request: TemplateSendRequest
-    ): Response<Void>
+//    @POST("NEAR/community/template/create")
+//    suspend fun createTemplate(
+//        @Header("Authorization") token: String,
+//        @Body request: TemplateCreateRequest
+//    ): Response<Void>
+//
+//    @PUT("NEAR/community/template/update")
+//    suspend fun updateTemplate(
+//        @Header("Authorization") token: String,
+//        @Body request: UserTemplate
+//    ): Response<Void>
+//
+//    @HTTP(method = "DELETE", path = "NEAR/community/template/delete", hasBody = true)
+//    suspend fun deleteTemplate(
+//        @Header("Authorization") token: String,
+//        @Body request: UserTemplate
+//    ): Response<Void>
+//
+//    @POST("NEAR/community/template/send")
+//    suspend fun sendTemplate(
+//        @Header("Authorization") token: String,
+//        @Body request: TemplateSendRequest
+//    ): Response<Void>
 
 }

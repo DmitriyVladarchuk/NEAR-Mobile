@@ -53,7 +53,7 @@ import coil.compose.AsyncImage
 import com.example.near.R
 import com.example.near.domain.shared.models.NotificationOption
 import com.example.near.feature.auth.domain.model.SignupNotificationOption
-import com.example.near.domain.user.models.User
+import com.example.near.feature.user.domain.models.User
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.ui.theme.AppTypography
 import com.example.near.ui.theme.CustomTheme

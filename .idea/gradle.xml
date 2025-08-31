@@ -17,7 +17,9 @@
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/auth" />
+            <option value="$PROJECT_DIR$/feature/community" />
             <option value="$PROJECT_DIR$/feature/template" />
+            <option value="$PROJECT_DIR$/feature/user" />
           </set>
         </option>
       </GradleProjectSettings>
