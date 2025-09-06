@@ -1,6 +1,6 @@
-package com.example.near.common.storage
+package com.example.near.feature.auth.domain.storage
 
-import com.example.near.common.models.AuthCredentials
+import com.example.near.feature.auth.domain.model.AuthCredentials
 
 
 interface AuthDataStorage {

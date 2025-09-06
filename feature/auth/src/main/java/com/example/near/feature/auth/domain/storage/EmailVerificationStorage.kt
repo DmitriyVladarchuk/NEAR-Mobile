@@ -1,6 +1,6 @@
-package com.example.near.common.storage
+package com.example.near.feature.auth.domain.storage
 
-import com.example.near.common.models.LoginCredentials
+import com.example.near.feature.auth.domain.model.LoginCredentials
 
 interface EmailVerificationStorage {
     suspend fun savePendingEmail(email: String, password: String, isCommunity: Boolean)

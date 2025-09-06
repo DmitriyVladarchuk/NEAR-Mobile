@@ -1,8 +1,8 @@
 package com.example.near.feature.community.data.repository
 
+import com.example.near.core.network.SessionManager
 import com.example.near.core.network.model.FcmTokenRequest
 import com.example.near.core.network.service.CommunityService
-import com.example.near.data.storage.SessionManager
 import com.example.near.feature.community.data.mapper.toDomain
 import com.example.near.feature.community.data.mapper.toRequest
 import com.example.near.feature.community.domain.model.Community

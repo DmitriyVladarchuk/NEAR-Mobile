@@ -1,12 +1,18 @@
-package com.example.near.data.storage
-
-import com.example.near.common.models.AuthTokens
+package com.example.near.core.network
 
 class SessionManager {
     private var _authToken: AuthTokens? = null
+    private var _isCommunity: Boolean = false
 
     val authToken: AuthTokens?
         get() = _authToken
+
+    val isCommunity: Boolean
+        get() = _isCommunity
+
+    fun setCommunityFlag(isCommunity: Boolean) {
+        _isCommunity = isCommunity
+    }
 
     fun saveAuthToken(authToken: AuthTokens) {
         _authToken = authToken

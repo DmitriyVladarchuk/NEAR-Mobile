@@ -1,6 +1,7 @@
 package com.example.near.feature.user.data.repository
 
 import android.util.Log
+import com.example.near.core.network.SessionManager
 import com.example.near.core.network.model.FcmTokenRequest
 import com.example.near.core.network.model.commmunity.CommunityActionRequest
 import com.example.near.core.network.model.user.FriendRequest
@@ -8,7 +9,6 @@ import com.example.near.core.network.model.user.GroupActionRequest
 import com.example.near.core.network.model.user.GroupCreateRequest
 import com.example.near.core.network.model.user.UserUpdateRequest
 import com.example.near.core.network.service.UserService
-import com.example.near.data.storage.SessionManager
 import com.example.near.domain.shared.models.NotificationOption
 import com.example.near.feature.community.data.mapper.toDomain
 import com.example.near.feature.community.domain.model.Community

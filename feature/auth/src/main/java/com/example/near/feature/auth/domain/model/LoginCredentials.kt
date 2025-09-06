@@ -1,4 +1,4 @@
-package com.example.near.common.models
+package com.example.near.feature.auth.domain.model
 
 data class LoginCredentials(
     val email: String,

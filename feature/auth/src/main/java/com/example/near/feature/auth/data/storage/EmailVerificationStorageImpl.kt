@@ -1,9 +1,9 @@
-package com.example.near.storage
+package com.example.near.feature.auth.data.storage
 
 import android.content.Context
 import androidx.core.content.edit
-import com.example.near.common.models.LoginCredentials
-import com.example.near.common.storage.EmailVerificationStorage
+import com.example.near.feature.auth.domain.model.LoginCredentials
+import com.example.near.feature.auth.domain.storage.EmailVerificationStorage
 
 class EmailVerificationStorageImpl(
     private val context: Context

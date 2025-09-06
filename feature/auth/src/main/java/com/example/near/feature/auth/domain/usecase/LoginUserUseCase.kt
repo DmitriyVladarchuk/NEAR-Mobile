@@ -1,8 +1,8 @@
 package com.example.near.feature.auth.domain.usecase
 
-import com.example.near.common.models.AuthCredentials
-import com.example.near.common.models.LoginCredentials
-import com.example.near.common.storage.AuthDataStorage
+import com.example.near.feature.auth.domain.model.AuthCredentials
+import com.example.near.feature.auth.domain.model.LoginCredentials
+import com.example.near.feature.auth.domain.storage.AuthDataStorage
 import com.example.near.feature.auth.domain.model.EmailVerificationStatus
 import com.example.near.feature.auth.domain.repository.UserAuthRepository
 

@@ -1,6 +1,6 @@
 package com.example.near.feature.auth.domain.repository
 
-import com.example.near.common.models.LoginCredentials
+import com.example.near.feature.auth.domain.model.LoginCredentials
 import com.example.near.feature.auth.domain.model.EmailVerificationStatus
 import com.example.near.feature.auth.domain.model.UserSignUp
 

@@ -1,11 +1,11 @@
 package com.example.near.DI
 
 import android.content.Context
-import com.example.near.common.storage.AuthDataStorage
-import com.example.near.common.storage.EmailVerificationStorage
+import com.example.near.feature.auth.domain.storage.AuthDataStorage
+import com.example.near.feature.auth.domain.storage.EmailVerificationStorage
 import com.example.near.core.network.service.CommunityService
 import com.example.near.core.network.service.UserService
-import com.example.near.data.storage.SessionManager
+import com.example.near.core.network.SessionManager
 import com.example.near.data.storage.SettingsDataStorageImpl
 import com.example.near.feature.user.data.repository.UserRepositoryImpl
 import com.example.near.domain.shared.storage.SettingsDataStorage
@@ -19,8 +19,8 @@ import com.example.near.feature.community.domain.repository.CommunityRepository
 import com.example.near.feature.template.data.repository.TemplateRepositoryImpl
 import com.example.near.feature.template.domain.repository.TemplateRepository
 import com.example.near.service.FcmTokenManager
-import com.example.near.storage.AuthDataStorageImpl
-import com.example.near.storage.EmailVerificationStorageImpl
+import com.example.near.feature.auth.data.storage.AuthDataStorageImpl
+import com.example.near.feature.auth.data.storage.EmailVerificationStorageImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

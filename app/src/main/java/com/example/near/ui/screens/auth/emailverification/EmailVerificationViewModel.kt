@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.feature.auth.domain.model.AuthCheckResult
-import com.example.near.common.storage.EmailVerificationStorage
+import com.example.near.feature.auth.domain.storage.EmailVerificationStorage
 import com.example.near.domain.shared.models.UIState
 import com.example.near.feature.auth.domain.usecase.LoadUserUseCase
 import com.example.near.service.FcmTokenManager

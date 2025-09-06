@@ -1,11 +1,11 @@
 package com.example.near.feature.auth.data.repository
 
-import com.example.near.common.models.LoginCredentials
-import com.example.near.common.storage.AuthDataStorage
-import com.example.near.common.storage.EmailVerificationStorage
+import com.example.near.feature.auth.domain.model.LoginCredentials
+import com.example.near.feature.auth.domain.storage.AuthDataStorage
+import com.example.near.feature.auth.domain.storage.EmailVerificationStorage
 import com.example.near.core.network.model.RefreshTokenRequest
 import com.example.near.core.network.service.CommunityService
-import com.example.near.data.storage.SessionManager
+import com.example.near.core.network.SessionManager
 import com.example.near.feature.auth.data.mapper.toDomain
 import com.example.near.feature.auth.data.mapper.toRequest
 import com.example.near.feature.auth.domain.model.CommunitySignup
@@ -42,6 +42,7 @@ class CommunityAuthRepositoryImpl(
             if (response.isSuccessful) {
                 response.body()?.toDomain()?.let {
                     sessionManager.saveAuthToken(it)
+                    sessionManager.setCommunityFlag(true)
                     Result.success(EmailVerificationStatus.Verified(it))
                 } ?: Result.failure(Exception("Empty response body"))
             } else if(response.code() == 403) {
@@ -66,6 +67,7 @@ class CommunityAuthRepositoryImpl(
             if (response.isSuccessful) {
                 response.body()?.toDomain()?.let {
                     sessionManager.saveAuthToken(it)
+                    sessionManager.setCommunityFlag(true)
                     Result.success(Unit)
                 } ?: Result.failure(Exception("Empty response body"))
             } else {

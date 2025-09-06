@@ -1,9 +1,9 @@
-package com.example.near.storage
+package com.example.near.feature.auth.data.storage
 
 import android.content.Context
 import androidx.core.content.edit
-import com.example.near.common.models.AuthCredentials
-import com.example.near.common.storage.AuthDataStorage
+import com.example.near.feature.auth.domain.model.AuthCredentials
+import com.example.near.feature.auth.domain.storage.AuthDataStorage
 
 class AuthDataStorageImpl(
     private val context: Context

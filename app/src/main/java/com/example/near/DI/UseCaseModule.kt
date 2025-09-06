@@ -1,7 +1,7 @@
 package com.example.near.DI
 
-import com.example.near.common.storage.AuthDataStorage
-import com.example.near.common.storage.EmailVerificationStorage
+import com.example.near.feature.auth.domain.storage.AuthDataStorage
+import com.example.near.feature.auth.domain.storage.EmailVerificationStorage
 import com.example.near.feature.community.domain.usecase.GetCommunityUseCase
 import com.example.near.domain.shared.storage.SettingsDataStorage
 import com.example.near.domain.shared.usecase.GetThemeUseCase

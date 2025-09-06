@@ -1,6 +1,6 @@
 package com.example.near.domain.user.usecase.auth
 
-import com.example.near.common.storage.AuthDataStorage
+import com.example.near.feature.auth.domain.storage.AuthDataStorage
 
 class LogOutUseCase(
     private val authDataStorage: AuthDataStorage

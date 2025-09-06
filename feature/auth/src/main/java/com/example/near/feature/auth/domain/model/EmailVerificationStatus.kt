@@ -1,6 +1,6 @@
 package com.example.near.feature.auth.domain.model
 
-import com.example.near.common.models.AuthTokens
+import com.example.near.core.network.AuthTokens
 
 sealed class EmailVerificationStatus {
     object NotAuth : EmailVerificationStatus()

@@ -2,8 +2,8 @@ package com.example.near.ui.screens.navigation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.common.storage.AuthDataStorage
-import com.example.near.data.storage.SessionManager
+import com.example.near.feature.auth.domain.storage.AuthDataStorage
+import com.example.near.core.network.SessionManager
 import com.example.near.domain.shared.models.UIState
 import com.example.near.domain.shared.storage.SettingsDataStorage
 import com.example.near.feature.auth.domain.model.AuthCheckResult
@@ -54,7 +54,6 @@ class NavigationViewModel @Inject constructor(
                         _uiState.value = UIState.Success
                     }
                     AuthCheckResult.NotAuthenticated -> {
-                        //_navigationRoute.value = Routes.EmailVerification.route
                         _navigationRoute.value = Routes.Onboarding.route
                         _uiState.value = UIState.Success
                     }

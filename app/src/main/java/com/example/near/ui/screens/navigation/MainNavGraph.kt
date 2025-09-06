@@ -304,7 +304,6 @@ fun SplashScreen(loading: Boolean) {
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            // Ваше лого
             Image(
                 painter = painterResource(R.drawable.logo),
                 contentDescription = null

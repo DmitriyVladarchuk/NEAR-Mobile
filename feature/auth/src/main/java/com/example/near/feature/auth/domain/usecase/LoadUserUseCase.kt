@@ -1,7 +1,7 @@
 package com.example.near.feature.auth.domain.usecase
 
-import com.example.near.common.storage.AuthDataStorage
-import com.example.near.common.storage.EmailVerificationStorage
+import com.example.near.feature.auth.domain.storage.AuthDataStorage
+import com.example.near.feature.auth.domain.storage.EmailVerificationStorage
 import com.example.near.feature.auth.domain.model.AuthCheckResult
 import com.example.near.feature.auth.domain.model.EmailVerificationStatus
 import com.example.near.feature.auth.domain.repository.CommunityAuthRepository

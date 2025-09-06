@@ -1,7 +1,7 @@
 package com.example.near.feature.auth.data.mapper
 
-import com.example.near.common.models.AuthTokens
-import com.example.near.common.models.LoginCredentials
+import com.example.near.core.network.AuthTokens
+import com.example.near.feature.auth.domain.model.LoginCredentials
 import com.example.near.core.network.model.LoginRequest
 import com.example.near.core.network.model.LoginResponse
 import com.example.near.core.network.model.SignupNotificationOptionRequest
