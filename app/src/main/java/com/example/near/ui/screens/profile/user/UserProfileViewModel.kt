@@ -7,10 +7,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.domain.shared.models.NotificationOption
-import com.example.near.domain.user.models.User
-import com.example.near.domain.shared.usecase.GetUserByIdUseCase
-import com.example.near.domain.shared.usecase.GetUserUseCase
-import com.example.near.domain.user.usecase.GetNotificationOptionsUseCase
+import com.example.near.feature.user.domain.models.User
+import com.example.near.feature.user.domain.usecase.GetUserByIdUseCase
+import com.example.near.feature.user.domain.usecase.GetUserUseCase
+import com.example.near.feature.user.domain.usecase.GetNotificationOptionsUseCase
 import com.example.near.domain.user.usecase.auth.LogOutUseCase
 import com.example.near.domain.user.usecase.friends.AddFriendRequestUseCase
 import com.example.near.domain.user.usecase.friends.GetAllFriendsInfoUseCase

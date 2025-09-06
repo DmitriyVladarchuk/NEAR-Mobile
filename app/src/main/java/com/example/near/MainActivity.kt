@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.near.ui.screens.navigation.MainNavGraph
 import com.example.near.ui.screens.navigation.Routes
-import com.example.near.ui.theme.NEARTheme
+import com.example.near.core.ui.theme.NEARTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

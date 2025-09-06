@@ -24,7 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.near.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.CustomTheme
 import kotlinx.coroutines.launch
 
 @Composable

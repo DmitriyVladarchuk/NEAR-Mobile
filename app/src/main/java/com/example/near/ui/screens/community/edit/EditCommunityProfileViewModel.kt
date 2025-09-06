@@ -6,11 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.community.models.CommunityUpdateParams
-import com.example.near.community.usecase.UpdateCommunityUseCase
-import com.example.near.domain.community.models.Community
-import com.example.near.domain.community.usecase.GetCommunityUseCase
 import com.example.near.domain.shared.models.UIState
+import com.example.near.feature.community.domain.model.Community
+import com.example.near.feature.community.domain.model.CommunityUpdateParams
+import com.example.near.feature.community.domain.usecase.GetCommunityUseCase
+import com.example.near.feature.community.domain.usecase.UpdateCommunityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

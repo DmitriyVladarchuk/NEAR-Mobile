@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -54,7 +53,7 @@ import com.example.near.ui.screens.subscriptions.SubscribersScreen
 import com.example.near.ui.screens.subscriptions.SubscriptionsScreen
 import com.example.near.ui.screens.templates.CreateTemplate
 import com.example.near.ui.screens.templates.InfoTemplateScreen
-import com.example.near.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.CustomTheme
 
 
 @Composable
@@ -305,7 +304,6 @@ fun SplashScreen(loading: Boolean) {
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            // Ваше лого
             Image(
                 painter = painterResource(R.drawable.logo),
                 contentDescription = null

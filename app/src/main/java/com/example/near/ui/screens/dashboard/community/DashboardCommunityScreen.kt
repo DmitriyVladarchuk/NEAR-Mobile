@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
-import com.example.near.domain.user.models.UserTemplate
+import com.example.near.feature.user.domain.models.UserTemplate
 import com.example.near.ui.components.common.ItemTemplate
 import com.example.near.ui.components.common.SubmittedTemplateButton
 import com.example.near.ui.components.decorations.dashedBorder
@@ -43,8 +43,8 @@ import com.example.near.ui.components.dialogs.SendTemplateDialog
 import com.example.near.ui.components.dialogs.UiStateNotifier
 import com.example.near.ui.components.headers.MainHeaderTextInfo
 import com.example.near.ui.screens.navigation.Routes
-import com.example.near.ui.theme.AppTypography
-import com.example.near.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.AppTypography
+import com.example.near.core.ui.theme.CustomTheme
 
 @Composable
 fun DashboardCommunityScreen(
@@ -179,7 +179,7 @@ private fun BodyTemplates(
             template = selectedTemplate,
             onDismiss = { showDialog = false },
             onConfirm = {
-                viewModel.send(selectedTemplate!!.id)
+                //viewModel.send(selectedTemplate!!.id)
                 showDialog = false
             }
         )

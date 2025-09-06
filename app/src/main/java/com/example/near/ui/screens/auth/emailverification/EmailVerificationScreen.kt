@@ -28,9 +28,9 @@ import androidx.navigation.NavController
 import com.example.near.R
 import com.example.near.domain.shared.models.UIState
 import com.example.near.ui.screens.navigation.Routes
-import com.example.near.ui.theme.AppTypography
-import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.theme.NEARTheme
+import com.example.near.core.ui.theme.AppTypography
+import com.example.near.core.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.NEARTheme
 
 @Composable
 fun EmailVerificationScreen(

@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.example.near"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.near"
@@ -47,6 +47,12 @@ dependencies {
 
     implementation(project(":domain"))
     implementation(project(":data"))
+    implementation(project(":core:network"))
+    implementation(project(":core:ui"))
+    implementation(project(":feature:auth"))
+    implementation(project(":feature:template"))
+    implementation(project(":feature:community"))
+    implementation(project(":feature:user"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -73,10 +79,6 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation(libs.firebase.messaging.ktx)
-//
-//    implementation("com.google.firebase:firebase-messaging-ktx:24.1.1")
-//    implementation("com.google.firebase:firebase-analytics-ktx:22.4.0")
-
 
     annotationProcessor(libs.androidx.room.room.compiler)
     ksp(libs.androidx.room.room.compiler)

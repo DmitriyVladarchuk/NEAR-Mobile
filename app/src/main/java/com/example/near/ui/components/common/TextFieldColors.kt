@@ -2,7 +2,7 @@ package com.example.near.ui.components.common
 
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
-import com.example.near.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.CustomTheme
 
 @Composable
 fun textFieldColors() = OutlinedTextFieldDefaults.colors(

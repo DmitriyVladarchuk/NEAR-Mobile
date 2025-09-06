@@ -22,8 +22,8 @@ import androidx.navigation.NavController
 import com.example.near.R
 import com.example.near.ui.screens.friendsAndGroups.friends.FriendsScreen
 import com.example.near.ui.screens.friendsAndGroups.groups.GroupsScreen
-import com.example.near.ui.theme.AppTypography
-import com.example.near.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.AppTypography
+import com.example.near.core.ui.theme.CustomTheme
 import com.example.near.ui.components.decorations.DynamicItemContainer
 import com.example.near.ui.components.headers.MainHeaderTextInfo
 

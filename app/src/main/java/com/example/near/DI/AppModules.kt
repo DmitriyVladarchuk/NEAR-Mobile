@@ -1,20 +1,26 @@
 package com.example.near.DI
 
 import android.content.Context
-import com.example.near.common.storage.EmailVerificationStorage
-import com.example.near.data.api.CommunityService
-import com.example.near.data.api.UserService
-import com.example.near.data.storage.AuthDataStorageImpl
-import com.example.near.data.storage.SessionManager
+import com.example.near.feature.auth.domain.storage.AuthDataStorage
+import com.example.near.feature.auth.domain.storage.EmailVerificationStorage
+import com.example.near.core.network.service.CommunityService
+import com.example.near.core.network.service.UserService
+import com.example.near.core.network.SessionManager
 import com.example.near.data.storage.SettingsDataStorageImpl
-import com.example.near.data.community.repositories.CommunityRepositoryImpl
-import com.example.near.data.user.repositories.UserRepositoryImpl
-import com.example.near.domain.shared.storage.AuthDataStorage
-import com.example.near.domain.community.repository.CommunityRepository
+import com.example.near.feature.user.data.repository.UserRepositoryImpl
 import com.example.near.domain.shared.storage.SettingsDataStorage
-import com.example.near.domain.user.repository.UserRepository
+import com.example.near.feature.user.domain.repository.UserRepository
+import com.example.near.feature.auth.data.repository.CommunityAuthRepositoryImpl
+import com.example.near.feature.auth.data.repository.UserAuthRepositoryImpl
+import com.example.near.feature.auth.domain.repository.CommunityAuthRepository
+import com.example.near.feature.auth.domain.repository.UserAuthRepository
+import com.example.near.feature.community.data.repository.CommunityRepositoryImpl
+import com.example.near.feature.community.domain.repository.CommunityRepository
+import com.example.near.feature.template.data.repository.TemplateRepositoryImpl
+import com.example.near.feature.template.domain.repository.TemplateRepository
 import com.example.near.service.FcmTokenManager
-import com.example.near.storage.EmailVerificationStorageImpl
+import com.example.near.feature.auth.data.storage.AuthDataStorageImpl
+import com.example.near.feature.auth.data.storage.EmailVerificationStorageImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,10 +36,8 @@ object AppModules {
     fun provideUserRepository(
         userService: UserService,
         sessionManager: SessionManager,
-        authDataStorage: AuthDataStorage,
-        emailVerificationStorage: EmailVerificationStorage
     ): UserRepository {
-        return UserRepositoryImpl(userService, sessionManager, authDataStorage, emailVerificationStorage)
+        return UserRepositoryImpl(userService, sessionManager)
     }
 
     @Provides
@@ -41,11 +45,45 @@ object AppModules {
     fun provideCommunityRepository(
         communityService: CommunityService,
         sessionManager: SessionManager,
+    ): CommunityRepository {
+        return CommunityRepositoryImpl(communityService, sessionManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserAuthRepository(
+        userService: UserService,
+        sessionManager: SessionManager,
         authDataStorage: AuthDataStorage,
         emailVerificationStorage: EmailVerificationStorage
-    ): CommunityRepository {
-        return CommunityRepositoryImpl(communityService, sessionManager, authDataStorage, emailVerificationStorage)
+    ): UserAuthRepository {
+        return UserAuthRepositoryImpl(
+            userService = userService,
+            sessionManager = sessionManager,
+            authDataStorage = authDataStorage,
+            emailVerificationStorage = emailVerificationStorage
+        )
     }
+
+    @Provides
+    @Singleton
+    fun provideCommunityAuthRepository(
+        communityService: CommunityService,
+        sessionManager: SessionManager,
+        authDataStorage: AuthDataStorage,
+        emailVerificationStorage: EmailVerificationStorage
+    ): CommunityAuthRepository {
+        return CommunityAuthRepositoryImpl(
+            communityService = communityService,
+            sessionManager = sessionManager,
+            authDataStorage = authDataStorage,
+            emailVerificationStorage = emailVerificationStorage
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideTemplateRepository(): TemplateRepository = TemplateRepositoryImpl()
 
     @Provides
     @Singleton

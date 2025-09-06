@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.near.R
 import com.example.near.ui.screens.navigation.Routes
-import com.example.near.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.CustomTheme
 import com.example.near.ui.components.decorations.DynamicItemContainer
 
 @Composable

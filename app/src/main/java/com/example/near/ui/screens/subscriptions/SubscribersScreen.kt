@@ -25,9 +25,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
-import com.example.near.domain.user.models.UserFriend
-import com.example.near.ui.theme.AppTypography
-import com.example.near.ui.theme.CustomTheme
+import com.example.near.feature.community.domain.model.Subscriber
+import com.example.near.core.ui.theme.AppTypography
+import com.example.near.core.ui.theme.CustomTheme
 import com.example.near.ui.components.headers.MainHeaderTextInfo
 
 @Composable
@@ -71,7 +71,7 @@ fun SubscribersScreen(
 }
 
 @Composable
-private fun FriendItem(friend: UserFriend, onItemClick: (String) -> Unit) {
+private fun FriendItem(friend: Subscriber, onItemClick: (String) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth().padding(vertical = 8.dp, horizontal = 8.dp)

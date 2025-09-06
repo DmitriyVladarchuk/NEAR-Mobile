@@ -1,20 +1,15 @@
 package com.example.near.ui.screens.subscriptions
 
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.domain.shared.models.UIState
-import com.example.near.domain.user.models.UserFriend
-import com.example.near.domain.user.models.UserSubscription
-import com.example.near.domain.shared.usecase.GetUserUseCase
-import com.example.near.user.usecase.GetAllCommunitiesUseCase
-import com.example.near.user.usecase.SearchCommunityUseCase
+import com.example.near.feature.user.domain.models.UserSubscription
+import com.example.near.feature.user.domain.usecase.GetAllCommunitiesUseCase
+import com.example.near.feature.user.domain.usecase.GetUserUseCase
+import com.example.near.feature.user.domain.usecase.SearchCommunityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

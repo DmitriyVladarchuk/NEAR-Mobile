@@ -5,12 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.domain.user.models.AllFriendsInfo
-import com.example.near.domain.user.models.UserFriend
-import com.example.near.domain.user.models.UserGroup
-import com.example.near.domain.user.models.UserTemplate
-import com.example.near.domain.shared.usecase.GetUserUseCase
+import com.example.near.feature.user.domain.models.AllFriendsInfo
+import com.example.near.feature.user.domain.models.UserFriend
+import com.example.near.feature.user.domain.models.UserGroup
+import com.example.near.feature.user.domain.usecase.GetUserUseCase
 import com.example.near.domain.user.usecase.friends.GetAllFriendsInfoUseCase
+import com.example.near.feature.user.domain.models.UserTemplate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

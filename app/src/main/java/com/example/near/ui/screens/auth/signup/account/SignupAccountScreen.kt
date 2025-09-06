@@ -31,18 +31,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
-import com.example.near.domain.shared.models.SignupNotificationOption
+import com.example.near.feature.auth.domain.model.SignupNotificationOption
 import com.example.near.domain.shared.models.UIState
 import com.example.near.ui.screens.navigation.Routes
-import com.example.near.ui.theme.AppTypography
-import com.example.near.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.AppTypography
+import com.example.near.core.ui.theme.CustomTheme
 import com.example.near.ui.components.common.AppTextField
 import com.example.near.ui.components.auth.AuthScreenButtons
 import com.example.near.ui.components.common.ErrorText
 import com.example.near.ui.components.headers.HeaderTextInfo
 import com.example.near.ui.components.auth.PasswordVisibilityToggle
 import com.example.near.ui.components.transformations.DateTransformation
-import com.example.near.ui.components.transformations.RussianPhoneOffsetMapping
 
 
 @Composable

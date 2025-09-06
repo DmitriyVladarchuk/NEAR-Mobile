@@ -1,6 +1,7 @@
 package com.example.near.ui.screens.auth.signup.community
 
 import android.content.Context
+import android.util.Patterns
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,9 +9,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.R
-import com.example.near.domain.shared.models.EmergencyType
+import com.example.near.core.network.model.EmergencyType
 import com.example.near.domain.shared.models.UIState
-import com.example.near.domain.community.usecase.SignUpCommunityUseCase
+import com.example.near.feature.auth.domain.model.CommunitySignup
+import com.example.near.feature.auth.domain.usecase.SignUpCommunityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -44,13 +46,17 @@ class SignupCommunityViewModel @Inject constructor(
         if (!validateInput()) return
 
         _uiState.value = UIState.Loading
+
+        val communitySignup = CommunitySignup(
+            communityName = communityName,
+            email = email,
+            password = password,
+            location = monitoringRegion,
+            monitoredEmergencyTypes = selectedEmergencyTypes
+        )
         viewModelScope.launch {
             signUpCommunityUseCase(
-                communityName,
-                email,
-                password,
-                monitoringRegion,
-                selectedEmergencyTypes
+                communitySignup
             ).onSuccess {
                 _uiState.value = UIState.Success
                 navigateToDashboards()
@@ -61,7 +67,7 @@ class SignupCommunityViewModel @Inject constructor(
     private fun validateInput(): Boolean {
         return when {
             communityName.isBlank() -> showError(R.string.error_name)
-            email.isBlank() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() ->
+            email.isBlank() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() ->
                 showError(R.string.error_invalid_email)
             password.isBlank() || password.length < 7 ->
                 showError(R.string.error_password_weak)

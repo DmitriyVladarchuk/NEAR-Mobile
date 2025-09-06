@@ -58,16 +58,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.near.R
-import com.example.near.domain.community.models.Community
-import com.example.near.domain.shared.models.EmergencyType
+import com.example.near.core.network.model.EmergencyType
+import com.example.near.feature.community.domain.model.Community
 import com.example.near.ui.components.common.ItemEmergencyType
 import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
 import com.example.near.ui.screens.navigation.Routes
-import com.example.near.ui.theme.AppTypography
-import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.theme.current_container
-import com.example.near.ui.theme.dark_content
-import com.example.near.ui.theme.light_container
+import com.example.near.core.ui.theme.AppTypography
+import com.example.near.core.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.current_container
+import com.example.near.core.ui.theme.dark_content
+import com.example.near.core.ui.theme.light_container
 
 
 @Composable

@@ -9,8 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.near.domain.shared.models.UIState
-import com.example.near.ui.theme.CustomTheme
-import com.example.near.ui.theme.NEARTheme
+import com.example.near.core.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.NEARTheme
 
 @Composable
 fun LoadingIndicator(state: UIState, modifier: Modifier = Modifier) {

@@ -6,10 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.near.domain.user.models.UserTemplate
-import com.example.near.domain.community.repository.CommunityRepository
-import com.example.near.domain.community.usecase.GetCommunityUseCase
 import com.example.near.domain.shared.models.UIState
+import com.example.near.feature.community.domain.repository.CommunityRepository
+import com.example.near.feature.community.domain.usecase.GetCommunityUseCase
+import com.example.near.feature.user.domain.models.UserTemplate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,7 +31,7 @@ class DashboardCommunityViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = UIState.Loading
             try {
-                notificationTemplates = getCommunityUseCase().notificationTemplates
+                //notificationTemplates = getCommunityUseCase().notificationTemplates
                 _uiState.value = UIState.Success
             } catch (e: Exception) {
                 _uiState.value = UIState.Error("Failed to load user data: ${e.message}")
@@ -42,17 +42,17 @@ class DashboardCommunityViewModel @Inject constructor(
         }
     }
 
-    fun send(id: String) {
-        viewModelScope.launch {
-            _uiState.value = UIState.Loading
-            try {
-                val recipients = getCommunityUseCase().subscribers.map { it.id }
-                communityRepository.sendTemplate(id, recipients)
-                    .onSuccess { _uiState.value = UIState.Success }
-                    .onFailure { _uiState.value = UIState.Error("Failed to send notification") }
-            } catch (e: Exception) {
-                _uiState.value = UIState.Error("Error: ${e.localizedMessage}")
-            }
-        }
-    }
+//    fun send(id: String) {
+//        viewModelScope.launch {
+//            _uiState.value = UIState.Loading
+//            try {
+//                val recipients = getCommunityUseCase().subscribers.map { it.id }
+//                communityRepository.sendTemplate(id, recipients)
+//                    .onSuccess { _uiState.value = UIState.Success }
+//                    .onFailure { _uiState.value = UIState.Error("Failed to send notification") }
+//            } catch (e: Exception) {
+//                _uiState.value = UIState.Error("Error: ${e.localizedMessage}")
+//            }
+//        }
+//    }
 }
