@@ -16,3 +16,6 @@ val content_inscription = Color.Gray
 val current_content = dark_content
 val current_container = Color(0xFF2D384A)
 val orange = Color(0xFFFF4C2B)
+
+val error_color = Color(0xFFF44336)
+val error_container = Color(0x1AF44336)
