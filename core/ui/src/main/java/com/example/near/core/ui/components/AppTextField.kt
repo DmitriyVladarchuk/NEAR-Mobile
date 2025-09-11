@@ -24,6 +24,26 @@ import com.example.near.core.ui.theme.Dimens
 import com.example.near.core.ui.theme.NEARTheme
 import com.example.near.core.ui.theme.screenPadding
 
+/**
+ * Универсальный компонент текстового поля.
+ *
+ * @param value Текущее значение текстового поля
+ * @param onValueChange Обработчик изменения значения поля
+ * @param labelRes Текст метки поля (отображается над полем ввода)
+ * @param placeholderRes Текст плейсхолдера (отображается когда поле пустое)
+ * @param modifier Модификатор для настройки layout и поведения компонента
+ * @param keyboardType Тип клавиатуры для ввода (текст, email, число и т.д.)
+ * @param visualTransformation Визуальное преобразование текста (например, для пароля)
+ * @param trailingIcon Иконка в конце поля (например, кнопка очистки)
+ * @param leadingIcon Иконка в начале поля (например, иконка email)
+ * @param isError Флаг indicating наличие ошибки в поле
+ * @param errorMessage Сообщение об ошибке (отображается под полем при isError = true)
+ * @param singleLine Ограничение ввода одной строкой
+ * @param maxLines Максимальное количество строк (игнорируется если singleLine = true)
+ * @param minLines Минимальное количество строк
+ * @param readOnly Флаг только для чтения (поле нельзя редактировать)
+ *
+ */
 @Composable
 fun AppTextField(
     value: String,
@@ -76,6 +96,13 @@ fun AppTextField(
     }
 }
 
+/**
+ * Компонент для отображения плейсхолдера текстового поля.
+ *
+ * @param text Текст плейсхолдера
+ * @param style Стиль текста (по умолчанию bodyMedium)
+ *
+ */
 @Composable
 fun TextFieldPlaceholder(
     text: String,
@@ -88,6 +115,15 @@ fun TextFieldPlaceholder(
     )
 }
 
+/**
+ * Компонент для отображения метки текстового поля.
+ * Поддерживает состояние ошибки с изменением цвета.
+ *
+ * @param text Текст метки
+ * @param isError Флаг indicating наличие ошибки
+ * @param style Стиль текста (по умолчанию bodySmall)
+ *
+ */
 @Composable
 fun TextFieldLabel(
     text: String,

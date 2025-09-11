@@ -29,7 +29,7 @@ object Dimens {
     // Радиусы скруглений
     val cornerRadiusSmall: Dp = 4.dp
     val cornerRadiusMedium: Dp = 8.dp
-    val cornerRadiusLarge: Dp = 16.dp
+    val cornerRadiusLarge: Dp = 12.dp
     val cornerRadiusExtraLarge: Dp = 24.dp
 }
 
