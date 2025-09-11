@@ -1,16 +1,15 @@
-package com.example.near.ui.screens.templates
+package com.example.near.ui.screens.templates.info
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.near.domain.user.usecase.friends.GetAllFriendsInfoUseCase
+import com.example.near.feature.template.domain.model.Template
 import com.example.near.feature.user.domain.models.AllFriendsInfo
-import com.example.near.feature.user.domain.models.UserFriend
 import com.example.near.feature.user.domain.models.UserGroup
 import com.example.near.feature.user.domain.usecase.GetUserUseCase
-import com.example.near.domain.user.usecase.friends.GetAllFriendsInfoUseCase
-import com.example.near.feature.user.domain.models.UserTemplate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,13 +20,10 @@ class InfoTemplateViewModel @Inject constructor(
     private val getAllFriendsInfoUseCase: GetAllFriendsInfoUseCase,
 ) : ViewModel() {
 
-    var template by mutableStateOf<UserTemplate?>(null)
+    var template by mutableStateOf<Template?>(null)
         private set
 
     var friends by mutableStateOf<AllFriendsInfo?>(null)
-        private set
-
-    var subscribers by mutableStateOf<List<UserFriend>?>(null)
         private set
 
     var groups by mutableStateOf<List<UserGroup>?>(null)

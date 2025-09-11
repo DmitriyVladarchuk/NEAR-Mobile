@@ -45,6 +45,7 @@ import com.example.near.ui.components.headers.MainHeaderTextInfo
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.core.ui.theme.AppTypography
 import com.example.near.core.ui.theme.CustomTheme
+import com.example.near.feature.template.domain.model.Template
 
 @Composable
 fun DashboardCommunityScreen(
@@ -135,11 +136,11 @@ private fun BodyButtons(navController: NavController) {
 @Composable
 private fun BodyTemplates(
     navController: NavController,
-    templates: List<UserTemplate>,
+    templates: List<Template>,
     viewModel: DashboardCommunityViewModel
 ) {
     var showDialog by remember { mutableStateOf(false) }
-    var selectedTemplate by remember { mutableStateOf<UserTemplate?>(null) }
+    var selectedTemplate by remember { mutableStateOf<Template?>(null) }
 
     Column(
         modifier = Modifier.fillMaxSize()

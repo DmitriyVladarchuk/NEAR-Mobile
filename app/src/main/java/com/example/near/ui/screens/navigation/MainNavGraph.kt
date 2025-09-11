@@ -31,6 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.near.R
+import com.example.near.core.ui.theme.CustomTheme
 import com.example.near.domain.shared.models.UIState
 import com.example.near.ui.screens.auth.emailverification.EmailVerificationScreen
 import com.example.near.ui.screens.auth.login.account.LoginAccountScreen
@@ -39,21 +40,20 @@ import com.example.near.ui.screens.auth.signup.account.SignupAccountScreen
 import com.example.near.ui.screens.auth.signup.community.SignupCommunityScreen
 import com.example.near.ui.screens.bottomBar.BottomBar
 import com.example.near.ui.screens.community.edit.EditCommunityProfileScreen
+import com.example.near.ui.screens.community.profile.ProfileCommunityScreen
 import com.example.near.ui.screens.dashboard.community.DashboardCommunityScreen
 import com.example.near.ui.screens.dashboard.user.DashboardScreen
 import com.example.near.ui.screens.friendsAndGroups.FriendsAndGroupsScreen
 import com.example.near.ui.screens.friendsAndGroups.FriendsAndSubscriptions
 import com.example.near.ui.screens.friendsAndGroups.groups.CreateGroupsScreen
 import com.example.near.ui.screens.onboarding.OnboardingScreen
-import com.example.near.ui.screens.community.profile.ProfileCommunityScreen
 import com.example.near.ui.screens.profile.edit.EditUserProfileScreen
 import com.example.near.ui.screens.profile.user.UserProfileScreen
 import com.example.near.ui.screens.settings.SettingsScreen
 import com.example.near.ui.screens.subscriptions.SubscribersScreen
 import com.example.near.ui.screens.subscriptions.SubscriptionsScreen
-import com.example.near.ui.screens.templates.CreateTemplate
-import com.example.near.ui.screens.templates.InfoTemplateScreen
-import com.example.near.core.ui.theme.CustomTheme
+import com.example.near.ui.screens.templates.create.CreateTemplateScreen
+import com.example.near.ui.screens.templates.info.InfoTemplateScreen
 
 
 @Composable
@@ -243,7 +243,7 @@ fun MainNavGraph(
 
                 // --- Template ---
                 composable(Routes.CreateTemplate.route) {
-                    CreateTemplate(navController = navController)
+                    CreateTemplateScreen(navController = navController)
                 }
 
                 composable(
@@ -251,7 +251,7 @@ fun MainNavGraph(
                     arguments = listOf(navArgument("templateId") { type = NavType.StringType })
                 ) { backStackEntry ->
                     val templateId = backStackEntry.arguments?.getString("templateId")
-                    CreateTemplate(templateId = templateId, navController = navController)
+                    CreateTemplateScreen(templateId = templateId, navController = navController)
                 }
 
                 composable(
@@ -287,7 +287,7 @@ fun MainNavGraph(
 
                 // --- Template ---
                 composable(Routes.CreateTemplate.route) {
-                    CreateTemplate(navController = navController, isCommunity = true)
+                    CreateTemplateScreen(navController = navController)
                 }
 
             }

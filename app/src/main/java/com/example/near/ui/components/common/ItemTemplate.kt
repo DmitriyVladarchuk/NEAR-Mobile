@@ -24,14 +24,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.near.R
 import com.example.near.core.network.model.emergencyTypes
-import com.example.near.feature.user.domain.models.UserTemplate
 import com.example.near.core.ui.theme.AppTypography
 import com.example.near.core.ui.theme.CustomTheme
 import com.example.near.core.ui.theme.NEARTheme
+import com.example.near.feature.template.domain.model.Template
 
 @Composable
 fun ItemTemplate(
-    template: UserTemplate,
+    template: Template,
     onClick: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit
@@ -129,7 +129,7 @@ private fun TemplateOptionsMenu(
 private fun ItemTemplatePreview() {
     NEARTheme {
 
-        val template = UserTemplate(
+        val template = Template(
             id = "2136593275",
             templateName = "Test Template",
             message = "TODO()",

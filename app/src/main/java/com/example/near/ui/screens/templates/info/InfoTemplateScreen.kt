@@ -1,4 +1,4 @@
-package com.example.near.ui.screens.templates
+package com.example.near.ui.screens.templates.info
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -45,12 +45,12 @@ import coil.compose.AsyncImage
 import com.example.near.R
 import com.example.near.feature.user.domain.models.User
 import com.example.near.feature.user.domain.models.UserGroup
-import com.example.near.feature.user.domain.models.UserTemplate
 import com.example.near.ui.components.decorations.DynamicItemContainer
 import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
 import com.example.near.core.ui.theme.AppTypography
 import com.example.near.core.ui.theme.CustomTheme
 import com.example.near.core.ui.theme.dark_content
+import com.example.near.feature.template.domain.model.Template
 
 @Composable
 fun InfoTemplateScreen(
@@ -147,7 +147,7 @@ fun InfoTemplateScreen(
 }
 
 @Composable
-private fun TemplateInfo(template: UserTemplate?) {
+private fun TemplateInfo(template: Template?) {
     template?.let {
         Column(
             modifier = Modifier

@@ -33,10 +33,58 @@ class TemplateRepositoryTest {
         templateId = "template_123",
         recipients = listOf("user_123", "user_456")
     )
+    private val testTemplates = listOf(
+        Template(
+            id = "template_1",
+            templateName = "Template 1",
+            message = "Message 1",
+            emergencyType = testEmergencyType
+        ),
+        Template(
+            id = "template_2",
+            templateName = "Template 2",
+            message = "Message 2",
+            emergencyType = testEmergencyType
+        )
+    )
 
     @Before
     fun setUp() {
         repository = mockRepository
+    }
+
+    @Test
+    fun `getTemplates should return success result with templates list`() = runBlocking {
+        coEvery { repository.getTemplates() } returns Result.success(testTemplates)
+
+        val result = repository.getTemplates()
+
+        assertTrue(result.isSuccess)
+        assertEquals(testTemplates, result.getOrNull())
+        coVerify { repository.getTemplates() }
+    }
+
+    @Test
+    fun `getTemplates should return empty list when no templates available`() = runBlocking {
+        coEvery { repository.getTemplates() } returns Result.success(emptyList())
+
+        val result = repository.getTemplates()
+
+        assertTrue(result.isSuccess)
+        assertEquals(emptyList(), result.getOrNull())
+        coVerify { repository.getTemplates() }
+    }
+
+    @Test
+    fun `getTemplates should return failure result when repository fails`() = runBlocking {
+        val exception = RuntimeException("Network error")
+        coEvery { repository.getTemplates() } returns Result.failure(exception)
+
+        val result = repository.getTemplates()
+
+        assertTrue(result.isFailure)
+        assertEquals(exception, result.exceptionOrNull())
+        coVerify { repository.getTemplates() }
     }
 
     @Test

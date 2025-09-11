@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
-import com.example.near.ui.components.common.AppTextField
+import com.example.near.core.ui.components.AppTextField
 import com.example.near.ui.components.decorations.LoadingIndicator
 import com.example.near.ui.components.dialogs.UiStateNotifier
 import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
@@ -102,15 +102,15 @@ private fun PersonalInfoSection(viewModel: EditUserProfileViewModel) {
     AppTextField(
         value = viewModel.firstName,
         onValueChange = { viewModel.firstName = it },
-        labelRes = R.string.first_name,
-        placeholderRes = R.string.first_name
+        labelRes = stringResource(R.string.first_name),
+        placeholderRes = stringResource(R.string.first_name)
     )
 
     AppTextField(
         value = viewModel.lastName,
         onValueChange = { viewModel.lastName = it },
-        labelRes = R.string.last_name,
-        placeholderRes = R.string.last_name
+        labelRes = stringResource(R.string.last_name),
+        placeholderRes = stringResource(R.string.last_name)
     )
 
     AppTextField(
@@ -119,8 +119,8 @@ private fun PersonalInfoSection(viewModel: EditUserProfileViewModel) {
             val filtered = newText.filter { it.isDigit() }.take(8)
             viewModel.birthday = filtered
         },
-        labelRes = R.string.birthday,
-        placeholderRes = R.string.birthday,
+        labelRes = stringResource(R.string.birthday),
+        placeholderRes = stringResource(R.string.birthday),
         keyboardType = KeyboardType.Number,
         visualTransformation = DateTransformation()
     )
@@ -131,22 +131,22 @@ private fun LocationSection(viewModel: EditUserProfileViewModel) {
     AppTextField(
         value = viewModel.country,
         onValueChange = { viewModel.country = it },
-        labelRes = R.string.country,
-        placeholderRes = R.string.country
+        labelRes = stringResource(R.string.country),
+        placeholderRes = stringResource(R.string.country)
     )
 
     AppTextField(
         value = viewModel.city,
         onValueChange = { viewModel.city = it },
-        labelRes = R.string.city,
-        placeholderRes = R.string.city
+        labelRes = stringResource(R.string.city),
+        placeholderRes = stringResource(R.string.city)
     )
 
     AppTextField(
         value = viewModel.district,
         onValueChange = { viewModel.district = it },
-        labelRes = R.string.district,
-        placeholderRes = R.string.district
+        labelRes = stringResource(R.string.district),
+        placeholderRes = stringResource(R.string.district)
     )
 }
 

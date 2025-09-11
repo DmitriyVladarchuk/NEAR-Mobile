@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.near.domain.shared.models.UIState
 import com.example.near.feature.community.domain.repository.CommunityRepository
 import com.example.near.feature.community.domain.usecase.GetCommunityUseCase
+import com.example.near.feature.template.domain.model.Template
 import com.example.near.feature.user.domain.models.UserTemplate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -23,7 +24,7 @@ class DashboardCommunityViewModel @Inject constructor(
     private val _uiState = mutableStateOf<UIState>(UIState.Idle)
     val uiState: State<UIState> = _uiState
 
-    var notificationTemplates: List<UserTemplate> by mutableStateOf(listOf())
+    var notificationTemplates: List<Template> by mutableStateOf(listOf())
         private set
 
 

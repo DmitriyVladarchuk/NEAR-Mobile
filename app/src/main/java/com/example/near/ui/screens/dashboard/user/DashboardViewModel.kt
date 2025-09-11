@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.domain.shared.models.UIState
+import com.example.near.feature.template.domain.model.Template
 import com.example.near.feature.user.domain.usecase.GetUserUseCase
 import com.example.near.feature.template.domain.usecase.DeleteTemplateUseCase
 import com.example.near.feature.user.domain.models.UserTemplate
@@ -23,7 +24,7 @@ class DashboardViewModel @Inject constructor(
     private val _uiState = mutableStateOf<UIState>(UIState.Idle)
     val uiState: State<UIState> = _uiState
 
-    var notificationTemplates: List<UserTemplate> by mutableStateOf(listOf())
+    var notificationTemplates: List<Template> by mutableStateOf(listOf())
         private set
 
 
@@ -41,7 +42,7 @@ class DashboardViewModel @Inject constructor(
         }
     }
 
-    fun deleteTemplate(template: UserTemplate) {
+    fun deleteTemplate(template: Template) {
         viewModelScope.launch {
             _uiState.value = UIState.Loading
             try {

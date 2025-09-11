@@ -1,5 +1,7 @@
 package com.example.near.feature.user.domain.models
 
+import com.example.near.feature.template.domain.model.Template
+
 data class User(
     val id: String,
     val firstName: String,
@@ -14,5 +16,5 @@ data class User(
     val friends: List<UserFriend>,
     val groups: List<UserGroup>,
     val subscriptions: List<UserSubscription>,
-    val notificationTemplates: List<UserTemplate>,
+    val notificationTemplates: List<Template>,
 )

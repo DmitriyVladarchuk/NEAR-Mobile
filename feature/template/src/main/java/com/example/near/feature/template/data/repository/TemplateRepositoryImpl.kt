@@ -3,7 +3,9 @@ package com.example.near.feature.template.data.repository
 import com.example.near.core.network.SessionManager
 import com.example.near.core.network.service.CommunityService
 import com.example.near.core.network.service.UserService
+import com.example.near.core.network.util.NetworkUtils.executeApiCall
 import com.example.near.core.network.util.NetworkUtils.executeVoidApiCall
+import com.example.near.feature.template.data.mapper.toDomain
 import com.example.near.feature.template.data.mapper.toRequest
 import com.example.near.feature.template.domain.model.CreateTemplate
 import com.example.near.feature.template.domain.model.SendTemplateParams
@@ -15,6 +17,24 @@ class TemplateRepositoryImpl(
     private val communityService: CommunityService,
     private val sessionManager: SessionManager,
 ) : TemplateRepository {
+
+    override suspend fun getTemplates(): Result<List<Template>> {
+        val authHeader = "Bearer ${sessionManager.authToken!!.accessToken}"
+
+        return if (sessionManager.isCommunity) {
+            executeApiCall {
+                communityService.getCommunityInfo(token = authHeader)
+            }.map { response ->
+                response.notificationTemplates.map { it.toDomain() }
+            }
+        } else {
+            executeApiCall {
+                userService.getUserInfo(token = authHeader)
+            }.map { response ->
+                response.notificationTemplates.map { it.toDomain() }
+            }
+        }
+    }
 
     override suspend fun createTemplate(template: CreateTemplate): Result<Unit> {
         return executeVoidApiCall {

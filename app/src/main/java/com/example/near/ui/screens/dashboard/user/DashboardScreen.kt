@@ -35,15 +35,15 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
-import com.example.near.feature.user.domain.models.UserTemplate
+import com.example.near.core.ui.theme.AppTypography
+import com.example.near.core.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.dark_content
+import com.example.near.feature.template.domain.model.Template
 import com.example.near.ui.components.common.ItemTemplate
 import com.example.near.ui.components.common.SubmittedTemplateButton
 import com.example.near.ui.components.decorations.dashedBorder
 import com.example.near.ui.components.headers.MainHeaderTextInfo
 import com.example.near.ui.screens.navigation.Routes
-import com.example.near.core.ui.theme.AppTypography
-import com.example.near.core.ui.theme.CustomTheme
-import com.example.near.core.ui.theme.dark_content
 
 @Composable
 fun DashboardScreen(
@@ -154,7 +154,7 @@ private fun BodyButtons(navController: NavController) {
 @Composable
 private fun BodyTemplates(
     navController: NavController,
-    templates: List<UserTemplate>,
+    templates: List<Template>,
     viewModel: DashboardViewModel
 ) {
     Column(

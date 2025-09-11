@@ -83,7 +83,15 @@ object AppModules {
 
     @Provides
     @Singleton
-    fun provideTemplateRepository(): TemplateRepository = TemplateRepositoryImpl()
+    fun provideTemplateRepository(
+        userService: UserService,
+        communityService: CommunityService,
+        sessionManager: SessionManager,
+    ): TemplateRepository = TemplateRepositoryImpl(
+        userService = userService,
+        communityService = communityService,
+        sessionManager = sessionManager
+    )
 
     @Provides
     @Singleton
