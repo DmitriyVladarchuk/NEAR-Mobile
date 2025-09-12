@@ -22,15 +22,20 @@ object Dimens {
     // Размеры компонентов
     val textFieldHeight: Dp = 56.dp
     val buttonHeight: Dp = 48.dp
-    val iconSizeSmall: Dp = 16.dp
-    val iconSizeMedium: Dp = 24.dp
-    val iconSizeLarge: Dp = 32.dp
+
+    // Размеры иконок
+    val iconSizeExtraSmall: Dp = 16.dp
+    val iconSizeSmall: Dp = 24.dp
+    val iconSizeMedium: Dp = 32.dp
+    val iconSizeLarge: Dp = 48.dp
+    val iconSizeExtraLarge: Dp = 64.dp
 
     // Радиусы скруглений
     val cornerRadiusSmall: Dp = 4.dp
     val cornerRadiusMedium: Dp = 8.dp
     val cornerRadiusLarge: Dp = 12.dp
     val cornerRadiusExtraLarge: Dp = 24.dp
+    val cornerRadiusCircle: Dp = 50.dp
 }
 
 /**

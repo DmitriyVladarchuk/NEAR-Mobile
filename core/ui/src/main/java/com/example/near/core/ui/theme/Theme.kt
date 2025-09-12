@@ -15,7 +15,8 @@ private val lightColors = CustomColors(
     currentContainer = current_container,
     orange = orange,
     error = error_color,
-    errorContainer = error_container
+    errorContainer = error_container,
+    caption = light_caption
 )
 
 private val darkColors = CustomColors(
@@ -27,7 +28,8 @@ private val darkColors = CustomColors(
     currentContainer = current_container,
     orange = orange,
     error = error_color,
-    errorContainer = error_container
+    errorContainer = error_container,
+    caption = dark_caption
 )
 
 val LocalCustomColors = staticCompositionLocalOf<CustomColors> {

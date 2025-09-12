@@ -13,5 +13,6 @@ data class CustomColors(
     val currentContainer: Color,
     val orange: Color,
     val error: Color,
-    val errorContainer: Color
+    val errorContainer: Color,
+    val caption: Color
 )

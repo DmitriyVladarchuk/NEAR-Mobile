@@ -73,7 +73,7 @@ fun CategoryChip(
         modifier = modifier
             .background(
                 color = backgroundColor,
-                shape = RoundedCornerShape(Dimens.cornerRadiusMedium)
+                shape = RoundedCornerShape(Dimens.cornerRadiusLarge)
             ),
         contentAlignment = Alignment.Center
     ) {

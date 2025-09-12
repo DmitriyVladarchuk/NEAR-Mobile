@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.near.domain.user.usecase.friends.GetAllFriendsInfoUseCase
 import com.example.near.feature.template.domain.model.Template
+import com.example.near.feature.template.domain.usecase.SendTemplateUseCase
 import com.example.near.feature.user.domain.models.AllFriendsInfo
 import com.example.near.feature.user.domain.models.UserGroup
 import com.example.near.feature.user.domain.usecase.GetUserUseCase
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class InfoTemplateViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val getAllFriendsInfoUseCase: GetAllFriendsInfoUseCase,
+    private val sendTemplateUseCase: SendTemplateUseCase,
 ) : ViewModel() {
 
     var template by mutableStateOf<Template?>(null)
@@ -63,7 +65,7 @@ class InfoTemplateViewModel @Inject constructor(
     fun saveRecipients() {
         viewModelScope.launch {
             template?.let {
-                //communityRepository.sendTemplate(template!!.id, recipients)
+
             }
         }
     }
