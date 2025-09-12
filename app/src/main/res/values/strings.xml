@@ -181,5 +181,9 @@
     <string name="retry">Try again</string>
     <string name="error_message">error is not null</string>
 
+    <string name="error_load_data">Failed to load template data</string>
+    <string name="error_send_template">Failed to send template</string>
+    <string name="error_unknown">An unexpected error occurred</string>
+
 
 </resources>
