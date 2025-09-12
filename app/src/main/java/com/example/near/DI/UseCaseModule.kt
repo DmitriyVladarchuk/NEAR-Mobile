@@ -28,6 +28,8 @@ import com.example.near.feature.community.domain.usecase.UpdateCommunityUseCase
 import com.example.near.feature.template.domain.repository.TemplateRepository
 import com.example.near.feature.template.domain.usecase.CreateTemplateUseCase
 import com.example.near.feature.template.domain.usecase.DeleteTemplateUseCase
+import com.example.near.feature.template.domain.usecase.GetTemplatesUseCase
+import com.example.near.feature.template.domain.usecase.SendTemplateUseCase
 import com.example.near.feature.template.domain.usecase.UpdateTemplateUseCase
 import com.example.near.feature.user.domain.repository.UserRepository
 import com.example.near.feature.user.domain.usecase.GetAllCommunitiesUseCase
@@ -199,6 +201,11 @@ object UseCaseModule {
     // --- Template ---
 
     @Provides
+    fun provideGetTemplatesUseCase(templateRepository: TemplateRepository): GetTemplatesUseCase {
+        return GetTemplatesUseCase(templateRepository)
+    }
+
+    @Provides
     fun provideCreateTemplateUseCase(templateRepository: TemplateRepository): CreateTemplateUseCase {
         return CreateTemplateUseCase(templateRepository)
     }
@@ -211,6 +218,11 @@ object UseCaseModule {
     @Provides
     fun provideDeleteTemplateUseCase(templateRepository: TemplateRepository): DeleteTemplateUseCase {
         return DeleteTemplateUseCase(templateRepository)
+    }
+
+    @Provides
+    fun provideSendTemplateUseCase(templateRepository: TemplateRepository): SendTemplateUseCase {
+        return SendTemplateUseCase(templateRepository)
     }
 
     @Provides

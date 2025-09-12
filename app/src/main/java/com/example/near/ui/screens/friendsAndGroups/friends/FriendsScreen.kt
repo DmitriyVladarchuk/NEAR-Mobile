@@ -46,7 +46,7 @@ import com.example.near.R
 import com.example.near.domain.shared.models.UIState
 import com.example.near.feature.user.domain.models.AllFriendsInfo
 import com.example.near.feature.user.domain.models.User
-import com.example.near.ui.components.common.AppTextField
+import com.example.near.core.ui.components.AppTextField
 import com.example.near.core.ui.theme.AppTypography
 import com.example.near.core.ui.theme.CustomTheme
 
@@ -144,8 +144,8 @@ private fun FriendsHeader(
                 AppTextField(
                     value = searchQuery,
                     onValueChange = onSearchQueryChange,
-                    labelRes = R.string.search_users,
-                    placeholderRes = R.string.search_users_placeholder,
+                    labelRes = stringResource(R.string.search_users),
+                    placeholderRes = stringResource(R.string.search_users_placeholder),
                     modifier = Modifier.weight(1f),
                     trailingIcon = {
                         IconButton(onClick = onClearSearch) {

@@ -13,7 +13,10 @@ private val lightColors = CustomColors(
     content = light_content,
     currentContent = current_content,
     currentContainer = current_container,
-    orange = orange
+    orange = orange,
+    error = error_color,
+    errorContainer = error_container,
+    caption = light_caption
 )
 
 private val darkColors = CustomColors(
@@ -23,7 +26,10 @@ private val darkColors = CustomColors(
     content = dark_content,
     currentContent = current_content,
     currentContainer = current_container,
-    orange = orange
+    orange = orange,
+    error = error_color,
+    errorContainer = error_container,
+    caption = dark_caption
 )
 
 val LocalCustomColors = staticCompositionLocalOf<CustomColors> {

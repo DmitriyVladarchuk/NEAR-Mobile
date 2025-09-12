@@ -24,7 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.near.R
 import com.example.near.core.network.model.emergencyTypes
-import com.example.near.ui.components.common.AppTextField
+import com.example.near.core.ui.components.AppTextField
 import com.example.near.ui.components.common.EmergencyTypeChip
 import com.example.near.ui.components.decorations.LoadingIndicator
 import com.example.near.ui.components.dialogs.UiStateNotifier
@@ -77,36 +77,36 @@ private fun ProfileForm(viewModel: EditCommunityProfileViewModel) {
         AppTextField(
             value = viewModel.communityName,
             onValueChange = { viewModel.communityName = it },
-            labelRes = R.string.community_name,
-            placeholderRes = R.string.community_name
+            labelRes = stringResource(R.string.community_name),
+            placeholderRes = stringResource(R.string.community_name)
         )
 
         AppTextField(
             value = viewModel.description,
             onValueChange = { viewModel.description = it },
-            labelRes = R.string.description,
-            placeholderRes = R.string.description
+            labelRes = stringResource(R.string.description),
+            placeholderRes = stringResource(R.string.description)
         )
 
         AppTextField(
             value = viewModel.country,
             onValueChange = { viewModel.country = it },
-            labelRes = R.string.country,
-            placeholderRes = R.string.country
+            labelRes = stringResource(R.string.country),
+            placeholderRes = stringResource(R.string.country)
         )
 
         AppTextField(
             value = viewModel.city,
             onValueChange = { viewModel.city = it },
-            labelRes = R.string.city,
-            placeholderRes = R.string.city
+            labelRes = stringResource(R.string.city),
+            placeholderRes = stringResource(R.string.city)
         )
 
         AppTextField(
             value = viewModel.district,
             onValueChange = { viewModel.district = it },
-            labelRes = R.string.district,
-            placeholderRes = R.string.district
+            labelRes = stringResource(R.string.district),
+            placeholderRes = stringResource(R.string.district)
         )
 
         Text(

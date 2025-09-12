@@ -11,6 +11,7 @@ import com.example.near.core.network.model.NotificationOptionResponse
 import com.example.near.core.network.model.RefreshTokenRequest
 import com.example.near.core.network.model.TemplateActionRequest
 import com.example.near.core.network.model.TemplateCreateRequest
+import com.example.near.core.network.model.TemplateSendRequest
 import com.example.near.core.network.model.user.AllFriendsInfoResponse
 import com.example.near.core.network.model.user.FriendRequest
 import com.example.near.core.network.model.user.GroupActionRequest
@@ -149,6 +150,12 @@ interface UserService {
     suspend fun deleteTemplate(
         @Header("Authorization") token: String,
         @Body request: TemplateActionRequest
+    ): Response<Void>
+
+    @POST("NEAR/user/template/send")
+    suspend fun sendTemplate(
+        @Header("Authorization") token: String,
+        @Body request: TemplateSendRequest
     ): Response<Void>
 
     // --- Action Subscribes

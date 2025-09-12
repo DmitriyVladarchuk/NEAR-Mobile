@@ -20,7 +20,7 @@ import androidx.navigation.NavController
 import com.example.near.R
 import com.example.near.domain.shared.models.UIState
 import com.example.near.ui.screens.navigation.Routes
-import com.example.near.ui.components.common.AppTextField
+import com.example.near.core.ui.components.AppTextField
 import com.example.near.ui.components.auth.AuthScreenButtons
 import com.example.near.ui.components.common.ErrorText
 import com.example.near.ui.components.auth.ForgotPassword
@@ -85,8 +85,8 @@ private fun TextFieldCommunity(viewModel: LoginCommunityViewModel, errorMessage:
         AppTextField(
             value = viewModel.email,
             onValueChange = viewModel::onEmailChange,
-            labelRes = R.string.email,
-            placeholderRes = R.string.email,
+            labelRes = stringResource(R.string.email),
+            placeholderRes = stringResource(R.string.email),
             keyboardType = KeyboardType.Email,
             isError = errorMessage != null && viewModel.email.isBlank()
         )
@@ -94,8 +94,8 @@ private fun TextFieldCommunity(viewModel: LoginCommunityViewModel, errorMessage:
         AppTextField(
             value = viewModel.password,
             onValueChange = viewModel::onPasswordChange,
-            labelRes = R.string.password,
-            placeholderRes = R.string.password,
+            labelRes = stringResource(R.string.password),
+            placeholderRes = stringResource(R.string.password),
             keyboardType = KeyboardType.Password,
             visualTransformation = if (isPasswordVisibility) None else PasswordVisualTransformation(),
             trailingIcon = {

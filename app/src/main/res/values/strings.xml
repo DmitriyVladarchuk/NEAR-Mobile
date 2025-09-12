@@ -179,6 +179,11 @@
     <string name="email_verification_message">We sent a confirmation link to your email. Please check your inbox and click the link to verify your email address.</string>
     <string name="i_confirmed_email">I confirmed my email</string>
     <string name="retry">Try again</string>
+    <string name="error_message">error is not null</string>
+
+    <string name="error_load_data">Failed to load template data</string>
+    <string name="error_send_template">Failed to send template</string>
+    <string name="error_unknown">An unexpected error occurred</string>
 
 
 </resources>

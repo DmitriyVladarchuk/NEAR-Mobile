@@ -33,7 +33,7 @@ import com.example.near.domain.shared.models.UIState
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.core.ui.theme.AppTypography
 import com.example.near.core.ui.theme.CustomTheme
-import com.example.near.ui.components.common.AppTextField
+import com.example.near.core.ui.components.AppTextField
 import com.example.near.ui.components.auth.AuthScreenButtons
 import com.example.near.ui.components.common.ErrorText
 import com.example.near.ui.components.headers.HeaderTextInfo
@@ -97,16 +97,16 @@ private fun TextFieldCommunity(viewModel: SignupCommunityViewModel) {
         AppTextField(
             value = viewModel.communityName,
             onValueChange = { viewModel.communityName = it },
-            labelRes = R.string.community_name,
-            placeholderRes = R.string.community_name
+            labelRes = stringResource(R.string.community_name),
+            placeholderRes = stringResource(R.string.community_name)
         )
 
         // Email
         AppTextField(
             value = viewModel.email,
             onValueChange = { viewModel.email = it },
-            labelRes = R.string.email,
-            placeholderRes = R.string.email,
+            labelRes = stringResource(R.string.email),
+            placeholderRes = stringResource(R.string.email),
             keyboardType = KeyboardType.Email
         )
 
@@ -115,8 +115,8 @@ private fun TextFieldCommunity(viewModel: SignupCommunityViewModel) {
         AppTextField(
             value = viewModel.password,
             onValueChange = { viewModel.password = it },
-            labelRes = R.string.password,
-            placeholderRes = R.string.password,
+            labelRes = stringResource(R.string.password),
+            placeholderRes = stringResource(R.string.password),
             keyboardType = KeyboardType.Password,
             visualTransformation = if (isPasswordVisible) None else PasswordVisualTransformation(),
             trailingIcon = {
@@ -131,8 +131,8 @@ private fun TextFieldCommunity(viewModel: SignupCommunityViewModel) {
         AppTextField(
             value = viewModel.monitoringRegion,
             onValueChange = { viewModel.monitoringRegion = it },
-            labelRes = R.string.monitoring_region,
-            placeholderRes = R.string.monitoring_region
+            labelRes = stringResource(R.string.monitoring_region),
+            placeholderRes = stringResource(R.string.monitoring_region)
         )
 
         // Emergency Types

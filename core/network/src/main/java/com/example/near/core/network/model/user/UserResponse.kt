@@ -1,5 +1,6 @@
 package com.example.near.core.network.model.user
 
+import com.example.near.core.network.model.TemplateResponse
 import com.google.gson.annotations.SerializedName
 
 data class UserResponse(
@@ -16,5 +17,5 @@ data class UserResponse(
     @SerializedName("friends") val friends: List<UserFriendResponse>,
     @SerializedName("groups") val groups: List<UserGroupResponse>,
     @SerializedName("subscriptions") val subscriptions: List<UserSubscriptionResponse>,
-    @SerializedName("notificationTemplates") val notificationTemplates: List<UserTemplateResponse>
+    @SerializedName("notificationTemplates") val notificationTemplates: List<TemplateResponse>
 )

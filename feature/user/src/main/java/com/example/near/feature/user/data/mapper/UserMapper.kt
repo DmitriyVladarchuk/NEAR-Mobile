@@ -1,8 +1,8 @@
 package com.example.near.feature.user.data.mapper
 
 import com.example.near.core.network.model.EmergencyType
-import com.example.near.core.network.model.EmergencyTypeResponse
 import com.example.near.core.network.model.NotificationOptionResponse
+import com.example.near.core.network.model.TemplateResponse
 import com.example.near.core.network.model.user.AllFriendsInfoResponse
 import com.example.near.core.network.model.user.CommunitiesListResponse
 import com.example.near.core.network.model.user.UserFriendResponse
@@ -10,8 +10,8 @@ import com.example.near.core.network.model.user.UserGroupResponse
 import com.example.near.core.network.model.user.UserListResponse
 import com.example.near.core.network.model.user.UserResponse
 import com.example.near.core.network.model.user.UserSubscriptionResponse
-import com.example.near.core.network.model.user.UserTemplateResponse
 import com.example.near.domain.shared.models.NotificationOption
+import com.example.near.feature.template.domain.model.Template
 import com.example.near.feature.user.domain.models.AllFriendsInfo
 import com.example.near.feature.user.domain.models.CommunitiesList
 import com.example.near.feature.user.domain.models.User
@@ -19,7 +19,6 @@ import com.example.near.feature.user.domain.models.UserFriend
 import com.example.near.feature.user.domain.models.UserGroup
 import com.example.near.feature.user.domain.models.UserList
 import com.example.near.feature.user.domain.models.UserSubscription
-import com.example.near.feature.user.domain.models.UserTemplate
 
 fun AllFriendsInfoResponse.toDomain(): AllFriendsInfo = AllFriendsInfo(
     friends = friends.toUserFriendList(),
@@ -78,14 +77,14 @@ fun UserSubscriptionResponse.toDomain(): UserSubscription = UserSubscription(
     subscribersCount = subscribersCount
 )
 
-fun EmergencyTypeResponse.toDomain(): EmergencyType = EmergencyType(
+fun EmergencyType.toDomain(): EmergencyType = EmergencyType(
     id = id,
     title = title,
     color = color,
     bgColor = bgColor
 )
 
-fun UserTemplateResponse.toDomain(): UserTemplate = UserTemplate(
+fun TemplateResponse.toDomain(): Template = Template(
     id = id,
     templateName = templateName,
     message = message,

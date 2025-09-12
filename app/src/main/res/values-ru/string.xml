@@ -177,4 +177,8 @@
     <string name="email_verification_message">Мы отправили ссылку для подтверждения на ваш email. Пожалуйста, проверьте почту и перейдите по ссылке.</string>
     <string name="i_confirmed_email">Я подтвердил email</string>
     <string name="retry">Попробовать снова</string>
+
+    <string name="error_load_data">Failed to load template data</string>
+    <string name="error_send_template">Failed to send template</string>
+    <string name="error_unknown">An unexpected error occurred</string>
 </resources>

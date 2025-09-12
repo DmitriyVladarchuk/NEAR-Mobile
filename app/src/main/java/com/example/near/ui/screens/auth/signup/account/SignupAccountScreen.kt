@@ -36,7 +36,7 @@ import com.example.near.domain.shared.models.UIState
 import com.example.near.ui.screens.navigation.Routes
 import com.example.near.core.ui.theme.AppTypography
 import com.example.near.core.ui.theme.CustomTheme
-import com.example.near.ui.components.common.AppTextField
+import com.example.near.core.ui.components.AppTextField
 import com.example.near.ui.components.auth.AuthScreenButtons
 import com.example.near.ui.components.common.ErrorText
 import com.example.near.ui.components.headers.HeaderTextInfo
@@ -102,16 +102,16 @@ private fun TextFieldAccount(viewModel: SignupAccountViewModel) {
         AppTextField(
             value = viewModel.nameUser,
             onValueChange = { viewModel.nameUser = it },
-            labelRes = R.string.your_name,
-            placeholderRes = R.string.your_name
+            labelRes = stringResource(R.string.your_name),
+            placeholderRes = stringResource(R.string.your_name)
         )
 
         // Email field
         AppTextField(
             value = viewModel.email,
             onValueChange = { viewModel.email = it },
-            labelRes = R.string.email,
-            placeholderRes = R.string.email,
+            labelRes = stringResource(R.string.email),
+            placeholderRes = stringResource(R.string.email),
             keyboardType = KeyboardType.Email
         )
 
@@ -119,8 +119,8 @@ private fun TextFieldAccount(viewModel: SignupAccountViewModel) {
         AppTextField(
             value = viewModel.password,
             onValueChange = { viewModel.password = it },
-            labelRes = R.string.password,
-            placeholderRes = R.string.password,
+            labelRes = stringResource(R.string.password),
+            placeholderRes = stringResource(R.string.password),
             keyboardType = KeyboardType.Password,
             visualTransformation = if (isPasswordVisible) None else PasswordVisualTransformation(),
             trailingIcon = {
@@ -135,8 +135,8 @@ private fun TextFieldAccount(viewModel: SignupAccountViewModel) {
         AppTextField(
             value = viewModel.country,
             onValueChange = { viewModel.country = it },
-            labelRes = R.string.country_city_district,
-            placeholderRes = R.string.country_city_district
+            labelRes = stringResource(R.string.country_city_district),
+            placeholderRes = stringResource(R.string.country_city_district)
         )
 
         // Birthday field
@@ -147,8 +147,8 @@ private fun TextFieldAccount(viewModel: SignupAccountViewModel) {
                 Log.d("aaaaa", newText)
                 viewModel.birthday = filtered
             },
-            labelRes = R.string.birthday,
-            placeholderRes = R.string.birthday,
+            labelRes = stringResource(R.string.birthday),
+            placeholderRes = stringResource(R.string.birthday),
             keyboardType = KeyboardType.Number,
             visualTransformation = DateTransformation()
         )
@@ -157,8 +157,8 @@ private fun TextFieldAccount(viewModel: SignupAccountViewModel) {
         AppTextField(
             value = viewModel.phone,
             onValueChange = { viewModel.phone = it },
-            labelRes = R.string.phone_number,
-            placeholderRes = R.string.phone_number,
+            labelRes = stringResource(R.string.phone_number),
+            placeholderRes = stringResource(R.string.phone_number),
             keyboardType = KeyboardType.Phone
         )
 
@@ -166,8 +166,8 @@ private fun TextFieldAccount(viewModel: SignupAccountViewModel) {
         AppTextField(
             value = viewModel.telegramShortName,
             onValueChange = { viewModel.telegramShortName = it },
-            labelRes = R.string.telegram_short_name,
-            placeholderRes = R.string.telegram_short_name
+            labelRes = stringResource(R.string.telegram_short_name),
+            placeholderRes = stringResource(R.string.telegram_short_name)
         )
     }
 }

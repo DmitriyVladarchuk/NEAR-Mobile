@@ -31,9 +31,9 @@ import com.example.near.core.ui.theme.AppTypography
 import com.example.near.core.ui.theme.CustomTheme
 import com.example.near.ui.components.user.FriendItemWithCheckbox
 import com.example.near.ui.components.headers.SecondaryHeaderTextInfo
-import com.example.near.ui.components.common.TextFieldLabel
-import com.example.near.ui.components.common.TextFieldPlaceholder
-import com.example.near.ui.components.common.textFieldColors
+import com.example.near.core.ui.components.TextFieldLabel
+import com.example.near.core.ui.components.TextFieldPlaceholder
+import com.example.near.core.ui.components.textFieldColors
 
 @Composable
 fun CreateGroupsScreen(
