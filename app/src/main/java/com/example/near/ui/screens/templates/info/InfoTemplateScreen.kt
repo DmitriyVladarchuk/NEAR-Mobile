@@ -31,7 +31,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -43,7 +42,9 @@ import com.example.near.core.ui.components.CustomTabRow
 import com.example.near.core.ui.components.IconSize
 import com.example.near.core.ui.theme.AppTypography
 import com.example.near.core.ui.theme.CustomTheme
+import com.example.near.core.ui.theme.Dimens
 import com.example.near.core.ui.theme.dark_content
+import com.example.near.core.ui.theme.screenPadding
 import com.example.near.feature.template.domain.model.Template
 import com.example.near.feature.user.domain.models.User
 import com.example.near.feature.user.domain.models.UserGroup
@@ -111,11 +112,11 @@ fun InfoTemplateScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .screenPadding()
     ) {
         SecondaryHeaderTextInfo(
             text = stringResource(R.string.template_info),
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = Dimens.spacingMedium)
         ) {
             navController.popBackStack()
         }
@@ -128,7 +129,7 @@ fun InfoTemplateScreen(
             onTabSelected = { index -> selectedTab = index },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 24.dp, bottom = 16.dp)
+                .padding(top = Dimens.spacingLarge, bottom = Dimens.spacingMedium)
         )
 
         HorizontalPager(
@@ -161,7 +162,7 @@ fun InfoTemplateScreen(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp),
+                    .padding(top = Dimens.spacingMedium),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = CustomTheme.colors.orange
                 )
@@ -185,13 +186,13 @@ private fun TemplateInfo(template: Template?) {
             .fillMaxWidth()
             .background(
                 color = Color(template.emergencyType.color.toColorInt()),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(Dimens.cornerRadiusLarge)
             )
-            .padding(16.dp)
+            .padding(Dimens.spacingMedium)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = Dimens.spacingSmall)
         ) {
             Text(
                 text = template.emergencyType.title,
@@ -204,7 +205,7 @@ private fun TemplateInfo(template: Template?) {
             text = template.templateName,
             style = AppTypography.titleLarge,
             color = dark_content,
-            modifier = Modifier.padding(bottom = 4.dp)
+            modifier = Modifier.padding(bottom = Dimens.spacingExtraSmall)
         )
 
         Text(
